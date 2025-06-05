@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="font_size">22sp</dimen>
+    <dimen name="main_padding_horizontal">16dp</dimen>
+    <dimen name="main_padding_vertical">14dp</dimen>
+    <dimen name="btn_padding_bottom">16dp</dimen>
+    <dimen name="btn_border_radios">16dp</dimen>
+    <dimen name="btn_icon_padding">8dp</dimen>
+</resources>
