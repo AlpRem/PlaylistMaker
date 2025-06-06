@@ -4,4 +4,8 @@
     <string name="btn_search">Поиск</string>
     <string name="btn_library">Медиатека</string>
     <string name="btn_setting">Настройки</string>
+    <string name="setting_theme">Темная тема</string>
+    <string name="setting_support">Написать в поддержку</string>
+    <string name="setting_shared">Поделиться приложением</string>
+    <string name="setting_agreement">Пользовательское соглашение</string>
 </resources>
