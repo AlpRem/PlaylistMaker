@@ -60,7 +60,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Поделиться приложением"
+            android:text="@string/setting_shared"
             android:textColor="@color/black"
             android:textSize="@dimen/menu_font_size"
             android:paddingVertical="@dimen/menu_padding_vertical"
