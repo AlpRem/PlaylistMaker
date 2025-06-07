@@ -8,10 +8,8 @@
 .idea/
 *.iml
 .gradle/
+.kotlin/
 
 # Local configuration
 local.properties
 
-gradle/
-gradle
-.kotlin/
