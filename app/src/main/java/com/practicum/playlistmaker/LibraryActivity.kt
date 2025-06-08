@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import com.google.android.material.appbar.MaterialToolbar
 import com.practicum.playlistmaker.base.BaseActivity
 
 class LibraryActivity : BaseActivity() {
@@ -21,6 +22,7 @@ class LibraryActivity : BaseActivity() {
             view.updatePadding(top = systemBars.top)
             insets
         }
-        arrowBackButton(R.id.arrow_back)
+        arrowBackButton(R.id.title)
+
     }
 }

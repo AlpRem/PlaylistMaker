@@ -9,4 +9,5 @@
     <dimen name="btn_icon_padding">8dp</dimen>
     <dimen name="menu_padding_vertical">21dp</dimen>
     <dimen name="icon_size">24dp</dimen>
+    <dimen name="margin_icon_navigation">28dp</dimen>
 </resources>

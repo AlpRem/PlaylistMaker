@@ -20,5 +20,8 @@ class SettingsActivity : BaseActivity() {
         }
 
         arrowBackButton(R.id.arrow_back)
+//        findViewById<MaterialToolbar>(R.id.title).setOnClickListener {
+//            finish()
+//        }
     }
 }
