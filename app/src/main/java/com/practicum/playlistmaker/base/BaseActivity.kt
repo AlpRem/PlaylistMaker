@@ -8,8 +8,12 @@ import com.practicum.playlistmaker.MainActivity
 import com.practicum.playlistmaker.R
 
 abstract class BaseActivity: AppCompatActivity() {
-    protected fun arrowBackButton(materialToolbar: Int) {
-        findViewById<MaterialToolbar>(materialToolbar).setNavigationOnClickListener  {
+    protected fun arrowBackButton(arrowBack: Int) {
+//        findViewById<MaterialToolbar>(materialToolbar).setNavigationOnClickListener  {
+//            finish()
+//        }
+
+        findViewById<ImageView>(arrowBack).setOnClickListener  {
             finish()
         }
     }

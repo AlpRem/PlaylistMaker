@@ -3,4 +3,9 @@
     <style name="titleText" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:textSize">@dimen/font_size</item>
     </style>
+
+    <style name="switchStyle" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="thumbTint">@color/thumb_color</item>
+        <item name="trackTint">@color/track_color</item>
+    </style>
 </resources>

@@ -22,7 +22,7 @@ class LibraryActivity : BaseActivity() {
             view.updatePadding(top = systemBars.top)
             insets
         }
-        arrowBackButton(R.id.title)
+        arrowBackButton(R.id.arrow_back)
 
     }
 }
