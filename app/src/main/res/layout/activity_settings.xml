@@ -23,6 +23,8 @@
 <!--        app:titleTextAppearance="@style/titleText"-->
 <!--        />-->
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -54,7 +56,6 @@
         android:text="@string/setting_theme"
         android:textColor="@color/black"
         android:textSize="@dimen/menu_font_size"
-        app:thumbTint="#AEAFB4"
         style="@style/switchStyle"
         app:useMaterialThemeColors="false"
 

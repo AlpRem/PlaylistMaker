@@ -2,6 +2,7 @@ package com.practicum.playlistmaker
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -23,6 +24,9 @@ class LibraryActivity : BaseActivity() {
             insets
         }
         arrowBackButton(R.id.arrow_back)
+
+
+
 
     }
 }
