@@ -49,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingHorizontal="@dimen/main_padding_horizontal"
+
         android:paddingVertical="@dimen/menu_padding_vertical"
         android:text="@string/setting_theme"
         android:textColor="@color/black"
@@ -65,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/shared"
-        android:paddingHorizontal="@dimen/main_padding_horizontal"
+
         android:textColor="@color/black"
         android:paddingVertical="@dimen/menu_padding_vertical"
         android:text="@string/setting_shared"
@@ -75,7 +75,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/support"
-        android:paddingHorizontal="@dimen/main_padding_horizontal"
+
         android:textColor="@color/black"
         android:paddingVertical="@dimen/menu_padding_vertical"
         android:text="@string/setting_support"
@@ -85,7 +85,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/arrow_forward"
-        android:paddingHorizontal="@dimen/main_padding_horizontal"
+
         android:textColor="@color/black"
         android:paddingVertical="@dimen/menu_padding_vertical"
         android:text="@string/setting_agreement"
