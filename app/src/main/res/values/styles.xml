@@ -4,8 +4,14 @@
         <item name="android:textSize">@dimen/font_size</item>
     </style>
 
-    <style name="switchStyle" parent="Widget.MaterialComponents.CompoundButton.Switch">
-        <item name="thumbTint">@color/thumb_color</item>
-        <item name="trackTint">@color/track_color</item>
+
+    <style name="switchStyleLight" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="thumbTint">@color/thumb_color_light</item>
+        <item name="trackTint">@color/track_color_light</item>
+    </style>
+
+    <style name="switchStyleDark" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="thumbTint">@color/thumb_color_dark</item>
+        <item name="trackTint">@color/track_color_dark</item>
     </style>
 </resources>
