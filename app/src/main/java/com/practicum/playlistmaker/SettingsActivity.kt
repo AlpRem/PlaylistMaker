@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -24,11 +25,20 @@ class SettingsActivity : BaseActivity() {
         }
 
         arrowBackButton(R.id.arrow_back)
+
+
         val switchTheme = findViewById<SwitchMaterial>(R.id.switch_themes)
-        switchTheme.setOnCheckedChangeListener {
-                _, isChecked ->
-                    val styleRes = if (isChecked) R.style.switchStyleDark else R.style.switchStyleLight
-                    switchTheme.setStyle(styleRes)
+        val sharedPref = getSharedPreferences("AppPreferences", MODE_PRIVATE)
+        val isDarkTheme = sharedPref.getBoolean("dark_theme", false)
+        switchTheme.isChecked = isDarkTheme
+        switchTheme.setOnCheckedChangeListener { _, isChecked ->
+            sharedPref.edit().putBoolean("dark_theme", isChecked).apply()
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            recreate()
         }
     }
 

@@ -3,8 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="main_background">#3772E7</color>
-    <color name="text_color">#1A1B22</color>
-    <color name="thumb_color_light">#AEAFB4</color>
+    <color name="blackish_blue">#1A1B22</color>
+    <color name="icon_color_light">#AEAFB4</color>
+    <color name="thumb_color_light">@color/icon_color_light</color>
     <color name="thumb_color_dark">#3772E7</color>
     <color name="track_color_light">#E6E8EB</color>
     <color name="track_color_dark">#9FBBF3</color>

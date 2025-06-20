@@ -1,17 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="titleText" parent="TextAppearance.Material3.TitleLarge">
+    <style name="baseFont" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:textSize">@dimen/font_size</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
     </style>
 
-
-    <style name="switchStyleLight" parent="Widget.MaterialComponents.CompoundButton.Switch">
-        <item name="thumbTint">@color/thumb_color_light</item>
-        <item name="trackTint">@color/track_color_light</item>
+    <style name="mainActivity">
+        <item name="android:paddingHorizontal">@dimen/main_padding_horizontal</item>
+        <item name="android:paddingVertical">@dimen/main_padding_vertical</item>
+        <item name="android:orientation">vertical</item>
     </style>
 
-    <style name="switchStyleDark" parent="Widget.MaterialComponents.CompoundButton.Switch">
-        <item name="thumbTint">@color/thumb_color_dark</item>
-        <item name="trackTint">@color/track_color_dark</item>
+    <style name="buttonMenu">
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginBottom">@dimen/btn_padding_bottom</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/blackish_blue</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/btn_icon_padding</item>
+        <item name="iconTint">@color/blackish_blue</item>
+        <item name="cornerRadius">@dimen/btn_border_radios</item>
+        <item name="android:textSize">@dimen/font_size</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">700</item>
+        <!-- Стиль тени -->
+        <item name="android:outlineSpotShadowColor">@color/black</item>
+    </style>
+
+    <style name="titleActivity" parent="baseFont">
+        <item name="android:layout_marginStart">@dimen/margin_icon_navigation</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="imageInTitleActivity">
+        <item name="android:layout_width">@dimen/icon_size</item>
+        <item name="android:layout_height">@dimen/icon_size</item>
+    </style>
+
+    <style name="switchStyle" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/menu_font_size</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="thumbTint">?attr/thumbColor</item>
+        <item name="trackTint">?attr/trackColor</item>
+    </style>
+
+    <style name="itemMenuSetting" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:paddingVertical">@dimen/menu_padding_vertical</item>
+        <item name="android:textSize">@dimen/menu_font_size</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
     </style>
 </resources>

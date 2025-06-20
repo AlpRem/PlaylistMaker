@@ -3,70 +3,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
+    android:background="?attr/mainActivityBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_background"
-    android:paddingHorizontal="@dimen/main_padding_horizontal"
-    android:paddingVertical="@dimen/main_padding_vertical"
-    android:orientation="vertical">
+    style="@style/mainActivity"
+    >
 
     <TextView
+        android:text="@string/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/title"
-        android:textColor="@color/white"
-        android:textSize="@dimen/font_size"/>
+        style="@style/baseFont"/>
 
     <Button
         android:id="@+id/btn_search"
         android:layout_marginTop="40dp"
+        android:text="@string/btn_search"
+        app:icon="@drawable/search"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginBottom="@dimen/btn_padding_bottom"
-        android:backgroundTint="@color/white"
-        android:text="@string/btn_search"
-        android:textSize="@dimen/font_size"
-        android:textColor="@color/text_color"
-        app:icon="@drawable/search"
-        app:iconGravity="textStart"
-        app:iconPadding="@dimen/btn_icon_padding"
-        app:iconTint="@color/text_color"
-        app:cornerRadius="@dimen/btn_border_radios"
-        />
+        style="@style/buttonMenu"/>
 
     <Button
         android:id="@+id/btn_library"
+        android:text="@string/btn_library"
+        app:icon="@drawable/library"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginBottom="@dimen/btn_padding_bottom"
-        android:backgroundTint="@color/white"
-        android:text="@string/btn_library"
-        android:textSize="@dimen/font_size"
-        android:textColor="@color/text_color"
-        app:icon="@drawable/library"
-        app:iconGravity="textStart"
-        app:iconPadding="@dimen/btn_icon_padding"
-        app:iconTint="@color/text_color"
-        app:cornerRadius="@dimen/btn_border_radios"
-        />
+        style="@style/buttonMenu"/>
 
     <Button
         android:id="@+id/btn_setting"
+        android:text="@string/btn_setting"
+        app:icon="@drawable/setting"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginBottom="@dimen/btn_padding_bottom"
-        android:backgroundTint="@color/white"
-        android:text="@string/btn_setting"
-        android:textSize="@dimen/font_size"
-        android:textColor="@color/text_color"
-        app:icon="@drawable/setting"
-        app:iconGravity="textStart"
-        app:iconPadding="@dimen/btn_icon_padding"
-        app:iconTint="@color/text_color"
-        app:cornerRadius="@dimen/btn_border_radios"
-        />
+        style="@style/buttonMenu"/>
 
 </LinearLayout>

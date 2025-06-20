@@ -3,6 +3,16 @@
     <style name="Base.Theme.PlaylistMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:statusBarColor">@color/blackish_blue</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <item name="colorPrimary">@color/blackish_blue</item>
+        <item name="colorPrimaryVariant">@color/black</item>
+        <item name="mainActivityBackground">@color/main_background</item>
+        <item name="settingIconColor">@color/icon_color_light</item>
+        <item name="thumbColor">@color/thumb_color_light</item>
+        <item name="trackColor">@color/track_color_light</item>
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />

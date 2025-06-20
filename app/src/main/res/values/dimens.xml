@@ -10,4 +10,6 @@
     <dimen name="menu_padding_vertical">21dp</dimen>
     <dimen name="icon_size">24dp</dimen>
     <dimen name="margin_icon_navigation">28dp</dimen>
+    <dimen name="font_title_weight">500</dimen>
+    <dimen name="font_item_weight">400</dimen>
 </resources>
