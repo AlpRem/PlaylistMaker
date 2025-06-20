@@ -19,8 +19,6 @@
 
         <TextView
             android:text="@string/btn_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             style="@style/titleActivity"/>
     </LinearLayout>
 
@@ -38,24 +36,23 @@
 
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/text_view__shared"
         android:drawableEnd="@drawable/shared"
         android:text="@string/setting_shared"
         style="@style/itemMenuSetting" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/text_view__support"
         android:drawableEnd="@drawable/support"
         android:text="@string/setting_support"
         style="@style/itemMenuSetting" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/text_view__agreement"
         android:drawableEnd="@drawable/arrow_forward"
         android:text="@string/setting_agreement"
+
+
         style="@style/itemMenuSetting" />
 
 </LinearLayout>
