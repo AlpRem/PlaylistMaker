@@ -14,7 +14,7 @@ import androidx.core.view.updatePadding
 import com.practicum.playlistmaker.base.BaseActivity
 
 class SearchActivity : BaseActivity() {
-    private var searchQuery: String = ""
+    private var searchString: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +27,7 @@ class SearchActivity : BaseActivity() {
             insets
         }
 
-        searchQuery = savedInstanceState?.getString(SEARCH_STRING) ?: ""
+        searchString = savedInstanceState?.getString(SEARCH_STRING) ?: ""
         val searchEditText = findViewById<EditText>(R.id.search_edit_text)
         val clearBtn = findViewById<ImageView>(R.id.clear_icon)
 
@@ -38,7 +38,7 @@ class SearchActivity : BaseActivity() {
 
     private fun initObjectViews(editText: EditText, clearBtn: ImageView) {
         arrowBackButton(R.id.arrow_back)
-        editText.setText(searchQuery)
+        editText.setText(searchString)
         clearBtn.setOnClickListener { cleanText(editText, clearBtn) }
     }
 
@@ -50,7 +50,7 @@ class SearchActivity : BaseActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearBtn.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
-                searchQuery = if (s.isNullOrEmpty()) s.toString() else "";
+                searchString = if (s.isNullOrEmpty()) s.toString() else "";
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -61,7 +61,7 @@ class SearchActivity : BaseActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_STRING, searchQuery)
+        outState.putString(SEARCH_STRING, searchString)
     }
 
     private fun cleanText(editText: EditText, clearBtn: ImageView) {
