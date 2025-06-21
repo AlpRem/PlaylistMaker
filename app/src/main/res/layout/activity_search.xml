@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,5 +21,62 @@
             android:text="@string/btn_search"
             style="@style/titleActivity"/>
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/search_height"
+        android:layout_marginVertical="@dimen/search_margin_vertical"
+        android:background="@drawable/edittext_background"
+        android:paddingHorizontal="@dimen/search_padding_vertical">
+        <ImageView
+            android:layout_gravity="start|center_vertical"
+            android:src="@drawable/search"
+            style="@style/iconSearch"/>
+
+        <EditText
+            android:id="@+id/search_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/search_height"
+            android:hint="@string/btn_search"
+            android:maxLines="1"
+            style="@style/editTextSearch"/>
+
+        <ImageView
+            android:id="@+id/clear_icon"
+            android:layout_gravity="end|center_vertical"
+            android:src="@drawable/clear"
+            android:visibility="gone"
+            style="@style/iconSearch"/>
+
+    </FrameLayout>
+
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="16dp"-->
+<!--        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"-->
+<!--        app:boxBackgroundColor="#E6E8EB"-->
+<!--        app:boxCornerRadiusTopStart="16dp"-->
+<!--        app:boxCornerRadiusTopEnd="16dp"-->
+<!--        app:boxCornerRadiusBottomStart="16dp"-->
+<!--        app:boxCornerRadiusBottomEnd="16dp"-->
+<!--        app:startIconDrawable="@drawable/search"-->
+<!--        app:startIconTint="#9E9E9E"-->
+<!--        app:endIconMode="clear_text"-->
+<!--        app:endIconDrawable="@android:drawable/ic_menu_close_clear_cancel"-->
+<!--        app:endIconTint="#9E9E9E"-->
+<!--        app:hintTextColor="#9E9E9E">-->
+
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="Поиск"-->
+<!--            android:textColor="#000000"-->
+<!--            android:textColorHint="#9E9E9E"-->
+<!--            android:inputType="text"/>-->
+
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+
 
 </LinearLayout>

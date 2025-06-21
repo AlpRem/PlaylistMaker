@@ -12,6 +12,8 @@
         <item name="settingIconColor">@color/icon_color_light</item>
         <item name="thumbColor">@color/thumb_color_light</item>
         <item name="trackColor">@color/track_color_light</item>
+        <item name="editTextBackground">@color/edit_background_light</item>
+        <item name="editTextIconColor">@color/icon_color_light</item>
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />

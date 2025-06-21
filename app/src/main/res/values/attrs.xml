@@ -2,4 +2,5 @@
 <resources>
     <attr name="mainActivityBackground" format="reference|color"/>
     <attr name="settingIconColor" format="reference|color"/>
+    <attr name="editTextIconColor" format="reference|color"/>
 </resources>

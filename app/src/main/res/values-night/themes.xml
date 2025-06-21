@@ -6,13 +6,14 @@
         <item name="android:windowBackground">@color/blackish_blue</item>
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">false</item>
-
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryVariant">@color/white</item>
         <item name="mainActivityBackground">@color/blackish_blue</item>
         <item name="settingIconColor">@color/white</item>
         <item name="thumbColor">@color/thumb_color_dark</item>
         <item name="trackColor">@color/track_color_dark</item>
+        <item name="editTextBackground">@color/white</item>
+        <item name="editTextIconColor">@color/blackish_blue</item>
     </style>
 
     <style name="Theme.PlaylistMaker.Main" parent="Base.Theme.PlaylistMaker" />
