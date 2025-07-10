@@ -21,14 +21,11 @@ import com.practicum.playlistmaker.track.repository.TrackRepository
 class SearchActivity : BaseActivity() {
     private var searchString: String = ""
     private val trackRepository: TrackRepository = MockTrackRepository()
-
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var recyclerView: RecyclerView
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_search)) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(top = systemBars.top)
