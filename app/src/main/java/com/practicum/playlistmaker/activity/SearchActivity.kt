@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.activity
 
 import android.content.Context
 import android.os.Bundle
@@ -11,11 +11,19 @@ import android.widget.ImageView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import com.practicum.playlistmaker.base.BaseActivity
+import androidx.recyclerview.widget.RecyclerView
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.activity.base.BaseActivity
+import com.practicum.playlistmaker.track.adapter.TrackAdapter
+import com.practicum.playlistmaker.track.repository.MockTrackRepository
+import com.practicum.playlistmaker.track.repository.TrackRepository
 
 class SearchActivity : BaseActivity() {
     private var searchString: String = ""
+    private val trackRepository: TrackRepository = MockTrackRepository()
 
+    private lateinit var trackAdapter: TrackAdapter
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +41,10 @@ class SearchActivity : BaseActivity() {
 
         initObjectViews(searchEditText, clearBtn)
         implTextWatcher(searchEditText, clearBtn);
+
+        recyclerView = findViewById(R.id.trackRecyclerView)
+        trackAdapter = TrackAdapter(trackRepository.getTracks())
+        recyclerView.adapter = trackAdapter
 
     }
 

@@ -1,11 +1,7 @@
-package com.practicum.playlistmaker.base
+package com.practicum.playlistmaker.activity.base
 
-import android.content.Intent
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.appbar.MaterialToolbar
-import com.practicum.playlistmaker.MainActivity
-import com.practicum.playlistmaker.R
 
 abstract class BaseActivity: AppCompatActivity() {
     protected fun arrowBackButton(arrowBack: Int) {

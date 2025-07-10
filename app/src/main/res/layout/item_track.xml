@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <ImageView
+        android:id="@+id/artworkUrl"
+        android:layout_width="@dimen/artwork_size"
+        android:layout_height="@dimen/artwork_size"
+        android:layout_marginTop="@dimen/artwork_margin"
+        android:layout_marginBottom="@dimen/artwork_margin"
+        android:layout_marginEnd="@dimen/artwork_margin"
+        />
+
+    <ImageView
+        android:id="@+id/rightIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/arrow_forward"
+        android:gravity="center_vertical"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/artworkUrl"
+        android:layout_toStartOf="@id/rightIcon"
+        android:layout_marginTop="@dimen/main_padding_vertical"
+        android:layout_marginBottom="@dimen/main_padding_vertical"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/trackName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/titleTrackStyle"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+
+            <TextView
+                android:id="@+id/artistName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/infoTrackStyle"/>
+
+            <ImageView
+                android:layout_width="@dimen/ic_size"
+                android:layout_height="@dimen/ic_size"
+                android:src="@drawable/ic"
+                />
+
+            <TextView
+                android:id="@+id/trackTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/infoTrackStyle"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

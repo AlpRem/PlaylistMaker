@@ -3,4 +3,6 @@
     <attr name="mainActivityBackground" format="reference|color"/>
     <attr name="settingIconColor" format="reference|color"/>
     <attr name="editTextIconColor" format="reference|color"/>
+    <attr name="titleTrackColor" format="reference|color"/>
+    <attr name="infoTrackColor" format="reference|color"/>
 </resources>

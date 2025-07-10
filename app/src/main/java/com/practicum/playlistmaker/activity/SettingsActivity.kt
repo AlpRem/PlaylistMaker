@@ -1,25 +1,17 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.activity
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.ImageView
-import androidx.annotation.StyleRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.practicum.playlistmaker.base.BaseActivity
-import androidx.core.content.withStyledAttributes
+import com.practicum.playlistmaker.activity.base.BaseActivity
 import com.google.android.material.textview.MaterialTextView
 import androidx.core.net.toUri
+import com.practicum.playlistmaker.R
 
 class SettingsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

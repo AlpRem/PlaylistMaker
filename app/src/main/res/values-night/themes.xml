@@ -14,6 +14,8 @@
         <item name="trackColor">@color/track_color_dark</item>
         <item name="editTextBackground">@color/white</item>
         <item name="editTextIconColor">@color/blackish_blue</item>
+        <item name="titleTrackColor">@color/white</item>
+        <item name="infoTrackColor">@color/white</item>
     </style>
 
     <style name="Theme.PlaylistMaker.Main" parent="Base.Theme.PlaylistMaker" />

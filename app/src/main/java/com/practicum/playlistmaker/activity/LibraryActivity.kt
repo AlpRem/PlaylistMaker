@@ -1,18 +1,11 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.activity
 
-import android.annotation.SuppressLint
-import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import com.google.android.material.appbar.MaterialToolbar
-import com.practicum.playlistmaker.base.BaseActivity
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.activity.base.BaseActivity
 
 class LibraryActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

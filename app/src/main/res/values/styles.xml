@@ -76,4 +76,15 @@
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:textCursorDrawable">@drawable/cursor_edit_text</item>
     </style>
+
+    <style name="titleTrackStyle" parent="baseFont">
+        <item name="android:textColor">?attr/titleTrackColor</item>
+        <item name="android:textSize">@dimen/menu_font_size</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="infoTrackStyle" parent="titleTrackStyle">
+        <item name="android:textColor">?attr/infoTrackColor</item>
+        <item name="android:textSize">@dimen/track_font_size</item>
+    </style>
 </resources>
