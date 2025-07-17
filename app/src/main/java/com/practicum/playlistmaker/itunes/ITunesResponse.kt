@@ -2,7 +2,7 @@ package com.practicum.playlistmaker.itunes
 
 import com.google.gson.annotations.SerializedName
 
-class ITunesResponse(val results: TrackDto) {
+class ITunesResponse(val results: List<TrackDto>) {
     data class TrackDto(
         val trackName: String,
         val artistName: String,

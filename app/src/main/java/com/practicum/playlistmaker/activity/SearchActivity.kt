@@ -21,6 +21,8 @@ import com.practicum.playlistmaker.itunes.ItunesService
 import com.practicum.playlistmaker.track.adapter.TrackAdapter
 import com.practicum.playlistmaker.track.repository.MockTrackRepository
 import com.practicum.playlistmaker.track.repository.TrackRepository
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -53,19 +55,39 @@ class SearchActivity : BaseActivity() {
 
     }
 
-    fun listTrack(text: String) {
-        ItunesClient.itunesService
-            .search(text)
-            .enqueue(object : Callback<ITunesResponse> {
-                override fun onResponse(call: Call<ITunesResponse>,
-                                        response: Response<ITunesResponse>) {
-                    Log.d("LOG", "${response.body()}")
-                }
+    private fun listTrack(text: String) {
+        try {
+            ItunesClient.itunesService.search(text)
+                .enqueue(object : Callback<ITunesResponse> {
+                    override fun onResponse(call: Call<ITunesResponse>, response: Response<ITunesResponse>) {
+                        try {
+                            val iTunesResponse = response.body()
+                            if (iTunesResponse != null) {
+                                iTunesResponse.results.forEachIndexed { index, track ->
+                                    Log.d("TRACK_DEBUG", """
+                                        Track #${index + 1}:
+                                        Name: ${track.trackName}
+                                        Artist: ${track.artistName}
+                                        Duration: ${track.trackTimeMillis} ms
+                                        Cover URL: ${track.artworkUrl100}
+                                        --------------------------
+                                    """.trimIndent())
+                                }
+                            } else {
+                                Log.e("TRACK_DEBUG", "Response body is null")
+                            }
+                            } catch (e: Exception) {
+                            Log.e("DEBUG", "5. Body read error!", e)
+                        }
+                    }
 
-                override fun onFailure(call: Call<ITunesResponse>, t: Throwable) {
-                }
-
-            })
+                    override fun onFailure(call: Call<ITunesResponse>, t: Throwable) {
+                        Log.e("DEBUG", "6. Request failed", t)
+                    }
+                })
+        } catch (e: Exception) {
+            Log.e("DEBUG", "0. Outer crash!", e)
+        }
     }
 
     private fun initObjectViews(editText: EditText, clearBtn: ImageView) {
