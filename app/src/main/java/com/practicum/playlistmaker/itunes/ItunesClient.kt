@@ -10,4 +10,6 @@ object ItunesClient {
         .baseUrl(baseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
+
+    val itunesService: ItunesService = retrofit.create(ItunesService::class.java)
 }

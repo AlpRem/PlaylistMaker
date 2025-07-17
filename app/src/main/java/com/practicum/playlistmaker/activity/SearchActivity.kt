@@ -26,7 +26,6 @@ class SearchActivity : BaseActivity() {
     private val trackRepository: TrackRepository = MockTrackRepository()
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var recyclerView: RecyclerView
-    private val itunesService = ItunesClient.retrofit.create(ItunesService::class.java)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -49,8 +48,8 @@ class SearchActivity : BaseActivity() {
 
 
         try {
-            val response = itunesService.search("Шаман")
-            Log.d("SearchActivity", "Translated: ${response.contents.translated}")
+            val response = ItunesClient.itunesService.search("Шаман")
+            Log.d("SearchActivity", "Translated: ${response}")
         } catch (e: Exception) {
             Log.e("SearchActivity", "API error: ${e.message}")
         }
