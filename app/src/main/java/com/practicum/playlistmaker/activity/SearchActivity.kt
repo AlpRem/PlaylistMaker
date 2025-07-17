@@ -15,11 +15,15 @@ import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.activity.base.BaseActivity
+import com.practicum.playlistmaker.itunes.ITunesResponse
 import com.practicum.playlistmaker.itunes.ItunesClient
 import com.practicum.playlistmaker.itunes.ItunesService
 import com.practicum.playlistmaker.track.adapter.TrackAdapter
 import com.practicum.playlistmaker.track.repository.MockTrackRepository
 import com.practicum.playlistmaker.track.repository.TrackRepository
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SearchActivity : BaseActivity() {
     private var searchString: String = ""
@@ -45,15 +49,23 @@ class SearchActivity : BaseActivity() {
         recyclerView = findViewById(R.id.trackRecyclerView)
         trackAdapter = TrackAdapter(trackRepository.getTracks())
         recyclerView.adapter = trackAdapter
+        listTrack("Shaman")
 
+    }
 
-        try {
-            val response = ItunesClient.itunesService.search("Шаман")
-            Log.d("SearchActivity", "Translated: ${response}")
-        } catch (e: Exception) {
-            Log.e("SearchActivity", "API error: ${e.message}")
-        }
+    fun listTrack(text: String) {
+        ItunesClient.itunesService
+            .search(text)
+            .enqueue(object : Callback<ITunesResponse> {
+                override fun onResponse(call: Call<ITunesResponse>,
+                                        response: Response<ITunesResponse>) {
+                    Log.d("LOG", "${response.body()}")
+                }
 
+                override fun onFailure(call: Call<ITunesResponse>, t: Throwable) {
+                }
+
+            })
     }
 
     private fun initObjectViews(editText: EditText, clearBtn: ImageView) {
@@ -96,4 +108,6 @@ class SearchActivity : BaseActivity() {
     companion object {
         const val SEARCH_STRING = "SEARCH_STRING"
     }
+
+
 }
