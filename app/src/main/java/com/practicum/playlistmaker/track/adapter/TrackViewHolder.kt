@@ -32,16 +32,16 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         Glide.with(itemView)
             .load(model.artworkUrl100)
             .placeholder(R.drawable.placeholder)
-            .override(R.dimen.artwork_size.dpToPx(), R.dimen.artwork_size.dpToPx())
+            .override(45.dpToPx(), 45.dpToPx())
             .centerCrop()
             .transform(
                 MultiTransformation(
                     CenterCrop(),
-                    RoundedCorners(R.dimen.rounded_corners.dpToPx())
+                    RoundedCorners(2.dpToPx())
                 )
             )
             .into(artworkUrl)
     }
 
-    private fun Int.dpToPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
+    fun Int.dpToPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 }
