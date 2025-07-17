@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -14,6 +15,8 @@ import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.activity.base.BaseActivity
+import com.practicum.playlistmaker.itunes.ItunesClient
+import com.practicum.playlistmaker.itunes.ItunesService
 import com.practicum.playlistmaker.track.adapter.TrackAdapter
 import com.practicum.playlistmaker.track.repository.MockTrackRepository
 import com.practicum.playlistmaker.track.repository.TrackRepository
@@ -23,6 +26,7 @@ class SearchActivity : BaseActivity() {
     private val trackRepository: TrackRepository = MockTrackRepository()
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var recyclerView: RecyclerView
+    private val itunesService = ItunesClient.retrofit.create(ItunesService::class.java)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -42,6 +46,14 @@ class SearchActivity : BaseActivity() {
         recyclerView = findViewById(R.id.trackRecyclerView)
         trackAdapter = TrackAdapter(trackRepository.getTracks())
         recyclerView.adapter = trackAdapter
+
+
+        try {
+            val response = itunesService.search("Шаман")
+            Log.d("SearchActivity", "Translated: ${response.contents.translated}")
+        } catch (e: Exception) {
+            Log.e("SearchActivity", "API error: ${e.message}")
+        }
 
     }
 
