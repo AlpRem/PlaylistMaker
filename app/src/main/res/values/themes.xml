@@ -16,6 +16,7 @@
         <item name="editTextIconColor">@color/icon_color_light</item>
         <item name="titleTrackColor">@color/black</item>
         <item name="infoTrackColor">@color/icon_color_light</item>
+        <item name="colorNote">@color/color_note_light</item>
 
     </style>
 
