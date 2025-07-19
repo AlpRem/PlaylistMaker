@@ -39,6 +39,8 @@
             android:layout_height="@dimen/search_height"
             android:hint="@string/btn_search"
             android:maxLines="1"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             style="@style/editTextSearch"/>
 
         <ImageView

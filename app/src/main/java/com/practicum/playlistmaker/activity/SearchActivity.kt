@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
@@ -34,7 +35,6 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class SearchActivity : BaseActivity() {
-    private var searchString: String = ""
     private val trackRepository: TrackRepository = ItunesTrackRepository()
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var recyclerView: RecyclerView
@@ -47,21 +47,24 @@ class SearchActivity : BaseActivity() {
             insets
         }
 
-        searchString = savedInstanceState?.getString(SEARCH_STRING) ?: ""
         val searchEditText = findViewById<EditText>(R.id.search_edit_text)
         val clearBtn = findViewById<ImageView>(R.id.clear_icon)
-
         initObjectViews(searchEditText, clearBtn)
         implTextWatcher(searchEditText, clearBtn);
-
-        searchTracks("Whole Lotta Love");
+        searchEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                searchTracks(searchEditText.text.toString());
+                true
+            }
+            false
+        }
     }
 
 
 
     private fun initObjectViews(editText: EditText, clearBtn: ImageView) {
         arrowBackButton(R.id.arrow_back)
-        editText.setText(searchString)
+        editText.setText("")
         clearBtn.setOnClickListener { cleanText(editText, clearBtn) }
     }
 
@@ -72,7 +75,6 @@ class SearchActivity : BaseActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearBtn.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
-                searchString = if (s.isNullOrEmpty()) s.toString() else "";
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -110,7 +112,7 @@ class SearchActivity : BaseActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_STRING, searchString)
+        outState.putString(SEARCH_STRING, "")
     }
 
     private fun cleanText(editText: EditText, clearBtn: ImageView) {

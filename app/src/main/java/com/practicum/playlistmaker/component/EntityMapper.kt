@@ -1,17 +1,6 @@
 package com.practicum.playlistmaker.component
 
-class EntityMapper<T> {
-    companion object {
-        fun <T> toPage(
-            data: Collection<T>,
-            totalCount: Int,
-            errors: List<Error> = emptyList()
-        ): Page<T> {
-            val meta = Meta(
-                count = totalCount,
-                errors = errors
-            )
-            return Page(meta, data)
-        }
-    }
+interface EntityMapper<in FROM, out TO> {
+    fun map(entity: FROM): TO
+    fun mapList(entities: List<FROM>): List<TO> = entities.map { map(it) }
 }
