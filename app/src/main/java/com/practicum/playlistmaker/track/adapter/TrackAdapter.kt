@@ -25,4 +25,9 @@ class TrackAdapter(var tracks: List<Track>) : RecyclerView.Adapter<TrackViewHold
         tracks = page.data as List<Track>
         notifyDataSetChanged()
     }
+
+    fun clearTracks() {
+        tracks = emptyList()
+        notifyDataSetChanged()
+    }
 }

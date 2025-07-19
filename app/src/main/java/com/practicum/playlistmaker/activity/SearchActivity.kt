@@ -54,6 +54,7 @@ class SearchActivity : BaseActivity() {
         val clearBtn = findViewById<ImageView>(R.id.clear_icon)
         initObjectViews(searchEditText, clearBtn)
         implTextWatcher(searchEditText, clearBtn)
+
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE&&
                 searchEditText.text.toString().isNotEmpty()) {
@@ -135,6 +136,8 @@ class SearchActivity : BaseActivity() {
     private fun cleanText(editText: EditText, clearBtn: ImageView) {
         clearBtn.setOnClickListener{
             editText.setText("")
+            hideEmptyTrack()
+            trackAdapter.clearTracks()
             val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
             val currentView = currentFocus ?: View(this)
             inputMethodManager?.hideSoftInputFromWindow(currentView.windowToken, 0)
