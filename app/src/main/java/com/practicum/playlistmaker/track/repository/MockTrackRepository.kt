@@ -1,5 +1,7 @@
 package com.practicum.playlistmaker.track.repository
 
+import com.practicum.playlistmaker.component.Meta
+import com.practicum.playlistmaker.component.Page
 import com.practicum.playlistmaker.track.model.Track
 
 class MockTrackRepository: TrackRepository {
@@ -27,5 +29,14 @@ class MockTrackRepository: TrackRepository {
             "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg")
     )
 
-    override fun getTracks(): List<Track> = tracks
+    override fun getTracks(query: String, callback: (Page<Track>) -> Unit) {
+        callback(Page(
+            meta = Meta(
+                count = tracks.size,
+                errors = emptyList()
+                ),
+                data = tracks
+            )
+        )
+    }
 }

@@ -15,10 +15,14 @@ import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.activity.base.BaseActivity
+import com.practicum.playlistmaker.component.Error
+import com.practicum.playlistmaker.component.Page
 import com.practicum.playlistmaker.itunes.ITunesResponse
 import com.practicum.playlistmaker.itunes.ItunesClient
 import com.practicum.playlistmaker.itunes.ItunesService
 import com.practicum.playlistmaker.track.adapter.TrackAdapter
+import com.practicum.playlistmaker.track.model.Track
+import com.practicum.playlistmaker.track.repository.ItunesTrackRepository
 import com.practicum.playlistmaker.track.repository.MockTrackRepository
 import com.practicum.playlistmaker.track.repository.TrackRepository
 import okhttp3.RequestBody
@@ -26,10 +30,12 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class SearchActivity : BaseActivity() {
     private var searchString: String = ""
-    private val trackRepository: TrackRepository = MockTrackRepository()
+    private val trackRepository: TrackRepository = ItunesTrackRepository()
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var recyclerView: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,54 +54,16 @@ class SearchActivity : BaseActivity() {
         initObjectViews(searchEditText, clearBtn)
         implTextWatcher(searchEditText, clearBtn);
 
-        recyclerView = findViewById(R.id.trackRecyclerView)
-        trackAdapter = TrackAdapter(trackRepository.getTracks())
-        recyclerView.adapter = trackAdapter
-        listTrack("Shaman")
-
+        searchTracks("Whole Lotta Love");
     }
 
-    private fun listTrack(text: String) {
-        try {
-            ItunesClient.itunesService.search(text)
-                .enqueue(object : Callback<ITunesResponse> {
-                    override fun onResponse(call: Call<ITunesResponse>, response: Response<ITunesResponse>) {
-                        try {
-                            val iTunesResponse = response.body()
-                            if (iTunesResponse != null) {
-                                iTunesResponse.results.forEachIndexed { index, track ->
-                                    Log.d("TRACK_DEBUG", """
-                                        Track #${index + 1}:
-                                        Name: ${track.trackName}
-                                        Artist: ${track.artistName}
-                                        Duration: ${track.trackTimeMillis} ms
-                                        Cover URL: ${track.artworkUrl100}
-                                        --------------------------
-                                    """.trimIndent())
-                                }
-                            } else {
-                                Log.e("TRACK_DEBUG", "Response body is null")
-                            }
-                            } catch (e: Exception) {
-                            Log.e("DEBUG", "5. Body read error!", e)
-                        }
-                    }
 
-                    override fun onFailure(call: Call<ITunesResponse>, t: Throwable) {
-                        Log.e("DEBUG", "6. Request failed", t)
-                    }
-                })
-        } catch (e: Exception) {
-            Log.e("DEBUG", "0. Outer crash!", e)
-        }
-    }
 
     private fun initObjectViews(editText: EditText, clearBtn: ImageView) {
         arrowBackButton(R.id.arrow_back)
         editText.setText(searchString)
         clearBtn.setOnClickListener { cleanText(editText, clearBtn) }
     }
-
 
     private fun implTextWatcher(editText: EditText, clearBtn: ImageView){
         editText.addTextChangedListener(object : TextWatcher {
@@ -111,6 +79,33 @@ class SearchActivity : BaseActivity() {
             }
         })
     }
+
+    private fun searchTracks(query: String) {
+        recyclerView = findViewById(R.id.trackRecyclerView)
+        trackAdapter = TrackAdapter(emptyList())
+        recyclerView.adapter = trackAdapter
+        trackRepository.getTracks(query) { page ->
+            runOnUiThread {
+                updateTrackRecyclerView(page)
+            }
+        }
+    }
+
+    private fun updateTrackRecyclerView(page: Page<Track>) {
+        trackAdapter.updatePage(page)
+        if (page.meta.errors.isNotEmpty())
+            showErrors(page.meta.errors)
+        else {
+            if (page.data.isEmpty())
+                showEmptyTrack()
+            else
+                hideEmptyTrack()
+        }
+    }
+
+    private fun showErrors(errors: List<Error>) {}
+    private fun showEmptyTrack() {}
+    private fun hideEmptyTrack() {}
 
 
     override fun onSaveInstanceState(outState: Bundle) {
