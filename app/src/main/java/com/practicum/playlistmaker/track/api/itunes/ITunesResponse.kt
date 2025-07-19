@@ -1,6 +1,5 @@
-package com.practicum.playlistmaker.itunes
+package com.practicum.playlistmaker.track.api.itunes
 
-import com.google.gson.annotations.SerializedName
 
 class ITunesResponse(val results: List<TrackDto>) {
     data class TrackDto(

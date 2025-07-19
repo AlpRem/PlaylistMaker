@@ -3,8 +3,8 @@ package com.practicum.playlistmaker.track.repository
 import com.practicum.playlistmaker.component.Meta
 import com.practicum.playlistmaker.component.Page
 import com.practicum.playlistmaker.component.mapper.TrackDtoMapper
-import com.practicum.playlistmaker.itunes.ITunesResponse
-import com.practicum.playlistmaker.itunes.ItunesClient
+import com.practicum.playlistmaker.track.api.itunes.ITunesResponse
+import com.practicum.playlistmaker.track.api.itunes.ItunesClient
 import com.practicum.playlistmaker.track.model.Track
 import retrofit2.Call
 import retrofit2.Callback

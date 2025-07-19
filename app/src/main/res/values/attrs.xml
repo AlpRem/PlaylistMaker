@@ -5,4 +5,5 @@
     <attr name="editTextIconColor" format="reference|color"/>
     <attr name="titleTrackColor" format="reference|color"/>
     <attr name="infoTrackColor" format="reference|color"/>
+    <attr name="colorNote" format="reference|color"/>
 </resources>

@@ -16,6 +16,7 @@
         <item name="editTextIconColor">@color/blackish_blue</item>
         <item name="titleTrackColor">@color/white</item>
         <item name="infoTrackColor">@color/white</item>
+        <item name="colorNote">@color/color_note_dark</item>
     </style>
 
     <style name="Theme.PlaylistMaker.Main" parent="Base.Theme.PlaylistMaker" />

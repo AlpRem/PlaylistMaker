@@ -66,6 +66,12 @@
         <item name="android:tint">?attr/editTextIconColor</item>
     </style>
 
+    <style name="errorTrack">
+        <item name="android:layout_width">@dimen/icon_error</item>
+        <item name="android:layout_height">@dimen/icon_error</item>
+        <item name="android:layout_gravity">center|top</item>
+    </style>
+
     <style name="editTextSearch" parent="baseFont">
         <item name="android:paddingHorizontal">@dimen/search_edit_padding_horizontal</item>
         <item name="android:textSize">@dimen/menu_font_size</item>
@@ -86,5 +92,36 @@
     <style name="infoTrackStyle" parent="titleTrackStyle">
         <item name="android:textColor">?attr/infoTrackColor</item>
         <item name="android:textSize">@dimen/track_font_size</item>
+    </style>
+
+    <style name="titleErrorStyle" parent="titleTrackStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/font_size_error</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">@dimen/margin_size_error</item>
+    </style>
+
+    <style name="refreshBtn">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/font_size_refresh</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingVertical">@dimen/vertical_refresh</item>
+        <item name="android:paddingHorizontal">@dimen/horizontal_refresh</item>
+        <item name="android:layout_marginTop">@dimen/margin_size_error</item>
+        <item name="cornerRadius">@dimen/radius_refresh</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="errorLayoutStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginTop">@dimen/margin_top_error</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:visibility">gone</item>
     </style>
 </resources>

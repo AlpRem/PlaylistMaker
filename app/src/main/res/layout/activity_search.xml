@@ -63,10 +63,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/errorLayout"
+        style="@style/errorLayoutStyle">
+        <ImageView
+            android:id="@+id/errorImageView"
+            android:src="@drawable/track_not_found"
+            style="@style/errorTrack"/>
+        <TextView
+            android:id="@+id/errorTextView"
+            android:text="@string/track_not_found"
+            style="@style/titleErrorStyle"/>
 
-
+        <Button
+            android:id="@+id/refreshBtn"
+            android:text="@string/refresh"
+            style="@style/refreshBtn"
+            />
+    </LinearLayout>
 
 </LinearLayout>
