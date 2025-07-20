@@ -121,6 +121,7 @@ class SearchActivity : BaseActivity() {
         errorImageView.setImageResource(R.drawable.track_not_found)
         errorTextView.text = getString(R.string.track_not_found)
         errorLayout.visibility = View.VISIBLE
+        errorRefreshBtn.visibility = View.GONE
     }
     private fun hideEmptyTrack() {
         errorRefreshBtn.visibility = View.GONE
