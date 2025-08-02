@@ -1,9 +1,12 @@
 package com.practicum.playlistmaker.activity
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -11,12 +14,21 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 import com.practicum.playlistmaker.activity.base.BaseActivity
 import com.google.android.material.textview.MaterialTextView
 import androidx.core.net.toUri
+import com.practicum.playlistmaker.App
+import com.practicum.playlistmaker.IS_DARK_THEME
+import com.practicum.playlistmaker.PLAYLIST_MAKER_PREFERENCES
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.track.adapter.TrackAdapter
+
 
 class SettingsActivity : BaseActivity() {
+
+    private lateinit var sharedPrefs: SharedPreferences;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+        sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_setting)) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(top = systemBars.top)
@@ -63,20 +75,20 @@ class SettingsActivity : BaseActivity() {
 
     private fun changeTheme() {
         findViewById<SwitchMaterial>(R.id.switch_themes).apply {
-            isChecked = isDarkTheme()
+            isChecked = (application as App).getCurrentTheme()
             setOnCheckedChangeListener { _, isChecked ->
-                AppCompatDelegate.setDefaultNightMode(
-                    if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-                )
+                (application as App).switchTheme(isChecked)
                 recreate()
+                sharedPrefs.edit { putBoolean(IS_DARK_THEME, isChecked) }
+
             }
         }
     }
 
     private fun isDarkTheme(): Boolean {
-        return when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+        return sharedPrefs.getBoolean(IS_DARK_THEME,
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> true
-            else -> false
-        }
+            else -> false })
     }
 }
