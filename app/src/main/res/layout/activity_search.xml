@@ -51,33 +51,6 @@
             style="@style/iconSearch"/>
     </FrameLayout>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/main_padding_horizontal">
-
-        <TextView
-            android:id="@+id/titleHistorySearch"
-            android:text="@string/title_history_search"
-            style="@style/titleHistorySearch"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/trackRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-        <Button
-            android:id="@+id/clearHistorySearchBtn"
-            android:text="@string/clear_history_search"
-            style="@style/cleanSearchHistoryBtn"
-            />
-
-    </LinearLayout>
-
     <LinearLayout
         android:id="@+id/errorLayout"
         style="@style/errorLayoutStyle">
@@ -96,5 +69,33 @@
             style="@style/refreshBtn"
             />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/main_padding_horizontal">
+
+        <TextView
+            android:id="@+id/titleHistorySearch"
+            android:text="@string/title_history_search"
+            style="@style/titleHistorySearch"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trackRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+        <Button
+            android:id="@+id/clearHistorySearchBtn"
+            android:text="@string/clear_history_search"
+            style="@style/cleanSearchHistoryBtn"
+            />
+
+    </LinearLayout>
+
 
 </LinearLayout>
