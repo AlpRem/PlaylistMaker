@@ -36,6 +36,19 @@
         <item name="android:textColor">?attr/colorPrimary</item>
     </style>
 
+    <style name="titleHistorySearch" parent="titleActivity">
+        <item name="android:layout_marginStart">@dimen/size_null</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginVertical">@dimen/search_margin_vertical</item>
+        <item name="android:paddingTop">@dimen/padding_top_title_search</item>
+        <item name="android:paddingBottom">@dimen/search_padding_vertical</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textSize">@dimen/font_size_title_history</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
     <style name="imageInTitleActivity">
         <item name="android:layout_width">@dimen/icon_size</item>
         <item name="android:layout_height">@dimen/icon_size</item>
@@ -114,6 +127,12 @@
         <item name="android:layout_marginTop">@dimen/margin_size_error</item>
         <item name="cornerRadius">@dimen/radius_refresh</item>
         <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="cleanSearchHistoryBtn" parent="refreshBtn">
+        <item name="android:layout_marginTop">@dimen/margin_top_clean_btn</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="errorLayoutStyle">

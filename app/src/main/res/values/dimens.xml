@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="size_null">0dp</dimen>
     <dimen name="font_size">22sp</dimen>
+    <dimen name="font_size_title_history">19sp</dimen>
     <dimen name="menu_font_size">16sp</dimen>
     <dimen name="main_padding_horizontal">16dp</dimen>
     <dimen name="main_padding_vertical">14dp</dimen>
@@ -31,4 +33,6 @@
     <dimen name="vertical_refresh">10dp</dimen>
     <dimen name="horizontal_refresh">14dp</dimen>
     <dimen name="radius_refresh">54dp</dimen>
+    <dimen name="margin_top_clean_btn">24dp</dimen>
+    <dimen name="padding_top_title_search">18dp</dimen>
 </resources>

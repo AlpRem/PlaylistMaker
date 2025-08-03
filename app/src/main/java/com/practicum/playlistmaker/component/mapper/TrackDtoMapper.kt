@@ -8,6 +8,7 @@ import java.util.Locale
 
 class TrackDtoMapper : EntityMapper<ITunesResponse.TrackDto, Track>  {
     override fun map(entity: ITunesResponse.TrackDto): Track = Track(
+        trackId =  entity.trackId,
         trackName = entity.trackName,
         artistName = entity.artistName,
         trackTime = formatDuration(entity.trackTimeMillis),

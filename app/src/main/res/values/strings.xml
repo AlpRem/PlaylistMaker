@@ -18,5 +18,7 @@
     <string name="track_not_found">Ничего не нашлось</string>
     <string name="no_connect">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="refresh">Обновить</string>
+    <string name="clear_history_search">Очистить историю</string>
+    <string name="title_history_search">Вы искали</string>
 
 </resources>
