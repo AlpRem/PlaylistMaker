@@ -38,5 +38,7 @@
     <dimen name="margin_guide_begin_audio_player">16dp</dimen>
     <dimen name="margin_guide_top_audio_player">16dp</dimen>
     <dimen name="margin_guide_content_audio_player">24dp</dimen>
+    <dimen name="margin_guide_bottom_audio_player">20dp</dimen>
     <dimen name="margin_top_cover">42dp</dimen>
+
 </resources>

@@ -18,6 +18,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.practicum.playlistmaker.PLAYLIST_MAKER_PREFERENCES
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.activity.base.BaseActivity
@@ -195,9 +196,6 @@ class SearchActivity : BaseActivity() {
             trackAdapter.clearTracks()
     }
 
-
-
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_STRING, "")
@@ -217,6 +215,7 @@ class SearchActivity : BaseActivity() {
     private fun openAudioPlayer(track: Track) {
         historyTrackRepository.setHistory(sharedPrefs, track)
         val audioPlayerIntent = Intent(this, AudioPlayerActivity::class.java)
+            .apply { putExtra("TRACK", Gson().toJson(track)) }
         startActivity(audioPlayerIntent)
     }
 

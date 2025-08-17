@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_audio_player"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".activity.AudioPlayerActivity">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/activity_audio_player"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".activity.AudioPlayerActivity">
 
     <androidx.constraintlayout.widget.Guideline
@@ -37,6 +43,13 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="@dimen/margin_guide_top_audio_player"/>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottom_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/margin_guide_bottom_audio_player"/>
+
     <ImageView
         android:id="@+id/arrow_back"
         android:src="@drawable/arrow_back"
@@ -63,9 +76,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toStartOf="@+id/right_guideline"
         app:layout_constraintStart_toStartOf="@+id/left_guide_content_line"
-        app:layout_constraintTop_toBottomOf="@+id/cover"
+        app:layout_constraintTop_toBottomOf="@id/cover"
          />
 
     <TextView
@@ -73,9 +85,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toStartOf="@+id/right_guideline"
         app:layout_constraintStart_toStartOf="@+id/left_guide_content_line"
-        app:layout_constraintTop_toBottomOf="@+id/trackName"
+        app:layout_constraintTop_toBottomOf="@id/trackName"
         />
 
     <ImageView
@@ -87,7 +98,7 @@
         android:src="@drawable/play"
         app:layout_constraintEnd_toStartOf="@+id/right_guideline"
         app:layout_constraintStart_toStartOf="@+id/left_guide_content_line"
-        app:layout_constraintTop_toTopOf="@+id/trackName"
+        app:layout_constraintTop_toBottomOf="@+id/trackAuthor"
         />
 
     <ImageView
@@ -118,13 +129,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:text="0:30"
         app:layout_constraintEnd_toStartOf="@+id/right_guideline"
         app:layout_constraintStart_toStartOf="@+id/left_guide_content_line"
         app:layout_constraintTop_toBottomOf="@+id/play"
         />
 
     <TextView
-        android:id="@+id/trackTime_title"
+        android:id="@+id/track_time_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="59dp"
@@ -134,7 +146,7 @@
         />
 
     <TextView
-        android:id="@+id/trackTime_value"
+        android:id="@+id/track_time_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="59dp"
@@ -149,7 +161,7 @@
         android:layout_marginTop="17dp"
         android:text="Альбом"
         app:layout_constraintStart_toStartOf="@+id/left_guide_content_line"
-        app:layout_constraintTop_toBottomOf="@id/trackTime_title"
+        app:layout_constraintTop_toBottomOf="@id/track_time_title"
         />
 
     <TextView
@@ -158,7 +170,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="17dp"
         app:layout_constraintEnd_toEndOf="@+id/right_guideline"
-        app:layout_constraintTop_toBottomOf="@id/trackTime_title"
+        app:layout_constraintTop_toBottomOf="@id/track_time_value"
         />
 
     <TextView
@@ -216,7 +228,9 @@
         android:layout_marginTop="17dp"
         app:layout_constraintEnd_toEndOf="@+id/right_guideline"
         app:layout_constraintTop_toBottomOf="@id/primary_genre_name_title"
+        app:layout_constraintBottom_toTopOf="@id/bottom_guide"
         />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

@@ -11,6 +11,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.track.model.Track
+import com.practicum.playlistmaker.util.dpToPx
 
 class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
     private val trackName: TextView
@@ -43,5 +44,5 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
             .into(artworkUrl)
     }
 
-    fun Int.dpToPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
+
 }
