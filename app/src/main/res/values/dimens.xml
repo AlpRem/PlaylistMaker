@@ -35,4 +35,8 @@
     <dimen name="radius_refresh">54dp</dimen>
     <dimen name="margin_top_clean_btn">24dp</dimen>
     <dimen name="padding_top_title_search">18dp</dimen>
+    <dimen name="margin_guide_begin_audio_player">16dp</dimen>
+    <dimen name="margin_guide_top_audio_player">16dp</dimen>
+    <dimen name="margin_guide_content_audio_player">24dp</dimen>
+    <dimen name="margin_top_cover">42dp</dimen>
 </resources>

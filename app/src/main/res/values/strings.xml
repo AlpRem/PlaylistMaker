@@ -20,5 +20,6 @@
     <string name="refresh">Обновить</string>
     <string name="clear_history_search">Очистить историю</string>
     <string name="title_history_search">Вы искали</string>
+    <string name="content_description_audio_player">Обложка альбома</string>
 
 </resources>

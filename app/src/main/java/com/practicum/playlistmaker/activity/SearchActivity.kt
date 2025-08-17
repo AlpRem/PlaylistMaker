@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.activity
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
@@ -63,7 +64,7 @@ class SearchActivity : BaseActivity() {
         clearBtn = findViewById<ImageView>(R.id.clear_icon)
         sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
         trackAdapter = TrackAdapter(emptyList()) { track ->
-            historyTrackRepository.setHistory(sharedPrefs, track)
+            openAudioPlayer(track)
         }
 
 
@@ -212,6 +213,13 @@ class SearchActivity : BaseActivity() {
             inputMethodManager?.hideSoftInputFromWindow(currentView.windowToken, 0)
         }
     }
+
+    private fun openAudioPlayer(track: Track) {
+        historyTrackRepository.setHistory(sharedPrefs, track)
+        val audioPlayerIntent = Intent(this, AudioPlayerActivity::class.java)
+        startActivity(audioPlayerIntent)
+    }
+
     companion object {
         const val SEARCH_STRING = "SEARCH_STRING"
     }
