@@ -6,4 +6,7 @@
     <attr name="titleTrackColor" format="reference|color"/>
     <attr name="infoTrackColor" format="reference|color"/>
     <attr name="colorNote" format="reference|color"/>
+    <attr name="colorControlPanel" format="reference|color"/>
+    <attr name="colorInformationTitle" format="reference|color"/>
+    <attr name="colorInformationValue" format="reference|color"/>
 </resources>

@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.activity
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
@@ -17,6 +18,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.practicum.playlistmaker.PLAYLIST_MAKER_PREFERENCES
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.activity.base.BaseActivity
@@ -63,7 +65,7 @@ class SearchActivity : BaseActivity() {
         clearBtn = findViewById<ImageView>(R.id.clear_icon)
         sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
         trackAdapter = TrackAdapter(emptyList()) { track ->
-            historyTrackRepository.setHistory(sharedPrefs, track)
+            openAudioPlayer(track)
         }
 
 
@@ -194,9 +196,6 @@ class SearchActivity : BaseActivity() {
             trackAdapter.clearTracks()
     }
 
-
-
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_STRING, "")
@@ -212,6 +211,14 @@ class SearchActivity : BaseActivity() {
             inputMethodManager?.hideSoftInputFromWindow(currentView.windowToken, 0)
         }
     }
+
+    private fun openAudioPlayer(track: Track) {
+        historyTrackRepository.setHistory(sharedPrefs, track)
+        val audioPlayerIntent = Intent(this, AudioPlayerActivity::class.java)
+            .apply { putExtra("TRACK", Gson().toJson(track)) }
+        startActivity(audioPlayerIntent)
+    }
+
     companion object {
         const val SEARCH_STRING = "SEARCH_STRING"
     }

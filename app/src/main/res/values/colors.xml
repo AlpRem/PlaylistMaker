@@ -13,4 +13,9 @@
     <color name="search_cursor_color">#3772E7</color>
     <color name="color_note_light">#1A1B22</color>
     <color name="color_note_dark">#FFFFFFFF</color>
+    <color name="control_panel_color_light">#1A1B22</color>
+    <color name="control_panel_color_dark">#FFFFFFFF</color>
+    <color name="ap_information_title">#AEAFB4</color>
+    <color name="ap_information_value_light">#1A1B22</color>
+    <color name="ap_information_value_dark">#FFFFFF</color>
 </resources>
