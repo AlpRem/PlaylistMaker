@@ -21,5 +21,10 @@
     <string name="clear_history_search">Очистить историю</string>
     <string name="title_history_search">Вы искали</string>
     <string name="content_description_audio_player">Обложка альбома</string>
+    <string name="duration_audio_player">Длительность</string>
+    <string name="album_audio_player">Альбом</string>
+    <string name="year_audio_player">Год</string>
+    <string name="genre_audio_player">Жанр</string>
+    <string name="country_audio_player">Страна</string>
 
 </resources>

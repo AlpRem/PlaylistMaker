@@ -2,6 +2,8 @@
 <resources>
     <dimen name="size_null">0dp</dimen>
     <dimen name="font_size">22sp</dimen>
+    <dimen name="font_size_small">14sp</dimen>
+    <dimen name="font_size_information">13sp</dimen>
     <dimen name="font_size_title_history">19sp</dimen>
     <dimen name="menu_font_size">16sp</dimen>
     <dimen name="main_padding_horizontal">16dp</dimen>
@@ -40,5 +42,14 @@
     <dimen name="margin_guide_content_audio_player">24dp</dimen>
     <dimen name="margin_guide_bottom_audio_player">20dp</dimen>
     <dimen name="margin_top_cover">42dp</dimen>
+    <dimen name="margin_top_trackName">26dp</dimen>
+    <dimen name="margin_top_author_audio_player">12dp</dimen>
+    <dimen name="margin_top_control_panel">28dp</dimen>
+    <dimen name="size_control_panel_play">100dp</dimen>
+    <dimen name="size_control_panel_btn">51dp</dimen>
+    <dimen name="margin_top_time_audio_player">4dp</dimen>
+    <dimen name="margin_bottom_time_audio_player">30dp</dimen>
+    <dimen name="margin_top_information_audio_player">9dp</dimen>
+    <dimen name="margin_bottom_information_audio_player">8dp</dimen>
 
 </resources>

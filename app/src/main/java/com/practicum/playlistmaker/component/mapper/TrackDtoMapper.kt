@@ -17,8 +17,8 @@ class TrackDtoMapper : EntityMapper<ITunesResponse.TrackDto, Track>  {
         trackTime = formatDuration(entity.trackTimeMillis),
         artworkUrl100 = entity.artworkUrl100,
         collectionName = entity.collectionName,
-        releaseDate = entity.releaseDate,
-        primaryGenreName = extractYear(entity.primaryGenreName),
+        releaseDate = extractYear(entity.releaseDate),
+        primaryGenreName = entity.primaryGenreName,
         country = entity.country
     )
 

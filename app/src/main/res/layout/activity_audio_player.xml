@@ -75,36 +75,32 @@
         android:id="@+id/trackName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="@+id/left_guide_content_line"
         app:layout_constraintTop_toBottomOf="@id/cover"
+        style="@style/apTitle"
          />
 
     <TextView
         android:id="@+id/trackAuthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="@+id/left_guide_content_line"
         app:layout_constraintTop_toBottomOf="@id/trackName"
         />
 
     <ImageView
         android:id="@+id/play"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="30dp"
-        android:scaleType="centerCrop"
         android:src="@drawable/play"
         app:layout_constraintEnd_toStartOf="@+id/right_guideline"
         app:layout_constraintStart_toStartOf="@+id/left_guide_content_line"
         app:layout_constraintTop_toBottomOf="@+id/trackAuthor"
+        style="@style/apControlPanelPlay"
         />
 
     <ImageView
         android:id="@+id/add"
-        android:layout_width="51dp"
-        android:layout_height="51dp"
+        android:layout_width="@dimen/size_control_panel_btn"
+        android:layout_height="@dimen/size_control_panel_btn"
         android:scaleType="fitStart"
         android:src="@drawable/add"
         app:layout_constraintStart_toStartOf="@+id/left_guide_content_line"
@@ -114,11 +110,10 @@
 
     <ImageView
         android:id="@+id/like"
-        android:layout_width="51dp"
-        android:layout_height="51dp"
+        android:layout_width="@dimen/size_control_panel_btn"
+        android:layout_height="@dimen/size_control_panel_btn"
         android:scaleType="fitEnd"
         android:src="@drawable/like"
-        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@+id/right_guideline"
         app:layout_constraintTop_toTopOf="@id/play"
         app:layout_constraintBottom_toBottomOf="@id/play"
@@ -128,107 +123,110 @@
         android:id="@+id/timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="0:30"
         app:layout_constraintEnd_toStartOf="@+id/right_guideline"
         app:layout_constraintStart_toStartOf="@+id/left_guide_content_line"
         app:layout_constraintTop_toBottomOf="@+id/play"
+        style="@style/apTime"
         />
 
     <TextView
         android:id="@+id/track_time_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="59dp"
-        android:text="Длительность"
+        android:text="@string/duration_audio_player"
         app:layout_constraintStart_toStartOf="@+id/left_guide_content_line"
         app:layout_constraintTop_toBottomOf="@id/timer"
+        style="@style/apInformationTitle"
         />
 
     <TextView
         android:id="@+id/track_time_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="59dp"
         app:layout_constraintEnd_toEndOf="@+id/right_guideline"
-        app:layout_constraintTop_toBottomOf="@id/timer"
+        app:layout_constraintTop_toTopOf="@id/track_time_title"
+        app:layout_constraintBottom_toBottomOf="@id/track_time_title"
+        style="@style/apInformationValue"
         />
 
     <TextView
         android:id="@+id/collection_name_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
-        android:text="Альбом"
+        android:text="@string/album_audio_player"
         app:layout_constraintStart_toStartOf="@+id/left_guide_content_line"
         app:layout_constraintTop_toBottomOf="@id/track_time_title"
+        style="@style/apInformationTitle"
         />
 
     <TextView
         android:id="@+id/collection_name_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
         app:layout_constraintEnd_toEndOf="@+id/right_guideline"
-        app:layout_constraintTop_toBottomOf="@id/track_time_value"
+        app:layout_constraintTop_toTopOf="@id/collection_name_title"
+        app:layout_constraintBottom_toBottomOf="@id/collection_name_title"
+        style="@style/apInformationValue"
         />
 
     <TextView
         android:id="@+id/release_date_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
-        android:text="Год"
+        android:text="@string/year_audio_player"
         app:layout_constraintStart_toStartOf="@+id/left_guide_content_line"
         app:layout_constraintTop_toBottomOf="@id/collection_name_title"
+        style="@style/apInformationTitle"
         />
 
     <TextView
         android:id="@+id/release_date_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
         app:layout_constraintEnd_toEndOf="@+id/right_guideline"
-        app:layout_constraintTop_toBottomOf="@id/collection_name_value"
+        app:layout_constraintTop_toTopOf="@id/release_date_title"
+        app:layout_constraintBottom_toBottomOf="@id/release_date_title"
+        style="@style/apInformationValue"
         />
 
     <TextView
         android:id="@+id/primary_genre_name_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
-        android:text="Жанр"
+        android:text="@string/genre_audio_player"
         app:layout_constraintStart_toStartOf="@+id/left_guide_content_line"
         app:layout_constraintTop_toBottomOf="@id/release_date_title"
+        style="@style/apInformationTitle"
         />
 
     <TextView
         android:id="@+id/primary_genre_name_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
         app:layout_constraintEnd_toEndOf="@+id/right_guideline"
-        app:layout_constraintTop_toBottomOf="@id/release_date_title"
+        app:layout_constraintTop_toTopOf="@id/primary_genre_name_title"
+        app:layout_constraintBottom_toBottomOf="@id/primary_genre_name_title"
+        style="@style/apInformationValue"
         />
 
     <TextView
         android:id="@+id/country_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
-        android:text="Страна"
+        android:text="@string/country_audio_player"
         app:layout_constraintStart_toStartOf="@+id/left_guide_content_line"
         app:layout_constraintTop_toBottomOf="@id/primary_genre_name_title"
+        style="@style/apInformationTitle"
         />
 
     <TextView
         android:id="@+id/country_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
         app:layout_constraintEnd_toEndOf="@+id/right_guideline"
-        app:layout_constraintTop_toBottomOf="@id/primary_genre_name_title"
-        app:layout_constraintBottom_toTopOf="@id/bottom_guide"
+        app:layout_constraintTop_toTopOf="@id/country_title"
+        app:layout_constraintBottom_toBottomOf="@id/country_title"
+        style="@style/apInformationValue"
         />
 
 

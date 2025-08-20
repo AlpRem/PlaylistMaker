@@ -143,4 +143,46 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:visibility">gone</item>
     </style>
+
+    <style name="apTitle">
+        <item name="android:layout_marginTop">@dimen/margin_top_trackName</item>
+        <item name="android:textSize">@dimen/font_size</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">?attr/titleTrackColor</item>
+    </style>
+
+    <style name="apAuthor" parent="apTitle">
+        <item name="android:layout_marginTop">@dimen/margin_top_author_audio_player</item>
+        <item name="android:textSize">@dimen/font_size_small</item>
+    </style>
+
+    <style name="apControlPanelPlay">
+        <item name ="android:layout_width">@dimen/size_control_panel_play</item>
+        <item name ="android:layout_height">@dimen/size_control_panel_play</item>
+        <item name ="android:layout_marginTop">@dimen/margin_top_control_panel</item>
+        <item name = "android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="apTime">
+        <item name="android:layout_marginTop">@dimen/margin_top_time_audio_player</item>
+        <item name="android:layout_marginBottom">@dimen/margin_bottom_time_audio_player</item>
+        <item name="android:textSize">@dimen/font_size_small</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+    <style name="apInformation">
+        <item name="android:layout_marginTop">@dimen/margin_top_information_audio_player</item>
+        <item name="android:layout_marginBottom">@dimen/margin_bottom_information_audio_player</item>
+        <item name="android:textSize">@dimen/font_size_information</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="apInformationTitle" parent="apInformation" >
+        <item name="android:textColor">@color/ap_information_title</item>
+    </style>
+
+    <style name="apInformationValue" parent="apInformation" >
+        <item name="android:textColor">?attr/colorInformationValue</item>
+    </style>
+
 </resources>
