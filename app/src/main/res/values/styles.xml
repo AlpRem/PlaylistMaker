@@ -149,11 +149,14 @@
         <item name="android:textSize">@dimen/font_size</item>
         <item name="android:textFontWeight">400</item>
         <item name="android:textColor">?attr/titleTrackColor</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <style name="apAuthor" parent="apTitle">
         <item name="android:layout_marginTop">@dimen/margin_top_author_audio_player</item>
         <item name="android:textSize">@dimen/font_size_small</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">?attr/colorInformationValue</item>
     </style>
 
     <style name="apControlPanelPlay">
@@ -183,6 +186,10 @@
 
     <style name="apInformationValue" parent="apInformation" >
         <item name="android:textColor">?attr/colorInformationValue</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">end</item>
+        <item name="android:maxLines">1</item>
+
     </style>
 
 </resources>
