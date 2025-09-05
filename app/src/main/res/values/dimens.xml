@@ -51,5 +51,7 @@
     <dimen name="margin_bottom_time_audio_player">30dp</dimen>
     <dimen name="margin_top_information_audio_player">9dp</dimen>
     <dimen name="margin_bottom_information_audio_player">8dp</dimen>
+    <dimen name="size_progressBar">44dp</dimen>
+    <dimen name="margin_top_progressBar">140dp</dimen>
 
 </resources>

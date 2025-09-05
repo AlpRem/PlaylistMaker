@@ -77,10 +77,11 @@
         android:layout_marginTop="@dimen/main_padding_horizontal">
 
         <ProgressBar android:id="@+id/progressBar"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_marginTop="@dimen/margin_top_progressBar"
+            android:layout_width="@dimen/size_progressBar"
+            android:layout_height="@dimen/size_progressBar"
             android:layout_gravity="center"
-            android:indeterminateTint="@color/black"
+            android:indeterminateTint="@color/progress_bar"
             android:visibility="gone"/>
 
         <TextView

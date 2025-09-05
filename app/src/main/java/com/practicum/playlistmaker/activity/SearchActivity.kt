@@ -159,7 +159,7 @@ class SearchActivity : BaseActivity() {
 
     private fun searchTracks() {
         val query = searchEditText.text.toString().trim()
-        showProgressBar(true)
+        showProgressBar(View.VISIBLE)
         recyclerView.adapter = trackAdapter
         trackRepository.getTracks(query) { page ->
             runOnUiThread {
@@ -184,7 +184,7 @@ class SearchActivity : BaseActivity() {
 
     private fun updateTrackRecyclerView(query: String, page: Page<Track>) {
         trackAdapter.updatePage(page)
-        showProgressBar(false)
+        showProgressBar(View.GONE)
         if (page.meta.errors.isNotEmpty())
             showErrors(query)
         else {
@@ -245,16 +245,8 @@ class SearchActivity : BaseActivity() {
         startActivity(audioPlayerIntent)
     }
 
-    private fun showProgressBar(isVisibility: Boolean) {
-
-
-
-        if (isVisibility) {
-            progressBar.visibility = View.VISIBLE
-        }
-        else {
-            progressBar.visibility = View.GONE
-        }
+    private fun showProgressBar(isVisibility: Int) {
+            progressBar.visibility = isVisibility
     }
 
     companion object {
