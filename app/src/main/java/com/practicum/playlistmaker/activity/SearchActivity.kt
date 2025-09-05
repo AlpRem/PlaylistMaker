@@ -3,6 +3,8 @@ package com.practicum.playlistmaker.activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -12,6 +14,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.ViewCompat
@@ -29,9 +32,12 @@ import com.practicum.playlistmaker.track.repository.HistoryTrackRepository
 import com.practicum.playlistmaker.track.repository.HistoryTrackRepositoryImpl
 import com.practicum.playlistmaker.track.repository.ItunesTrackRepository
 import com.practicum.playlistmaker.track.repository.TrackRepository
+import org.w3c.dom.Text
 
 
 class SearchActivity : BaseActivity() {
+    private lateinit var handler: Handler
+    private val searchRunnable = Runnable { searchTracks() }
     private val trackRepository: TrackRepository = ItunesTrackRepository()
     private val historyTrackRepository: HistoryTrackRepository =
         HistoryTrackRepositoryImpl()
@@ -45,14 +51,16 @@ class SearchActivity : BaseActivity() {
     private lateinit var titleHistorySearch: TextView
     private lateinit var clearHistorySearchBtn: Button
     private lateinit var clearBtn: ImageView
+    private lateinit var progressBar: ProgressBar;
     private lateinit var sharedPrefs: SharedPreferences;
+
     private var lastQuery: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        handler = Handler(Looper.getMainLooper())
         sharedPrefs =  getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE);
         errorLayout = findViewById(R.id.errorLayout)
         errorImageView = findViewById(R.id.errorImageView)
@@ -63,15 +71,24 @@ class SearchActivity : BaseActivity() {
         titleHistorySearch = findViewById<TextView>(R.id.titleHistorySearch)
         clearHistorySearchBtn = findViewById<Button>(R.id.clearHistorySearchBtn)
         clearBtn = findViewById<ImageView>(R.id.clear_icon)
+        progressBar = findViewById<ProgressBar>(R.id.progressBar)
         sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
         trackAdapter = TrackAdapter(emptyList()) { track ->
             openAudioPlayer(track)
         }
 
-
         initSearchActivity()
         addListener()
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacksAndMessages(null)
+    }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
     private fun initSearchActivity() {
@@ -88,14 +105,19 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun addListener() {
-        searchEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE&&
-                searchEditText.text.toString().isNotEmpty()) {
-                searchTracks(searchEditText.text.toString())
-                true
+
+        searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
-            false
-        }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                searchDebounce()
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+        })
 
         searchEditText.setOnFocusChangeListener { _, hasFocus ->
             hideHistorySearch(
@@ -105,7 +127,7 @@ class SearchActivity : BaseActivity() {
         }
 
         errorRefreshBtn.setOnClickListener {
-            searchTracks(searchEditText.text.toString())
+            searchTracks()
         }
 
         clearHistorySearchBtn.setOnClickListener {
@@ -135,13 +157,16 @@ class SearchActivity : BaseActivity() {
         })
     }
 
-    private fun searchTracks(query: String) {
+    private fun searchTracks() {
+        val query = searchEditText.text.toString().trim()
+        showProgressBar(true)
         recyclerView.adapter = trackAdapter
         trackRepository.getTracks(query) { page ->
             runOnUiThread {
                 updateTrackRecyclerView(query, page)
             }
         }
+
     }
 
     private fun getHistory() {
@@ -159,6 +184,7 @@ class SearchActivity : BaseActivity() {
 
     private fun updateTrackRecyclerView(query: String, page: Page<Track>) {
         trackAdapter.updatePage(page)
+        showProgressBar(false)
         if (page.meta.errors.isNotEmpty())
             showErrors(query)
         else {
@@ -219,8 +245,21 @@ class SearchActivity : BaseActivity() {
         startActivity(audioPlayerIntent)
     }
 
+    private fun showProgressBar(isVisibility: Boolean) {
+
+
+
+        if (isVisibility) {
+            progressBar.visibility = View.VISIBLE
+        }
+        else {
+            progressBar.visibility = View.GONE
+        }
+    }
+
     companion object {
         const val SEARCH_STRING = "SEARCH_STRING"
+        const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
 }
