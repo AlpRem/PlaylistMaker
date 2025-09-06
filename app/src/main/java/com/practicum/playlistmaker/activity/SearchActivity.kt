@@ -252,13 +252,11 @@ class SearchActivity : BaseActivity() {
             progressBar.visibility = isVisibility
     }
 
-    private fun clickDebounce() : Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-        }
-        return current
+    private fun clickDebounce(): Boolean {
+        if (!isClickAllowed) return false
+        isClickAllowed = false
+        handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        return true
     }
 
     companion object {
