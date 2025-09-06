@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.activity
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -14,10 +15,12 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.activity.base.BaseActivity
+import com.practicum.playlistmaker.provider.AudioPlayerProvider
 import com.practicum.playlistmaker.track.model.Track
 import com.practicum.playlistmaker.util.dpToPx
 
-class AudioPlayerActivity  : BaseActivity() {
+class AudioPlayerActivity(
+    private val audioPlayerProvider: AudioPlayerProvider = AudioPlayerProvider())  : BaseActivity() {
 
     private lateinit var cover: ImageView
     private lateinit var trackName: TextView
@@ -35,15 +38,16 @@ class AudioPlayerActivity  : BaseActivity() {
     private lateinit var countryValue: TextView
     private lateinit var playButton: ImageView
     private lateinit var likeButton: ImageView
-
-    private var isPlaying = false
+    private var audioPlayerState: AudioPlayerState = AudioPlayerState.Default
     private var isLike = false
+    private lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val trackGson = intent.getStringExtra("TRACK") ?: ""
         val track =  Gson().fromJson(trackGson ,Track::class.java)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_player)
+        mediaPlayer = audioPlayerProvider.createMediaPlayer()
         cover = findViewById(R.id.cover)
         playButton = findViewById(R.id.play)
         likeButton = findViewById(R.id.like)
@@ -62,12 +66,21 @@ class AudioPlayerActivity  : BaseActivity() {
         countryValue = findViewById(R.id.country_value)
 
         onInitData(track)
+        preparePlayer(track)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_audio_player)) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(top = systemBars.top)
             insets
         }
         arrowBackButton(R.id.arrow_back)
+        playButton.setOnClickListener {
+            playbackControl()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
     }
 
     private fun onInitData(track: Track) {
@@ -91,7 +104,6 @@ class AudioPlayerActivity  : BaseActivity() {
         gerContentInLineTextViews(track.releaseDate, releaseDateTitle, releaseDateValue)
         gerContentInLineTextViews(track.primaryGenreName, primaryGenreNameTitle, primaryGenreNameValue)
         gerContentInLineTextViews(track.country, countryTitle, countryValue)
-        changeStatusPlay()
         changeStatusLikeTrack(track)
     }
 
@@ -114,17 +126,6 @@ class AudioPlayerActivity  : BaseActivity() {
         }
     }
 
-    private fun changeStatusPlay() {
-        playButton.setOnClickListener {
-            if (!isPlaying) {
-                playButton.setImageResource(R.drawable.pause)
-            } else {
-                playButton.setImageResource(R.drawable.play)
-            }
-            isPlaying = !isPlaying
-        }
-    }
-
     private fun changeStatusLikeTrack(track: Track) {
         likeButton.setOnClickListener {
             isLike = !isLike
@@ -134,5 +135,51 @@ class AudioPlayerActivity  : BaseActivity() {
                 likeButton.setImageResource(R.drawable.like)
             }
         }
+    }
+
+    private fun preparePlayer(track: Track) {
+        mediaPlayer.setDataSource(track.previewUrl)
+        mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener {
+            audioPlayerState = AudioPlayerState.Prepared
+        }
+        mediaPlayer.setOnCompletionListener {
+            audioPlayerState = AudioPlayerState.Prepared
+        }
+    }
+
+    private fun startPlayer() {
+        mediaPlayer.start()
+        playButton.setImageResource(R.drawable.pause)
+        audioPlayerState = AudioPlayerState.Playing
+    }
+
+    private fun pausePlayer() {
+        mediaPlayer.pause()
+        playButton.setImageResource(R.drawable.play)
+        audioPlayerState = AudioPlayerState.Paused
+    }
+
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
+    private fun playbackControl() {
+        when(audioPlayerState) {
+            AudioPlayerState.Playing -> {
+                pausePlayer()
+            }
+            AudioPlayerState.Prepared, AudioPlayerState.Paused, AudioPlayerState.Default -> {
+                startPlayer()
+            }
+        }
+    }
+
+    sealed class AudioPlayerState {
+        object Default : AudioPlayerState()
+        object Prepared : AudioPlayerState()
+        object Playing : AudioPlayerState()
+        object Paused : AudioPlayerState()
     }
 }
