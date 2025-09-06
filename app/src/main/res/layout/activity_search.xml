@@ -76,6 +76,14 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/main_padding_horizontal">
 
+        <ProgressBar android:id="@+id/progressBar"
+            android:layout_marginTop="@dimen/margin_top_progressBar"
+            android:layout_width="@dimen/size_progressBar"
+            android:layout_height="@dimen/size_progressBar"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/progress_bar"
+            android:visibility="gone"/>
+
         <TextView
             android:id="@+id/titleHistorySearch"
             android:text="@string/title_history_search"

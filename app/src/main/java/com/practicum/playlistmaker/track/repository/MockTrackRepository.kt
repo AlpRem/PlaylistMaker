@@ -15,7 +15,8 @@ class MockTrackRepository: TrackRepository {
             "Based On a True Story... (Deluxe Version)",
             "2013-03-26T07:00:00Z",
             "Country",
-            "USA"),
+            "USA",
+            ""),
         Track("2",
             "Billie Jean",
             "Michael Jackson",
@@ -24,7 +25,8 @@ class MockTrackRepository: TrackRepository {
             "Based On a True Story... (Deluxe Version)",
             "2013-03-26T07:00:00Z",
             "Country",
-            "USA"),
+            "USA",
+            ""),
         Track("3",
             "Stayin' Alive",
             "Bee Gees",
@@ -33,7 +35,8 @@ class MockTrackRepository: TrackRepository {
             "Based On a True Story... (Deluxe Version)",
             "2013-03-26T07:00:00Z",
             "Country",
-            "USA"),
+            "USA",
+            ""),
         Track("4",
             "Whole Lotta Love",
             "Led Zeppelin",
@@ -42,7 +45,8 @@ class MockTrackRepository: TrackRepository {
             "Based On a True Story... (Deluxe Version)",
             "2013-03-26T07:00:00Z",
             "Country",
-            "USA"),
+            "USA",
+            ""),
         Track("5",
             "Sweet Child O'Mine",
             "Guns N' Roses",
@@ -51,7 +55,8 @@ class MockTrackRepository: TrackRepository {
             "Based On a True Story... (Deluxe Version)",
             "2013-03-26T07:00:00Z",
             "Country",
-            "USA")
+            "USA",
+            "")
     )
 
     override fun getTracks(query: String, callback: (Page<Track>) -> Unit) {

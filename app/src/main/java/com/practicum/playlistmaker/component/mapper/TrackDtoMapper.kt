@@ -19,7 +19,8 @@ class TrackDtoMapper : EntityMapper<ITunesResponse.TrackDto, Track>  {
         collectionName = entity.collectionName,
         releaseDate = extractYear(entity.releaseDate),
         primaryGenreName = entity.primaryGenreName,
-        country = entity.country
+        country = entity.country,
+        previewUrl = entity.previewUrl
     )
 
     private fun formatDuration(millis: Long?): String {

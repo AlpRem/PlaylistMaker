@@ -18,4 +18,5 @@
     <color name="ap_information_title">#AEAFB4</color>
     <color name="ap_information_value_light">#1A1B22</color>
     <color name="ap_information_value_dark">#FFFFFF</color>
+    <color name="progress_bar">#3772E7</color>
 </resources>
