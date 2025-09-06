@@ -145,6 +145,7 @@ class AudioPlayerActivity(
         }
         mediaPlayer.setOnCompletionListener {
             audioPlayerState = AudioPlayerState.Prepared
+            playButton.setImageResource(R.drawable.play)
         }
     }
 
