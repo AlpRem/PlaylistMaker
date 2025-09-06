@@ -2,6 +2,8 @@ package com.practicum.playlistmaker.activity
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,10 +20,14 @@ import com.practicum.playlistmaker.activity.base.BaseActivity
 import com.practicum.playlistmaker.provider.AudioPlayerProvider
 import com.practicum.playlistmaker.track.model.Track
 import com.practicum.playlistmaker.util.dpToPx
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class AudioPlayerActivity(
     private val audioPlayerProvider: AudioPlayerProvider = AudioPlayerProvider())  : BaseActivity() {
 
+    private lateinit var handler: Handler
+    private val timerRunnable = Runnable { setTimerValueRunnable() }
     private lateinit var cover: ImageView
     private lateinit var trackName: TextView
     private lateinit var trackAuthor: TextView
@@ -46,6 +52,7 @@ class AudioPlayerActivity(
         val trackGson = intent.getStringExtra("TRACK") ?: ""
         val track =  Gson().fromJson(trackGson ,Track::class.java)
         super.onCreate(savedInstanceState)
+        handler = Handler(Looper.getMainLooper())
         setContentView(R.layout.activity_audio_player)
         mediaPlayer = audioPlayerProvider.createMediaPlayer()
         cover = findViewById(R.id.cover)
@@ -81,6 +88,7 @@ class AudioPlayerActivity(
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.release()
+        handler.removeCallbacksAndMessages(null)
     }
 
     private fun onInitData(track: Track) {
@@ -98,7 +106,7 @@ class AudioPlayerActivity(
                 .into(cover)
         trackName.text = track.trackName
         trackAuthor.text = track.artistName
-        timer.text = track.trackTime
+        timer.text = getString(R.string.null_timer)
         gerContentInLineTextViews(track.trackTime, trackTimeTitle, trackTimeValue)
         gerContentInLineTextViews(track.collectionName, collectionNameTitle, collectionNameValue)
         gerContentInLineTextViews(track.releaseDate, releaseDateTitle, releaseDateValue)
@@ -146,6 +154,8 @@ class AudioPlayerActivity(
         mediaPlayer.setOnCompletionListener {
             audioPlayerState = AudioPlayerState.Prepared
             playButton.setImageResource(R.drawable.play)
+            handler.removeCallbacks(timerRunnable)
+            timer.text = getString(R.string.null_timer)
         }
     }
 
@@ -153,12 +163,14 @@ class AudioPlayerActivity(
         mediaPlayer.start()
         playButton.setImageResource(R.drawable.pause)
         audioPlayerState = AudioPlayerState.Playing
+        handler.postDelayed(timerRunnable, TIMER_UPDATE_DELAY)
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
         playButton.setImageResource(R.drawable.play)
         audioPlayerState = AudioPlayerState.Paused
+        handler.removeCallbacks(timerRunnable)
     }
 
     override fun onPause() {
@@ -177,10 +189,21 @@ class AudioPlayerActivity(
         }
     }
 
+    private fun setTimerValueRunnable() {
+        timer.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
+        if (audioPlayerState == AudioPlayerState.Playing) {
+            handler.postDelayed(timerRunnable, TIMER_UPDATE_DELAY)
+        }
+    }
+
     sealed class AudioPlayerState {
         object Default : AudioPlayerState()
         object Prepared : AudioPlayerState()
         object Playing : AudioPlayerState()
         object Paused : AudioPlayerState()
+    }
+
+    companion object {
+        const val TIMER_UPDATE_DELAY = 300L
     }
 }

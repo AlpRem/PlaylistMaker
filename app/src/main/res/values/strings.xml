@@ -26,5 +26,6 @@
     <string name="year_audio_player">Год</string>
     <string name="genre_audio_player">Жанр</string>
     <string name="country_audio_player">Страна</string>
+    <string name="null_timer">00:00</string>
 
 </resources>
