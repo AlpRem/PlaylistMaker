@@ -55,6 +55,7 @@ class SearchActivity : BaseActivity() {
     private lateinit var sharedPrefs: SharedPreferences;
 
     private var lastQuery: String = ""
+    private var isClickAllowed = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -239,19 +240,31 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun openAudioPlayer(track: Track) {
-        historyTrackRepository.setHistory(sharedPrefs, track)
-        val audioPlayerIntent = Intent(this, AudioPlayerActivity::class.java)
-            .apply { putExtra("TRACK", Gson().toJson(track)) }
-        startActivity(audioPlayerIntent)
+        if (clickDebounce()) {
+            historyTrackRepository.setHistory(sharedPrefs, track)
+            val audioPlayerIntent = Intent(this, AudioPlayerActivity::class.java)
+                .apply { putExtra("TRACK", Gson().toJson(track)) }
+            startActivity(audioPlayerIntent)
+        }
     }
 
     private fun showProgressBar(isVisibility: Int) {
             progressBar.visibility = isVisibility
     }
 
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
     companion object {
         const val SEARCH_STRING = "SEARCH_STRING"
         const val SEARCH_DEBOUNCE_DELAY = 2000L
+        const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
 }
