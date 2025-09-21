@@ -1,9 +1,9 @@
-package com.practicum.playlistmaker.track.adapter
+package com.practicum.playlistmaker.ui.track
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.practicum.playlistmaker.track.model.Track
+import com.practicum.playlistmaker.domain.model.Track
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.component.Page
 

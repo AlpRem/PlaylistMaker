@@ -18,7 +18,7 @@ import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.activity.base.BaseActivity
 import com.practicum.playlistmaker.provider.AudioPlayerProvider
-import com.practicum.playlistmaker.track.model.Track
+import com.practicum.playlistmaker.domain.model.Track
 import com.practicum.playlistmaker.util.dpToPx
 import java.text.SimpleDateFormat
 import java.util.Locale

@@ -22,7 +22,7 @@
             android:name=".activity.LibraryActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.SearchActivity"
+            android:name=".ui.track.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".activity.SettingsActivity"

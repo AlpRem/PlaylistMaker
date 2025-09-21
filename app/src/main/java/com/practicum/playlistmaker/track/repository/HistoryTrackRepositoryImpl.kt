@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.practicum.playlistmaker.HISTORY_TRACKS
 import com.practicum.playlistmaker.component.Page
-import com.practicum.playlistmaker.track.model.Track
+import com.practicum.playlistmaker.domain.model.Track
 import androidx.core.content.edit
 import com.practicum.playlistmaker.component.Meta
 

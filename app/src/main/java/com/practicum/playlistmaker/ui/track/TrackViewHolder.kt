@@ -1,6 +1,5 @@
-package com.practicum.playlistmaker.track.adapter
+package com.practicum.playlistmaker.ui.track
 
-import android.content.res.Resources
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,7 +9,7 @@ import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.track.model.Track
+import com.practicum.playlistmaker.domain.model.Track
 import com.practicum.playlistmaker.util.dpToPx
 
 class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){

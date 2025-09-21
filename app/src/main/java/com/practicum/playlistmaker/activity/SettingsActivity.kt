@@ -4,8 +4,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -18,7 +16,6 @@ import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.IS_DARK_THEME
 import com.practicum.playlistmaker.PLAYLIST_MAKER_PREFERENCES
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.track.adapter.TrackAdapter
 
 
 class SettingsActivity : BaseActivity() {

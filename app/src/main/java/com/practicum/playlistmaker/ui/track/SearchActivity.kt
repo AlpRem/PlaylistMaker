@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.activity
+package com.practicum.playlistmaker.ui.track
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -8,7 +8,6 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -16,29 +15,31 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.practicum.playlistmaker.Creator
 import com.practicum.playlistmaker.PLAYLIST_MAKER_PREFERENCES
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.activity.AudioPlayerActivity
 import com.practicum.playlistmaker.activity.base.BaseActivity
 import com.practicum.playlistmaker.component.Page
-import com.practicum.playlistmaker.track.adapter.TrackAdapter
-import com.practicum.playlistmaker.track.model.Track
+import com.practicum.playlistmaker.data.repository.ItunesTrackRepository
+import com.practicum.playlistmaker.domain.api.TrackRepository
+import com.practicum.playlistmaker.domain.api.TracksInteractor
+import com.practicum.playlistmaker.domain.model.Track
 import com.practicum.playlistmaker.track.repository.HistoryTrackRepository
 import com.practicum.playlistmaker.track.repository.HistoryTrackRepositoryImpl
-import com.practicum.playlistmaker.track.repository.ItunesTrackRepository
-import com.practicum.playlistmaker.track.repository.TrackRepository
-import org.w3c.dom.Text
-
 
 class SearchActivity : BaseActivity() {
+
+
+    private val tracksInteractor: TracksInteractor = Creator.provideTracksInteractor()
     private lateinit var handler: Handler
     private val searchRunnable = Runnable { searchTracks() }
-    private val trackRepository: TrackRepository = ItunesTrackRepository()
+//    private val trackRepository: TrackRepository = ItunesTrackRepository()
     private val historyTrackRepository: HistoryTrackRepository =
         HistoryTrackRepositoryImpl()
     private lateinit var trackAdapter: TrackAdapter
@@ -162,12 +163,16 @@ class SearchActivity : BaseActivity() {
         val query = searchEditText.text.toString().trim()
         showProgressBar(View.VISIBLE)
         recyclerView.adapter = trackAdapter
-        trackRepository.getTracks(query) { page ->
-            runOnUiThread {
-                updateTrackRecyclerView(query, page)
+        tracksInteractor.searchTracks(query, object : TracksInteractor.TracksConsumer {
+            override fun consume(foundTracks: Page<Track>) {
+                updateTrackRecyclerView(query, foundTracks)
             }
-        }
-
+        })
+//        trackRepository.getTracks(query) { page ->
+//            runOnUiThread {
+//                updateTrackRecyclerView(query, page)
+//            }
+//        }
     }
 
     private fun getHistory() {

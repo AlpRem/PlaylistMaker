@@ -2,7 +2,7 @@ package com.practicum.playlistmaker.track.repository
 
 import android.content.SharedPreferences
 import com.practicum.playlistmaker.component.Page
-import com.practicum.playlistmaker.track.model.Track
+import com.practicum.playlistmaker.domain.model.Track
 
 interface HistoryTrackRepository {
     fun getHistory(sharedPreferences: SharedPreferences, callback: (Page<Track>) -> Unit)
