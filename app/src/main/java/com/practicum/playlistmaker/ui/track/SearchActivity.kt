@@ -30,18 +30,18 @@ import com.practicum.playlistmaker.data.repository.ItunesTrackRepository
 import com.practicum.playlistmaker.domain.api.TrackRepository
 import com.practicum.playlistmaker.domain.api.TracksInteractor
 import com.practicum.playlistmaker.domain.model.Track
-import com.practicum.playlistmaker.track.repository.HistoryTrackRepository
-import com.practicum.playlistmaker.track.repository.HistoryTrackRepositoryImpl
+import com.practicum.playlistmaker.domain.api.HistoryTrackRepository
+import com.practicum.playlistmaker.data.repository.HistoryTrackRepositoryImpl
+import com.practicum.playlistmaker.domain.api.HistoryTrackInteractor
 
 class SearchActivity : BaseActivity() {
 
 
     private val tracksInteractor: TracksInteractor = Creator.provideTracksInteractor()
+    private lateinit var historyTrackInteractor: HistoryTrackInteractor
     private lateinit var handler: Handler
     private val searchRunnable = Runnable { searchTracks() }
-//    private val trackRepository: TrackRepository = ItunesTrackRepository()
-    private val historyTrackRepository: HistoryTrackRepository =
-        HistoryTrackRepositoryImpl()
+
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var errorLayout: LinearLayout
@@ -62,6 +62,7 @@ class SearchActivity : BaseActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        historyTrackInteractor = Creator.provideHistoryTrackInteractor(applicationContext)
         handler = Handler(Looper.getMainLooper())
         sharedPrefs =  getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE);
         errorLayout = findViewById(R.id.errorLayout)
@@ -133,7 +134,7 @@ class SearchActivity : BaseActivity() {
         }
 
         clearHistorySearchBtn.setOnClickListener {
-            historyTrackRepository.cleanHistory(sharedPrefs)
+            historyTrackInteractor.clearHistory()
             hideHistorySearch(View.GONE)
         }
     }
@@ -168,20 +169,14 @@ class SearchActivity : BaseActivity() {
                 updateTrackRecyclerView(query, foundTracks)
             }
         })
-//        trackRepository.getTracks(query) { page ->
-//            runOnUiThread {
-//                updateTrackRecyclerView(query, page)
-//            }
-//        }
     }
 
     private fun getHistory() {
         recyclerView.adapter = trackAdapter
-        historyTrackRepository.getHistory( sharedPrefs, { page ->
+        historyTrackInteractor.getHistory { page ->
             trackAdapter.updatePage(page)
             if (page.meta.count == 0)
-                hideHistorySearch(View.GONE)
-        })
+                hideHistorySearch(View.GONE)}
         errorRefreshBtn.visibility = View.GONE
         errorLayout.visibility = View.GONE
         errorRefreshBtn.visibility = View.GONE
@@ -246,7 +241,7 @@ class SearchActivity : BaseActivity() {
 
     private fun openAudioPlayer(track: Track) {
         if (clickDebounce()) {
-            historyTrackRepository.setHistory(sharedPrefs, track)
+            historyTrackInteractor.saveTrack(track)
             val audioPlayerIntent = Intent(this, AudioPlayerActivity::class.java)
                 .apply { putExtra("TRACK", Gson().toJson(track)) }
             startActivity(audioPlayerIntent)
