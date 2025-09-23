@@ -9,7 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.practicum.playlistmaker.activity.base.BaseActivity
+import com.practicum.playlistmaker.ui.base.BaseActivity
 import com.google.android.material.textview.MaterialTextView
 import androidx.core.net.toUri
 import com.practicum.playlistmaker.App

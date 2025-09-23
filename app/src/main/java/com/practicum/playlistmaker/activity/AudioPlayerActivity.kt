@@ -16,7 +16,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.activity.base.BaseActivity
+import com.practicum.playlistmaker.ui.base.BaseActivity
 import com.practicum.playlistmaker.provider.AudioPlayerProvider
 import com.practicum.playlistmaker.domain.model.Track
 import com.practicum.playlistmaker.util.dpToPx

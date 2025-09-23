@@ -5,7 +5,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.activity.base.BaseActivity
+import com.practicum.playlistmaker.ui.base.BaseActivity
 
 class LibraryActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.activity.base
+package com.practicum.playlistmaker.ui.base
 
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
