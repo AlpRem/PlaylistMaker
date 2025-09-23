@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.activity
+package com.practicum.playlistmaker.ui.library
 
 import android.os.Bundle
 import androidx.core.view.ViewCompat
@@ -17,9 +17,5 @@ class LibraryActivity : BaseActivity() {
             insets
         }
         arrowBackButton(R.id.arrow_back)
-
-
-
-
     }
 }
