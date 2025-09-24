@@ -93,6 +93,11 @@ class AudioPlayerActivity : BaseActivity() {
         handler.removeCallbacksAndMessages(null)
     }
 
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
     private fun onInitData(track: Track) {
         if (!track.artworkUrl100.isEmpty())
             Glide.with(this)
