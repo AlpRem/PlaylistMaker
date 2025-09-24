@@ -2,18 +2,23 @@ package com.practicum.playlistmaker
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.media.MediaPlayer
 import com.google.gson.Gson
 import com.practicum.playlistmaker.data.mapper.TrackMapper
 import com.practicum.playlistmaker.data.network.ItunesClient
+import com.practicum.playlistmaker.data.repository.AudioPlayerRepositoryImpl
 import com.practicum.playlistmaker.data.repository.HistoryTrackRepositoryImpl
 import com.practicum.playlistmaker.data.repository.ItunesTrackRepository
 import com.practicum.playlistmaker.data.repository.SettingsRepositoryImpl
+import com.practicum.playlistmaker.domain.api.AudioPlayerInteractor
+import com.practicum.playlistmaker.domain.api.AudioPlayerRepository
 import com.practicum.playlistmaker.domain.api.HistoryTrackInteractor
 import com.practicum.playlistmaker.domain.api.HistoryTrackRepository
 import com.practicum.playlistmaker.domain.api.SettingsInteractor
 import com.practicum.playlistmaker.domain.api.SettingsRepository
 import com.practicum.playlistmaker.domain.api.TrackRepository
 import com.practicum.playlistmaker.domain.api.TracksInteractor
+import com.practicum.playlistmaker.domain.impl.AudioPlayerInteractorImpl
 import com.practicum.playlistmaker.domain.impl.HistoryTrackInteractorImpl
 import com.practicum.playlistmaker.domain.impl.SettingsInteractorImpl
 import com.practicum.playlistmaker.domain.impl.TracksInteractorImpl
@@ -39,6 +44,10 @@ object  Creator {
         return SettingsRepositoryImpl(prefs)
     }
 
+    private fun getAudioPlayerRepository(): AudioPlayerRepository {
+        return AudioPlayerRepositoryImpl(MediaPlayer())
+    }
+
     fun provideTracksInteractor(): TracksInteractor {
         return TracksInteractorImpl(getTracksRepository())
     }
@@ -49,5 +58,9 @@ object  Creator {
 
     fun provideSettingsInteractor(context: Context): SettingsInteractor {
         return SettingsInteractorImpl(getSettingsRepository(context))
+    }
+
+    fun providerAudioPlayer(): AudioPlayerInteractor {
+        return AudioPlayerInteractorImpl(getAudioPlayerRepository())
     }
 }

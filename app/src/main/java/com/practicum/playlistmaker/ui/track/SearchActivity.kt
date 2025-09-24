@@ -23,7 +23,7 @@ import com.google.gson.Gson
 import com.practicum.playlistmaker.Creator
 import com.practicum.playlistmaker.PLAYLIST_MAKER_PREFERENCES
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.activity.AudioPlayerActivity
+import com.practicum.playlistmaker.ui.audioPlayer.AudioPlayerActivity
 import com.practicum.playlistmaker.ui.base.BaseActivity
 import com.practicum.playlistmaker.component.Page
 import com.practicum.playlistmaker.data.repository.ItunesTrackRepository
