@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".ui.audioPlayer.AudioPlayerActivity">
+    tools:context=".player.ui.AudioPlayerActivity">
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/activity_audio_player"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ui.audioPlayer.AudioPlayerActivity">
+    tools:context=".player.ui.AudioPlayerActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/left_guideline"
