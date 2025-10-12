@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -29,14 +30,17 @@ import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.track.domain.api.TracksInteractor
 import com.practicum.playlistmaker.track.domain.model.Track
 import com.practicum.playlistmaker.track.domain.api.HistoryTrackInteractor
+import com.practicum.playlistmaker.track.domain.model.TrackState
+import com.practicum.playlistmaker.track.presenter.SearchViewModel
+import kotlin.getValue
 
 class SearchActivity : BaseActivity() {
 
 
-    private val tracksInteractor: TracksInteractor = Creator.provideTracksInteractor()
-    private lateinit var historyTrackInteractor: HistoryTrackInteractor
-    private lateinit var handler: Handler
-    private val searchRunnable = Runnable { performSearch() }
+//    private val tracksInteractor: TracksInteractor = Creator.provideTracksInteractor()
+//    private lateinit var historyTrackInteractor: HistoryTrackInteractor
+//    private lateinit var handler: Handler
+//    private val searchRunnable = Runnable { performSearch() }
 
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var recyclerView: RecyclerView
@@ -51,26 +55,34 @@ class SearchActivity : BaseActivity() {
     private lateinit var progressBar: ProgressBar;
     private lateinit var sharedPrefs: SharedPreferences;
 
-    private var lastQuery: String = ""
+//    private var lastQuery: String = ""
     private var isClickAllowed = true
+
+    private val viewModel: SearchViewModel by viewModels {
+        SearchViewModel.getFactory(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        historyTrackInteractor = Creator.provideHistoryTrackInteractor(applicationContext)
-        handler = Handler(Looper.getMainLooper())
-        sharedPrefs =  getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE);
+//        historyTrackInteractor = Creator.provideHistoryTrackInteractor(applicationContext)
+//        handler = Handler(Looper.getMainLooper())
+//        sharedPrefs =  getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE);
 
         onInitElement()
         onInitAdapter()
         onInitListener()
         hideEmptyTrack()
+
+        viewModel.observeState().observe(this) {
+            render(it)
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        handler.removeCallbacksAndMessages(null)
+//        handler.removeCallbacksAndMessages(null)
     }
 
 
@@ -94,7 +106,7 @@ class SearchActivity : BaseActivity() {
             insets
         }
         arrowBackButton(R.id.arrow_back)
-        searchEditText.setText("")
+//        searchEditText.setText("")
     }
 
     private fun onInitAdapter() {
@@ -110,44 +122,45 @@ class SearchActivity : BaseActivity() {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 clearBtn.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
-                hideHistorySearch(if (s.isNullOrEmpty()&&searchEditText.hasFocus()) View.VISIBLE else View.GONE)
-                searchDebounce()
+//                hideHistorySearch(if (s.isNullOrEmpty()&&searchEditText.hasFocus()) View.VISIBLE else View.GONE)
+//                searchDebounce()
+                viewModel.searchDebounce(changedText = s?.toString() ?: "")
             }
             override fun afterTextChanged(p0: Editable?) {}
         })
-        searchEditText.setOnFocusChangeListener { _, hasFocus ->
-            hideHistorySearch(if (hasFocus && searchEditText.text.toString().isEmpty()) View.VISIBLE else View.GONE)
-        }
+//        searchEditText.setOnFocusChangeListener { _, hasFocus ->
+//            hideHistorySearch(if (hasFocus && searchEditText.text.toString().isEmpty()) View.VISIBLE else View.GONE)
+//        }
 
-        clearBtn.setOnClickListener { clearInput() }
-        errorRefreshBtn.setOnClickListener { performSearch() }
-        clearHistorySearchBtn.setOnClickListener {
-            historyTrackInteractor.clearHistory()
-            hideHistorySearch(View.GONE)
-        }
+//        clearBtn.setOnClickListener { clearInput() }
+//        errorRefreshBtn.setOnClickListener { performSearch() }
+//        clearHistorySearchBtn.setOnClickListener {
+//            historyTrackInteractor.clearHistory()
+//            hideHistorySearch(View.GONE)
+//        }
     }
 
     // === search track ===
-    private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
-    }
+//    private fun searchDebounce() {
+//        handler.removeCallbacks(searchRunnable)
+//        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+//    }
 
-    private fun performSearch() {
-        val query = searchEditText.text.toString().trim()
-        if (query.isEmpty()) {
-            hideEmptyTrack()
-            hideError()
-            getHistory()
-            return
-        }
-        showLoading()
-        tracksInteractor.searchTracks(query, object : TracksInteractor.TracksConsumer {
-            override fun consume(foundTracks: Page<Track>) {
-                updateTrackRecyclerView(query, foundTracks)
-            }
-        })
-    }
+//    private fun performSearch() {
+//        val query = searchEditText.text.toString().trim()
+//        if (query.isEmpty()) {
+//            hideEmptyTrack()
+//            hideError()
+//            getHistory()
+//            return
+//        }
+//        showLoading()
+//        tracksInteractor.searchTracks(query, object : TracksInteractor.TracksConsumer {
+//            override fun consume(foundTracks: Page<Track>) {
+//                updateTrackRecyclerView(query, foundTracks)
+//            }
+//        })
+//    }
 
     private fun updateTrackRecyclerView(query: String, page: Page<Track>) {
         runOnUiThread {
@@ -163,18 +176,18 @@ class SearchActivity : BaseActivity() {
 
 
     // === history ===
-    private fun getHistory() {
-        historyTrackInteractor.getHistory { page ->
-            runOnUiThread {
-                trackAdapter.updatePage(page)
-                if (page.meta.count == 0)
-                    hideHistorySearch(View.GONE)
-                else
-                    showHistory(page)
-            }
-        }
-        hideError()
-    }
+//    private fun getHistory() {
+//        historyTrackInteractor.getHistory { page ->
+//            runOnUiThread {
+//                trackAdapter.updatePage(page)
+//                if (page.meta.count == 0)
+//                    hideHistorySearch(View.GONE)
+//                else
+//                    showHistory(page)
+//            }
+//        }
+//        hideError()
+//    }
 
 
     // === status ===
@@ -186,7 +199,7 @@ class SearchActivity : BaseActivity() {
     private fun showContent() {
         showProgressBar(View.GONE)
         errorLayout.visibility = View.GONE
-        lastQuery = ""
+//        lastQuery = ""
     }
 
     private fun showErrors(query: String) {
@@ -195,7 +208,7 @@ class SearchActivity : BaseActivity() {
         errorTextView.text = getString(R.string.no_connect)
         errorRefreshBtn.visibility = View.VISIBLE
         errorLayout.visibility = View.VISIBLE
-        lastQuery = query
+//        lastQuery = query
     }
 
     private fun showEmptyTrack() {
@@ -227,10 +240,10 @@ class SearchActivity : BaseActivity() {
     private fun hideHistorySearch(statusVisible: Int) {
         titleHistorySearch.visibility = statusVisible;
         clearHistorySearchBtn.visibility = statusVisible;
-        if (statusVisible == View.VISIBLE)
-            getHistory()
-        else
-            trackAdapter.clearTracks()
+//        if (statusVisible == View.VISIBLE)
+//            getHistory()
+//        else
+//            trackAdapter.clearTracks()
     }
 
     // === util ===
@@ -244,27 +257,44 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun openAudioPlayer(track: Track) {
-        if (clickDebounce()) {
-            historyTrackInteractor.saveTrack(track)
+//        if (clickDebounce()) {
+//            historyTrackInteractor.saveTrack(track)
             val audioPlayerIntent = Intent(this, AudioPlayerActivity::class.java)
                 .apply { putExtra("TRACK", Gson().toJson(track)) }
             startActivity(audioPlayerIntent)
-        }
+//        }
     }
 
     private fun showProgressBar(isVisibility: Int) {
         progressBar.visibility = isVisibility
     }
 
-    private fun clickDebounce(): Boolean {
-        if (!isClickAllowed) return false
-        isClickAllowed = false
-        handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-        return true
-    }
+//    private fun clickDebounce(): Boolean {
+//        if (!isClickAllowed) return false
+//        isClickAllowed = false
+//        handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+//        return true
+//    }
 
-    companion object {
-        const val SEARCH_DEBOUNCE_DELAY = 2000L
-        const val CLICK_DEBOUNCE_DELAY = 1000L
+//    companion object {
+//        const val SEARCH_DEBOUNCE_DELAY = 2000L
+//        const val CLICK_DEBOUNCE_DELAY = 1000L
+//    }
+
+
+    private fun render(state: TrackState) {
+        when {
+            state.isLoading -> showLoading()
+            state.isError -> showErrors("Ошибка")
+            state.isEmpty -> showEmptyTrack()
+            else -> {
+                showContent()
+                trackAdapter.updatePage(state.page)
+            }
+//            else -> showContent(state.tracks)
+//            state.errorMessage != null -> showError(state.errorMessage)
+//            state.movies.isEmpty() -> showEmpty("Ничего не найдено")
+//            else -> showContent(state.movies)
+        }
     }
 }
