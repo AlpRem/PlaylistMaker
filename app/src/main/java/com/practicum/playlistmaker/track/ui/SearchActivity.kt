@@ -194,6 +194,7 @@ class SearchActivity : BaseActivity() {
     private fun showLoading() {
         showProgressBar(View.VISIBLE)
         errorLayout.visibility = View.GONE
+        trackAdapter.clearTracks()
     }
 
     private fun showContent() {

@@ -33,13 +33,13 @@ class SearchViewModel(private val context: Context): ViewModel() {
     private lateinit var historyTrackInteractor: HistoryTrackInteractor
 
     private val handler: Handler = Handler(Looper.getMainLooper())
-
     private var lastQuery: String? = ""
 
     private val searchRunnable = Runnable {
         val newSearchText = lastQuery ?: ""
         searchRequest(newSearchText)
     }
+
 
     private val stateLiveData = MutableLiveData<TrackState>()
     fun observeState(): LiveData<TrackState> = stateLiveData
@@ -51,13 +51,9 @@ class SearchViewModel(private val context: Context): ViewModel() {
         }
         this.lastQuery = changedText
 
-        val searchRunnable = Runnable { searchRequest(changedText) }
         handler.removeCallbacks(searchRunnable)
-        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
-        handler.postAtTime(
-            searchRunnable,
-            postTime,
-        )
+//        val postTime = SystemClock.uptimeMillis() +
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
     private fun searchRequest(newSearchText: String) {
@@ -69,10 +65,10 @@ class SearchViewModel(private val context: Context): ViewModel() {
                     handler.post {
                         when {
                             page.hasErrors() -> {
-                                renderState(TrackState(page = page, isLoading = false, isError = true, isEmpty = false))
+                                renderState(TrackState(page = Page.empty(), isLoading = false, isError = true, isEmpty = false))
                             }
                             page.isEmpty() -> {
-                                renderState(TrackState(page = page, isLoading = false, isError = false, isEmpty = true))
+                                renderState(TrackState(page = Page.empty(), isLoading = false, isError = false, isEmpty = true))
                             }
                             else -> {
                                 renderState(TrackState(page = page, isLoading = false, isError = false, isEmpty = false))
