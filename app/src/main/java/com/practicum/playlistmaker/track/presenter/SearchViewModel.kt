@@ -3,7 +3,7 @@ package com.practicum.playlistmaker.track.presenter
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.os.SystemClock
+import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,11 +17,9 @@ import com.practicum.playlistmaker.track.domain.api.TracksInteractor
 import com.practicum.playlistmaker.track.domain.model.Track
 import com.practicum.playlistmaker.track.domain.model.TrackState
 
-class SearchViewModel(private val context: Context): ViewModel() {
+class SearchViewModel(context: Context): ViewModel() {
     companion object {
         const val SEARCH_DEBOUNCE_DELAY = 2000L
-        const val CLICK_DEBOUNCE_DELAY = 1000L
-
         fun getFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 SearchViewModel(context)
@@ -30,7 +28,7 @@ class SearchViewModel(private val context: Context): ViewModel() {
     }
 
     private val tracksInteractor: TracksInteractor = Creator.provideTracksInteractor()
-    private lateinit var historyTrackInteractor: HistoryTrackInteractor
+    private val historyTrackInteractor: HistoryTrackInteractor = Creator.provideHistoryTrackInteractor(context)
 
     private val handler: Handler = Handler(Looper.getMainLooper())
     private var lastQuery: String? = ""
@@ -40,49 +38,80 @@ class SearchViewModel(private val context: Context): ViewModel() {
         searchRequest(newSearchText)
     }
 
-
     private val stateLiveData = MutableLiveData<TrackState>()
     fun observeState(): LiveData<TrackState> = stateLiveData
 
+    private val stateOpenTrack = MutableLiveData<Track>()
+    val observeStateOpenTrack: LiveData<Track> = stateOpenTrack
 
     fun searchDebounce(changedText: String) {
         if (lastQuery == changedText) {
             return
         }
         this.lastQuery = changedText
-
         handler.removeCallbacks(searchRunnable)
-//        val postTime = SystemClock.uptimeMillis() +
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    fun onSearchFocusChange(hasFocus: Boolean, searchEditText: Editable?) {
+        if (hasFocus && searchEditText.isNullOrEmpty())
+            loadHistory()
+
+    }
+
+    fun onOpenAudioPlayer(track: Track) {
+        saveToHistory(track)
+        stateOpenTrack.postValue(track)
+    }
+
+    fun clearHistory() {
+        historyTrackInteractor.clearHistory()
+        renderState(TrackState.empty())
     }
 
     private fun searchRequest(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
-            renderState(TrackState(page = Page.empty(), isLoading = true, isError = false, isEmpty = false))
+            renderState(TrackState.loading())
 
             tracksInteractor.searchTracks(newSearchText, object: TracksInteractor.TracksConsumer {
                 override fun consume(page: Page<Track>) {
                     handler.post {
                         when {
                             page.hasErrors() -> {
-                                renderState(TrackState(page = Page.empty(), isLoading = false, isError = true, isEmpty = false))
+                                renderState(TrackState.error())
                             }
                             page.isEmpty() -> {
-                                renderState(TrackState(page = Page.empty(), isLoading = false, isError = false, isEmpty = true))
+                                renderState(TrackState.empty())
                             }
-                            else -> {
-                                renderState(TrackState(page = page, isLoading = false, isError = false, isEmpty = false))
-                            }
-
+                            else -> renderState(TrackState.content(page))
                         }
                     }
                 }
             })
+        } else
+            loadHistory()
+    }
+
+    private fun loadHistory() {
+        historyTrackInteractor.getHistory { page ->
+            handler.post {
+                if (page.data.isNotEmpty()) {
+                    renderState(TrackState.content(page, isHistory = true))
+                }
+            }
         }
     }
 
-    fun renderState(state: TrackState) {
+    private fun saveToHistory(track: Track) {
+        historyTrackInteractor.saveTrack(track)
+    }
+
+    private fun renderState(state: TrackState) {
         stateLiveData.postValue(state)
+    }
+
+    fun onSearchCleared () {
+        stateLiveData.postValue(TrackState.clear())
     }
 
 

@@ -1,10 +1,7 @@
 package com.practicum.playlistmaker.track.ui
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -21,27 +18,16 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import com.practicum.playlistmaker.creator.Creator
-import com.practicum.playlistmaker.PLAYLIST_MAKER_PREFERENCES
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.common.ui.BaseActivity
 import com.practicum.playlistmaker.common.component.Page
-import com.practicum.playlistmaker.track.domain.api.TracksInteractor
 import com.practicum.playlistmaker.track.domain.model.Track
-import com.practicum.playlistmaker.track.domain.api.HistoryTrackInteractor
 import com.practicum.playlistmaker.track.domain.model.TrackState
 import com.practicum.playlistmaker.track.presenter.SearchViewModel
 import kotlin.getValue
 
 class SearchActivity : BaseActivity() {
-
-
-//    private val tracksInteractor: TracksInteractor = Creator.provideTracksInteractor()
-//    private lateinit var historyTrackInteractor: HistoryTrackInteractor
-//    private lateinit var handler: Handler
-//    private val searchRunnable = Runnable { performSearch() }
-
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var errorLayout: LinearLayout
@@ -52,24 +38,17 @@ class SearchActivity : BaseActivity() {
     private lateinit var titleHistorySearch: TextView
     private lateinit var clearHistorySearchBtn: Button
     private lateinit var clearBtn: ImageView
-    private lateinit var progressBar: ProgressBar;
-    private lateinit var sharedPrefs: SharedPreferences;
-
-//    private var lastQuery: String = ""
-    private var isClickAllowed = true
+    private lateinit var progressBar: ProgressBar
 
     private val viewModel: SearchViewModel by viewModels {
         SearchViewModel.getFactory(this)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-//        historyTrackInteractor = Creator.provideHistoryTrackInteractor(applicationContext)
-//        handler = Handler(Looper.getMainLooper())
-//        sharedPrefs =  getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE);
-
         onInitElement()
         onInitAdapter()
         onInitListener()
@@ -78,16 +57,19 @@ class SearchActivity : BaseActivity() {
         viewModel.observeState().observe(this) {
             render(it)
         }
+
+        viewModel.observeStateOpenTrack.observe(this) { track ->
+            track?.let {
+                val intent = Intent(this, AudioPlayerActivity::class.java)
+                    .apply { putExtra("TRACK", Gson().toJson(it)) }
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-//        handler.removeCallbacksAndMessages(null)
     }
-
-
-    // === code from presenter ===
-    // === init element ===
     private fun onInitElement() {
         errorLayout = findViewById(R.id.errorLayout)
         errorImageView = findViewById(R.id.errorImageView)
@@ -106,12 +88,11 @@ class SearchActivity : BaseActivity() {
             insets
         }
         arrowBackButton(R.id.arrow_back)
-//        searchEditText.setText("")
     }
 
     private fun onInitAdapter() {
         trackAdapter = TrackAdapter(emptyList()) { track ->
-            openAudioPlayer(track)
+            viewModel.onOpenAudioPlayer(track)
         }
         recyclerView.adapter = trackAdapter
     }
@@ -122,94 +103,42 @@ class SearchActivity : BaseActivity() {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 clearBtn.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
-//                hideHistorySearch(if (s.isNullOrEmpty()&&searchEditText.hasFocus()) View.VISIBLE else View.GONE)
-//                searchDebounce()
                 viewModel.searchDebounce(changedText = s?.toString() ?: "")
             }
             override fun afterTextChanged(p0: Editable?) {}
         })
-//        searchEditText.setOnFocusChangeListener { _, hasFocus ->
-//            hideHistorySearch(if (hasFocus && searchEditText.text.toString().isEmpty()) View.VISIBLE else View.GONE)
-//        }
+        searchEditText.setOnFocusChangeListener { _, hasFocus ->
+            viewModel.onSearchFocusChange(hasFocus, searchEditText.text)
+        }
 
-//        clearBtn.setOnClickListener { clearInput() }
-//        errorRefreshBtn.setOnClickListener { performSearch() }
-//        clearHistorySearchBtn.setOnClickListener {
-//            historyTrackInteractor.clearHistory()
-//            hideHistorySearch(View.GONE)
-//        }
-    }
-
-    // === search track ===
-//    private fun searchDebounce() {
-//        handler.removeCallbacks(searchRunnable)
-//        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
-//    }
-
-//    private fun performSearch() {
-//        val query = searchEditText.text.toString().trim()
-//        if (query.isEmpty()) {
-//            hideEmptyTrack()
-//            hideError()
-//            getHistory()
-//            return
-//        }
-//        showLoading()
-//        tracksInteractor.searchTracks(query, object : TracksInteractor.TracksConsumer {
-//            override fun consume(foundTracks: Page<Track>) {
-//                updateTrackRecyclerView(query, foundTracks)
-//            }
-//        })
-//    }
-
-    private fun updateTrackRecyclerView(query: String, page: Page<Track>) {
-        runOnUiThread {
-            trackAdapter.updatePage(page)
-            showProgressBar(View.GONE)
-            if (page.meta.errors.isNotEmpty()) {
-                showErrors(query)
-            } else {
-                if (page.data.isEmpty()) showEmptyTrack() else showContent()
-            }
+        clearBtn.setOnClickListener { clearInput() }
+        clearHistorySearchBtn.setOnClickListener {
+            viewModel.clearHistory()
         }
     }
-
-
-    // === history ===
-//    private fun getHistory() {
-//        historyTrackInteractor.getHistory { page ->
-//            runOnUiThread {
-//                trackAdapter.updatePage(page)
-//                if (page.meta.count == 0)
-//                    hideHistorySearch(View.GONE)
-//                else
-//                    showHistory(page)
-//            }
-//        }
-//        hideError()
-//    }
-
-
-    // === status ===
-    private fun showLoading() {
+    private fun showLoading(state: TrackState) {
         showProgressBar(View.VISIBLE)
         errorLayout.visibility = View.GONE
-        trackAdapter.clearTracks()
+        titleHistorySearch.visibility = View.GONE
+        clearHistorySearchBtn.visibility = View.GONE
+        trackAdapter.updatePage(state.page)
     }
 
-    private fun showContent() {
+    private fun showContent(page: Page<Track>, isHistory: Boolean) {
+        trackAdapter.updatePage(page)
         showProgressBar(View.GONE)
         errorLayout.visibility = View.GONE
-//        lastQuery = ""
+        recyclerView.visibility = View.VISIBLE
+        titleHistorySearch.visibility = if (isHistory) View.VISIBLE else View.GONE
+        clearHistorySearchBtn.visibility = if (isHistory) View.VISIBLE else View.GONE
     }
 
-    private fun showErrors(query: String) {
+    private fun showErrors() {
         showProgressBar(View.GONE)
         errorImageView.setImageResource(R.drawable.no_connect)
         errorTextView.text = getString(R.string.no_connect)
         errorRefreshBtn.visibility = View.VISIBLE
         errorLayout.visibility = View.VISIBLE
-//        lastQuery = query
     }
 
     private fun showEmptyTrack() {
@@ -225,77 +154,22 @@ class SearchActivity : BaseActivity() {
         errorLayout.visibility = View.GONE
     }
 
-    private fun hideError() {
-        errorLayout.visibility = View.GONE
-        errorRefreshBtn.visibility = View.GONE
-    }
-
-
-    private fun showHistory(page: Page<Track>) {
-        trackAdapter.updatePage(page)
-        titleHistorySearch.visibility = View.VISIBLE
-        clearHistorySearchBtn.visibility = View.VISIBLE
-        errorLayout.visibility = View.GONE
-    }
-
-    private fun hideHistorySearch(statusVisible: Int) {
-        titleHistorySearch.visibility = statusVisible;
-        clearHistorySearchBtn.visibility = statusVisible;
-//        if (statusVisible == View.VISIBLE)
-//            getHistory()
-//        else
-//            trackAdapter.clearTracks()
-    }
-
-    // === util ===
     private fun clearInput() {
-        searchEditText.setText("")
-        hideEmptyTrack()
-        trackAdapter.clearTracks()
+        viewModel.onSearchCleared()
         val ims = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
         val currentView = currentFocus ?: View(this)
         ims?.hideSoftInputFromWindow(currentView.windowToken, 0)
     }
-
-    private fun openAudioPlayer(track: Track) {
-//        if (clickDebounce()) {
-//            historyTrackInteractor.saveTrack(track)
-            val audioPlayerIntent = Intent(this, AudioPlayerActivity::class.java)
-                .apply { putExtra("TRACK", Gson().toJson(track)) }
-            startActivity(audioPlayerIntent)
-//        }
-    }
-
     private fun showProgressBar(isVisibility: Int) {
         progressBar.visibility = isVisibility
     }
 
-//    private fun clickDebounce(): Boolean {
-//        if (!isClickAllowed) return false
-//        isClickAllowed = false
-//        handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-//        return true
-//    }
-
-//    companion object {
-//        const val SEARCH_DEBOUNCE_DELAY = 2000L
-//        const val CLICK_DEBOUNCE_DELAY = 1000L
-//    }
-
-
     private fun render(state: TrackState) {
         when {
-            state.isLoading -> showLoading()
-            state.isError -> showErrors("Ошибка")
+            state.isLoading -> showLoading(state)
+            state.isError -> showErrors()
             state.isEmpty -> showEmptyTrack()
-            else -> {
-                showContent()
-                trackAdapter.updatePage(state.page)
-            }
-//            else -> showContent(state.tracks)
-//            state.errorMessage != null -> showError(state.errorMessage)
-//            state.movies.isEmpty() -> showEmpty("Ничего не найдено")
-//            else -> showContent(state.movies)
+            else -> showContent(state.page, state.isHistory)
         }
     }
 }
