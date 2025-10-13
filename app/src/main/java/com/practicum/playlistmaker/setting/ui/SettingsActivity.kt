@@ -2,6 +2,8 @@ package com.practicum.playlistmaker.setting.ui
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -15,11 +17,17 @@ import com.practicum.playlistmaker.setting.domain.api.SettingsInteractor
 import com.practicum.playlistmaker.common.ui.BaseActivity
 import com.practicum.playlistmaker.databinding.ActivityLibraryBinding
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
+import com.practicum.playlistmaker.setting.presenter.SettingViewModel
+import com.practicum.playlistmaker.track.presenter.SearchViewModel
+import kotlin.getValue
 
 class SettingsActivity : BaseActivity() {
-
     private lateinit var binding: ActivitySettingsBinding
-    private lateinit var settingsInteractor: SettingsInteractor
+
+    private val viewModel: SettingViewModel by viewModels {
+        SettingViewModel.getFactory(this)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,29 +35,36 @@ class SettingsActivity : BaseActivity() {
         setContentView(binding.root)
         arrowBackButton(R.id.arrow_back)
 
-        settingsInteractor = Creator.provideSettingsInteractor(applicationContext)
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_setting)) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(top = systemBars.top)
             insets
         }
-        initThemeSwitch()
+
+        viewModel.observeStateTheme.observe(this) { state ->
+            binding.switchThemes.isChecked = state.isDarkTheme
+        }
+
+        viewModel.observeStateApplyTheme.observe(this) { isDark ->
+            AppCompatDelegate.setDefaultNightMode(
+                if (isDark) AppCompatDelegate.MODE_NIGHT_YES
+                else AppCompatDelegate.MODE_NIGHT_NO
+            )
+        }
+
+        binding.switchThemes.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.onThemeSwitched(isChecked)
+        }
+
+
+
         initSharedButton()
         initSupportButton()
         initAgreementButton()
     }
 
-    private fun initThemeSwitch() {
-        binding.switchThemes.apply {
-            isChecked = (application as App).getCurrentTheme()
-            setOnCheckedChangeListener { _, isChecked ->
-                (application as App).switchTheme(isChecked)
-                recreate()
-                settingsInteractor.setDarkThemeEnabled(isChecked)
-            }
-        }
-    }
+
+
     private fun initSharedButton() {
             binding.textViewShared.setOnClickListener {
                 val intent = Intent.createChooser(
