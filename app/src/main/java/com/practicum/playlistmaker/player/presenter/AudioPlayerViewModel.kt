@@ -1,6 +1,102 @@
 package com.practicum.playlistmaker.player.presenter
 
+import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.practicum.playlistmaker.creator.Creator
+import com.practicum.playlistmaker.player.domain.api.AudioPlayerInteractor
+import com.practicum.playlistmaker.player.domain.model.AudioPlayerState
+import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
+import com.practicum.playlistmaker.track.domain.model.Track
+import com.practicum.playlistmaker.track.presenter.SearchViewModel
+import java.text.SimpleDateFormat
+import java.util.Locale
 
-class AudioPlayerViewModel: ViewModel() {
+class AudioPlayerViewModel(): ViewModel() {
+
+    companion object {
+        private const val TIMER_UPDATE_DELAY = 300L
+
+        fun getFactory(): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                AudioPlayerViewModel()
+            }
+        }
+    }
+
+    private val audioPlayerInteractor: AudioPlayerInteractor = Creator.providerAudioPlayer()
+    private val handler: Handler = Handler(Looper.getMainLooper())
+    private val timerRunnable = Runnable { setTimerValueRunnable() }
+//    private var track: Track? = null
+
+    private val stateAudioPlayer = MutableLiveData<AudioPlayerState>(AudioPlayerState.Default)
+    val observeStateAudioPlayer: LiveData<AudioPlayerState> = stateAudioPlayer
+
+    private val stateTimer = MutableLiveData("00:00")
+    val observeTimer: LiveData<String> = stateTimer
+
+    var track: Track? = null
+        private set
+
+
+    private fun setTimerValueRunnable() {
+        stateTimer.postValue(SimpleDateFormat("mm:ss",
+            Locale.getDefault()).format(audioPlayerInteractor.currentPosition()))
+        if (audioPlayerInteractor.isPlaying()) {
+            handler.postDelayed(timerRunnable,TIMER_UPDATE_DELAY)
+        }
+    }
+
+
+    fun preparePlayer(track: Track) {
+        this.track = track
+        audioPlayerInteractor.preparePlayer(track,
+            onPrepared = {
+                stateAudioPlayer.postValue(AudioPlayerState.Prepared)
+            },
+            onCompletion = {
+                stateAudioPlayer.postValue(AudioPlayerState.Prepared)
+                stateTimer.postValue("00:00")
+                handler.removeCallbacks(timerRunnable)
+            })
+    }
+
+    fun playbackControl() {
+        when (stateAudioPlayer.value){
+            AudioPlayerState.Playing -> pausePlayer()
+            else -> startPlayer()
+        }
+    }
+
+    fun onPause() {
+        pausePlayer()
+    }
+
+    private fun startPlayer() {
+        audioPlayerInteractor.startPlayer(onStart = {
+            stateAudioPlayer.postValue(AudioPlayerState.Playing)
+            handler.postDelayed(timerRunnable, TIMER_UPDATE_DELAY)
+        })
+    }
+
+    private fun pausePlayer() {
+        audioPlayerInteractor.pausePlayer(onPause = {
+            stateAudioPlayer.postValue(AudioPlayerState.Paused)
+            handler.removeCallbacks(timerRunnable)
+        })
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        handler.removeCallbacksAndMessages(null)
+    }
+
+
+
 }

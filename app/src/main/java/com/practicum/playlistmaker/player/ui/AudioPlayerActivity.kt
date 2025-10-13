@@ -1,11 +1,10 @@
 package com.practicum.playlistmaker.player.ui
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -15,18 +14,15 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.creator.Creator
-import com.practicum.playlistmaker.player.domain.api.AudioPlayerInteractor
 import com.practicum.playlistmaker.track.domain.model.Track
 import com.practicum.playlistmaker.common.ui.BaseActivity
 import com.practicum.playlistmaker.common.util.dpToPx
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.practicum.playlistmaker.player.domain.model.AudioPlayerState
+import com.practicum.playlistmaker.player.presenter.AudioPlayerViewModel
+import com.practicum.playlistmaker.player.presenter.LikeViewModel
+import kotlin.getValue
 
 class AudioPlayerActivity : BaseActivity() {
-    private lateinit var audioPlayerInteractor: AudioPlayerInteractor
-    private lateinit var handler: Handler
-    private val timerRunnable = Runnable { setTimerValueRunnable() }
     private lateinit var cover: ImageView
     private lateinit var trackName: TextView
     private lateinit var trackAuthor: TextView
@@ -43,30 +39,47 @@ class AudioPlayerActivity : BaseActivity() {
     private lateinit var countryValue: TextView
     private lateinit var playButton: ImageView
     private lateinit var likeButton: ImageView
-    private var isLike = false
+
+    private val audioPlayerViewModel: AudioPlayerViewModel by viewModels {
+        AudioPlayerViewModel.getFactory()
+    }
+
+    private val  likeViewModel: LikeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val trackGson = intent.getStringExtra("TRACK") ?: ""
-        val track =  Gson().fromJson(trackGson , Track::class.java)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_player)
-
-        audioPlayerInteractor = Creator.providerAudioPlayer()
-        handler = Handler(Looper.getMainLooper())
-
-
         onInitElement()
+
         arrowBackButton(R.id.arrow_back)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_audio_player)) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(top = systemBars.top)
             insets
         }
-        onInitData(track)
-        preparePlayer(track)
 
-        playButton.setOnClickListener { playbackControl() }
-        likeButton.setOnClickListener { toggleLike() }
+        val track =  Gson().fromJson(intent.getStringExtra("TRACK") , Track::class.java)
+        onInitData(track)
+        if (audioPlayerViewModel.track == null)
+            audioPlayerViewModel.preparePlayer(track)
+
+        audioPlayerViewModel.observeStateAudioPlayer.observe(this) { state ->
+            when (state) {
+                is AudioPlayerState.Playing -> playButton.setImageResource(R.drawable.pause)
+                else -> playButton.setImageResource(R.drawable.play)
+            }
+        }
+
+        audioPlayerViewModel.observeTimer.observe(this) { timer.text = it }
+
+        likeViewModel.observeLike.observe(this) {isLike ->
+            likeButton.setImageResource(
+                if (isLike) R.drawable.like_full else R.drawable.like
+            )
+        }
+        playButton.setOnClickListener { audioPlayerViewModel.playbackControl() }
+        likeButton.setOnClickListener { likeViewModel.toggleLike() }
     }
 
     fun onInitElement() {
@@ -90,12 +103,11 @@ class AudioPlayerActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        handler.removeCallbacksAndMessages(null)
     }
 
     override fun onPause() {
         super.onPause()
-        pausePlayer()
+        audioPlayerViewModel.onPause()
     }
 
     private fun onInitData(track: Track) {
@@ -119,7 +131,6 @@ class AudioPlayerActivity : BaseActivity() {
         gerContentInLineTextViews(track.releaseDate, releaseDateTitle, releaseDateValue)
         gerContentInLineTextViews(track.primaryGenreName, primaryGenreNameTitle, primaryGenreNameValue)
         gerContentInLineTextViews(track.country, countryTitle, countryValue)
-        changeStatusLikeTrack(track)
     }
 
     fun getHeightArtworkUrl(artworkUrl100: String): String {
@@ -139,65 +150,5 @@ class AudioPlayerActivity : BaseActivity() {
             value.visibility = View.VISIBLE
             value.text = content
         }
-    }
-
-    private fun changeStatusLikeTrack(track: Track) {
-        likeButton.setOnClickListener {
-            isLike = !isLike
-            if (isLike) {
-                likeButton.setImageResource(R.drawable.like_full)
-            } else {
-                likeButton.setImageResource(R.drawable.like)
-            }
-        }
-    }
-
-    private fun preparePlayer(track: Track) {
-        audioPlayerInteractor.preparePlayer(track,
-            onPrepared = {
-                playButton.isEnabled = true
-                playButton.setImageResource(R.drawable.play)
-            }, onCompletion = {
-                playButton.setImageResource(R.drawable.play)
-                handler.removeCallbacks(timerRunnable)
-                timer.text = getString(R.string.null_timer)
-            })
-    }
-
-    private fun startPlayer() {
-        audioPlayerInteractor.startPlayer(onStart = {
-            playButton.setImageResource(R.drawable.pause)
-            handler.postDelayed(timerRunnable, TIMER_UPDATE_DELAY)
-        })
-    }
-
-    private fun pausePlayer() {
-        audioPlayerInteractor.pausePlayer(onPause = {
-            playButton.setImageResource(R.drawable.play)
-            handler.removeCallbacks(timerRunnable)
-        })
-    }
-
-    private fun playbackControl() {
-        when {
-            audioPlayerInteractor.isPlaying() -> pausePlayer()
-            else -> startPlayer()
-        }
-    }
-
-    private fun toggleLike() {
-        isLike = !isLike
-        likeButton.setImageResource(if (isLike) R.drawable.like_full else R.drawable.like)
-    }
-
-    private fun setTimerValueRunnable() {
-        timer.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(audioPlayerInteractor.currentPosition())
-        if (audioPlayerInteractor.isPlaying()) {
-            handler.postDelayed(timerRunnable, TIMER_UPDATE_DELAY)
-        }
-    }
-
-    companion object {
-        const val TIMER_UPDATE_DELAY = 300L
     }
 }
