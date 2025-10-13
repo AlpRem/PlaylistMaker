@@ -1,20 +1,14 @@
 package com.practicum.playlistmaker.player.presenter
 
-import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerInteractor
 import com.practicum.playlistmaker.player.domain.model.AudioPlayerState
-import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.track.domain.model.Track
-import com.practicum.playlistmaker.track.presenter.SearchViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -22,12 +16,6 @@ class AudioPlayerViewModel(): ViewModel() {
 
     companion object {
         private const val TIMER_UPDATE_DELAY = 300L
-
-        fun getFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                AudioPlayerViewModel()
-            }
-        }
     }
 
     private val audioPlayerInteractor: AudioPlayerInteractor = Creator.providerAudioPlayer()

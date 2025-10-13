@@ -6,49 +6,34 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.common.ui.BaseActivity
 import com.practicum.playlistmaker.common.component.Page
+import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.track.domain.model.Track
 import com.practicum.playlistmaker.track.domain.model.TrackState
 import com.practicum.playlistmaker.track.presenter.SearchViewModel
 import kotlin.getValue
 
 class SearchActivity : BaseActivity() {
-    private lateinit var trackAdapter: TrackAdapter
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var errorLayout: LinearLayout
-    private lateinit var errorImageView: ImageView
-    private lateinit var errorTextView: TextView
-    private lateinit var errorRefreshBtn: Button
-    private lateinit var searchEditText: EditText
-    private lateinit var titleHistorySearch: TextView
-    private lateinit var clearHistorySearchBtn: Button
-    private lateinit var clearBtn: ImageView
-    private lateinit var progressBar: ProgressBar
 
+    private lateinit var binding: ActivitySearchBinding
+    private lateinit var trackAdapter: TrackAdapter
     private val viewModel: SearchViewModel by viewModels {
         SearchViewModel.getFactory(this)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         onInitElement()
         onInitAdapter()
         onInitListener()
@@ -71,17 +56,6 @@ class SearchActivity : BaseActivity() {
         super.onDestroy()
     }
     private fun onInitElement() {
-        errorLayout = findViewById(R.id.errorLayout)
-        errorImageView = findViewById(R.id.errorImageView)
-        errorTextView = findViewById(R.id.errorTextView)
-        errorRefreshBtn = findViewById(R.id.refreshBtn)
-        recyclerView = findViewById(R.id.trackRecyclerView)
-        searchEditText = findViewById(R.id.search_edit_text)
-        titleHistorySearch = findViewById(R.id.titleHistorySearch)
-        clearHistorySearchBtn = findViewById(R.id.clearHistorySearchBtn)
-        clearBtn = findViewById(R.id.clear_icon)
-        progressBar = findViewById(R.id.progressBar)
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_search)) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(top = systemBars.top)
@@ -94,64 +68,64 @@ class SearchActivity : BaseActivity() {
         trackAdapter = TrackAdapter(emptyList()) { track ->
             viewModel.onOpenAudioPlayer(track)
         }
-        recyclerView.adapter = trackAdapter
+        binding.trackRecyclerView.adapter = trackAdapter
     }
 
 
     private fun onInitListener() {
-        searchEditText.addTextChangedListener(object : TextWatcher {
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                clearBtn.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+                binding.clearIcon.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
                 viewModel.searchDebounce(changedText = s?.toString() ?: "")
             }
             override fun afterTextChanged(p0: Editable?) {}
         })
-        searchEditText.setOnFocusChangeListener { _, hasFocus ->
-            viewModel.onSearchFocusChange(hasFocus, searchEditText.text)
+        binding.searchEditText.setOnFocusChangeListener { _, hasFocus ->
+            viewModel.onSearchFocusChange(hasFocus, binding.searchEditText.text)
         }
 
-        clearBtn.setOnClickListener { clearInput() }
-        clearHistorySearchBtn.setOnClickListener {
+        binding.clearIcon.setOnClickListener { clearInput() }
+        binding.clearHistorySearchBtn.setOnClickListener {
             viewModel.clearHistory()
         }
     }
     private fun showLoading(state: TrackState) {
         showProgressBar(View.VISIBLE)
-        errorLayout.visibility = View.GONE
-        titleHistorySearch.visibility = View.GONE
-        clearHistorySearchBtn.visibility = View.GONE
+        binding.errorLayout.visibility = View.GONE
+        binding.titleHistorySearch.visibility = View.GONE
+        binding.clearHistorySearchBtn.visibility = View.GONE
         trackAdapter.updatePage(state.page)
     }
 
     private fun showContent(page: Page<Track>, isHistory: Boolean) {
         trackAdapter.updatePage(page)
         showProgressBar(View.GONE)
-        errorLayout.visibility = View.GONE
-        recyclerView.visibility = View.VISIBLE
-        titleHistorySearch.visibility = if (isHistory) View.VISIBLE else View.GONE
-        clearHistorySearchBtn.visibility = if (isHistory) View.VISIBLE else View.GONE
+        binding.errorLayout.visibility = View.GONE
+        binding.trackRecyclerView.visibility = View.VISIBLE
+        binding.titleHistorySearch.visibility = if (isHistory) View.VISIBLE else View.GONE
+        binding.clearHistorySearchBtn.visibility = if (isHistory) View.VISIBLE else View.GONE
     }
 
     private fun showErrors() {
         showProgressBar(View.GONE)
-        errorImageView.setImageResource(R.drawable.no_connect)
-        errorTextView.text = getString(R.string.no_connect)
-        errorRefreshBtn.visibility = View.VISIBLE
-        errorLayout.visibility = View.VISIBLE
+        binding.errorImageView.setImageResource(R.drawable.no_connect)
+        binding.errorTextView.text = getString(R.string.no_connect)
+        binding.refreshBtn.visibility = View.VISIBLE
+        binding.errorLayout.visibility = View.VISIBLE
     }
 
     private fun showEmptyTrack() {
         showProgressBar(View.GONE)
-        errorImageView.setImageResource(R.drawable.track_not_found)
-        errorTextView.text = getString(R.string.track_not_found)
-        errorLayout.visibility = View.VISIBLE
-        errorRefreshBtn.visibility = View.GONE
+        binding.errorImageView.setImageResource(R.drawable.track_not_found)
+        binding.errorTextView.text = getString(R.string.track_not_found)
+        binding.errorLayout.visibility = View.VISIBLE
+        binding.refreshBtn.visibility = View.GONE
     }
 
     private fun hideEmptyTrack() {
-        errorRefreshBtn.visibility = View.GONE
-        errorLayout.visibility = View.GONE
+        binding.refreshBtn.visibility = View.GONE
+        binding.errorLayout.visibility = View.GONE
     }
 
     private fun clearInput() {
@@ -161,7 +135,7 @@ class SearchActivity : BaseActivity() {
         ims?.hideSoftInputFromWindow(currentView.windowToken, 0)
     }
     private fun showProgressBar(isVisibility: Int) {
-        progressBar.visibility = isVisibility
+        binding.progressBar.visibility = isVisibility
     }
 
     private fun render(state: TrackState) {

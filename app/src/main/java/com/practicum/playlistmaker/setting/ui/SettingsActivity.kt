@@ -13,14 +13,19 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.setting.domain.api.SettingsInteractor
 import com.practicum.playlistmaker.common.ui.BaseActivity
+import com.practicum.playlistmaker.databinding.ActivityLibraryBinding
+import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 
 class SettingsActivity : BaseActivity() {
 
+    private lateinit var binding: ActivitySettingsBinding
     private lateinit var settingsInteractor: SettingsInteractor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        arrowBackButton(R.id.arrow_back)
 
         settingsInteractor = Creator.provideSettingsInteractor(applicationContext)
 
@@ -29,20 +34,14 @@ class SettingsActivity : BaseActivity() {
             view.updatePadding(top = systemBars.top)
             insets
         }
-
-        initArrowBack()
         initThemeSwitch()
         initSharedButton()
         initSupportButton()
         initAgreementButton()
     }
 
-    private fun initArrowBack() {
-        arrowBackButton(R.id.arrow_back)
-    }
-
     private fun initThemeSwitch() {
-        findViewById<SwitchMaterial>(R.id.switch_themes).apply {
+        binding.switchThemes.apply {
             isChecked = (application as App).getCurrentTheme()
             setOnCheckedChangeListener { _, isChecked ->
                 (application as App).switchTheme(isChecked)
@@ -52,7 +51,7 @@ class SettingsActivity : BaseActivity() {
         }
     }
     private fun initSharedButton() {
-            findViewById<MaterialTextView>(R.id.text_view__shared).setOnClickListener {
+            binding.textViewShared.setOnClickListener {
                 val intent = Intent.createChooser(
                     Intent(Intent.ACTION_SEND).apply {
                         type = "text/plain"
@@ -64,7 +63,7 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun initSupportButton() {
-        findViewById<MaterialTextView>(R.id.text_view__support).setOnClickListener {
+        binding.textViewSupport.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = "mailto:".toUri()
             intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.support_email)))
@@ -75,7 +74,7 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun initAgreementButton() {
-        findViewById<MaterialTextView>(R.id.text_view__agreement).setOnClickListener {
+        binding.textViewAgreement.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, getString(R.string.agreement_url).toUri())
             startActivity(intent)
         }
