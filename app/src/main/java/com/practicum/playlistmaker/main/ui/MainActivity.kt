@@ -11,7 +11,7 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityMainBinding
 import com.practicum.playlistmaker.library.ui.LibraryActivity
 import com.practicum.playlistmaker.setting.ui.SettingsActivity
-import com.practicum.playlistmaker.track.ui.SearchActivity
+import com.practicum.playlistmaker.search.ui.SearchActivity
 
 class MainActivity : AppCompatActivity() {
 

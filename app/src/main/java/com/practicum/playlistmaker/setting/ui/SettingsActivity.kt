@@ -8,17 +8,11 @@ import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import com.google.android.material.switchmaterial.SwitchMaterial
-import com.google.android.material.textview.MaterialTextView
-import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.creator.Creator
-import com.practicum.playlistmaker.setting.domain.api.SettingsInteractor
 import com.practicum.playlistmaker.common.ui.BaseActivity
-import com.practicum.playlistmaker.databinding.ActivityLibraryBinding
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 import com.practicum.playlistmaker.setting.presenter.SettingViewModel
-import com.practicum.playlistmaker.track.presenter.SearchViewModel
+import com.practicum.playlistmaker.sharing.presenter.SharingViewModel
 import kotlin.getValue
 
 class SettingsActivity : BaseActivity() {
@@ -28,6 +22,9 @@ class SettingsActivity : BaseActivity() {
         SettingViewModel.getFactory(this)
     }
 
+    private val sharingViewModel: SharingViewModel by viewModels {
+        SharingViewModel.getFactory(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +38,11 @@ class SettingsActivity : BaseActivity() {
             insets
         }
 
+        initSettingViewModel()
+        initSharingViewModel()
+    }
+
+    private fun initSettingViewModel() {
         viewModel.observeStateTheme.observe(this) { state ->
             binding.switchThemes.isChecked = state.isDarkTheme
         }
@@ -55,12 +57,12 @@ class SettingsActivity : BaseActivity() {
         binding.switchThemes.setOnCheckedChangeListener { _, isChecked ->
             viewModel.onThemeSwitched(isChecked)
         }
+    }
 
-
-
-        initSharedButton()
-        initSupportButton()
-        initAgreementButton()
+    private fun initSharingViewModel() {
+        binding.textViewShared.setOnClickListener { sharingViewModel.shareApp() }
+        binding.textViewSupport.setOnClickListener { sharingViewModel.openSupport() }
+        binding.textViewAgreement.setOnClickListener { sharingViewModel.openAgreement() }
     }
 
 

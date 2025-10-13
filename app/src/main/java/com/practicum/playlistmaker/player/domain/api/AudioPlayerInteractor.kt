@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker.player.domain.api
 
 import com.practicum.playlistmaker.player.domain.model.AudioPlayerState
-import com.practicum.playlistmaker.track.domain.model.Track
+import com.practicum.playlistmaker.search.domain.model.Track
 
 interface  AudioPlayerInteractor {
     fun preparePlayer(track: Track, onPrepared: () -> Unit, onCompletion: () -> Unit)

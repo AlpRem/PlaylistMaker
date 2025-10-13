@@ -5,24 +5,28 @@ import android.content.SharedPreferences
 import android.media.MediaPlayer
 import com.google.gson.Gson
 import com.practicum.playlistmaker.PLAYLIST_MAKER_PREFERENCES
-import com.practicum.playlistmaker.track.data.mapper.TrackMapper
-import com.practicum.playlistmaker.track.data.network.ItunesClient
+import com.practicum.playlistmaker.search.data.mapper.TrackMapper
+import com.practicum.playlistmaker.search.data.network.ItunesClient
 import com.practicum.playlistmaker.player.data.AudioPlayerRepositoryImpl
-import com.practicum.playlistmaker.track.data.repository.HistoryTrackRepositoryImpl
-import com.practicum.playlistmaker.track.data.repository.ItunesTrackRepository
+import com.practicum.playlistmaker.search.data.repository.HistoryTrackRepositoryImpl
+import com.practicum.playlistmaker.search.data.repository.ItunesTrackRepository
 import com.practicum.playlistmaker.setting.data.SettingsRepositoryImpl
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerInteractor
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerRepository
-import com.practicum.playlistmaker.track.domain.api.HistoryTrackInteractor
-import com.practicum.playlistmaker.track.domain.api.HistoryTrackRepository
+import com.practicum.playlistmaker.search.domain.api.HistoryTrackInteractor
+import com.practicum.playlistmaker.search.domain.api.HistoryTrackRepository
 import com.practicum.playlistmaker.setting.domain.api.SettingsInteractor
 import com.practicum.playlistmaker.setting.domain.api.SettingsRepository
-import com.practicum.playlistmaker.track.domain.api.TrackRepository
-import com.practicum.playlistmaker.track.domain.api.TracksInteractor
+import com.practicum.playlistmaker.search.domain.api.TrackRepository
+import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.player.domain.impl.AudioPlayerInteractorImpl
-import com.practicum.playlistmaker.track.domain.impl.HistoryTrackInteractorImpl
+import com.practicum.playlistmaker.search.domain.impl.HistoryTrackInteractorImpl
 import com.practicum.playlistmaker.setting.domain.impl.SettingsInteractorImpl
-import com.practicum.playlistmaker.track.domain.impl.TracksInteractorImpl
+import com.practicum.playlistmaker.sharing.data.ExternalNavigatorImpl
+import com.practicum.playlistmaker.sharing.domain.api.ExternalNavigator
+import com.practicum.playlistmaker.sharing.domain.api.SharingInteractor
+import com.practicum.playlistmaker.sharing.domain.impl.SharingInteractorImpl
+import com.practicum.playlistmaker.search.domain.impl.TracksInteractorImpl
 
 object  Creator {
     private fun getTracksRepository(): TrackRepository {
@@ -49,6 +53,10 @@ object  Creator {
         return AudioPlayerRepositoryImpl(MediaPlayer())
     }
 
+    private fun getExternalNavigator(context: Context): ExternalNavigator {
+        return ExternalNavigatorImpl(context)
+    }
+
     fun provideTracksInteractor(): TracksInteractor {
         return TracksInteractorImpl(getTracksRepository())
     }
@@ -63,5 +71,9 @@ object  Creator {
 
     fun providerAudioPlayer(): AudioPlayerInteractor {
         return AudioPlayerInteractorImpl(getAudioPlayerRepository())
+    }
+
+    fun providerSharing(context: Context): SharingInteractor {
+        return SharingInteractorImpl(context, getExternalNavigator(context))
     }
 }

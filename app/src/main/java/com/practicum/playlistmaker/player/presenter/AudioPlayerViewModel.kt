@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerInteractor
 import com.practicum.playlistmaker.player.domain.model.AudioPlayerState
-import com.practicum.playlistmaker.track.domain.model.Track
+import com.practicum.playlistmaker.search.domain.model.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 

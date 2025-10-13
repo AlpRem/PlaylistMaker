@@ -3,7 +3,7 @@ package com.practicum.playlistmaker.player.data
 import android.media.MediaPlayer
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerRepository
 import com.practicum.playlistmaker.player.domain.model.AudioPlayerState
-import com.practicum.playlistmaker.track.domain.model.Track
+import com.practicum.playlistmaker.search.domain.model.Track
 
 class AudioPlayerRepositoryImpl(private val mediaPlayer: MediaPlayer) : AudioPlayerRepository {
 
