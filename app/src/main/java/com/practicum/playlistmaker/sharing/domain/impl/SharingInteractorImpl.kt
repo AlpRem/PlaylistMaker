@@ -23,21 +23,16 @@ class SharingInteractorImpl(private val externalNavigator: ExternalNavigator) : 
     }
 
     private fun getShareTitle(): String {
-//        return context.getString(R.string.shared_title)
         return "Share APK"
     }
 
     private fun getSupportEmailData(): EmailData {
-//        return EmailData(email = context.getString(R.string.support_email),
-//            subject = context.getString(R.string.support_subject),
-//            text = context.getString(R.string.support_message))
         return EmailData(email = "alprem2016@yandex.ru",
             subject = "Сообщение разработчикам и разработчицам приложения Playlist Maker",
             text = "Спасибо разработчикам и разработчицам за крутое приложение!")
     }
 
     private fun getTermsLink(): String {
-//        return context.getString(R.string.agreement_url)
         return "https://yandex.ru/legal/practicum_offer/"
     }
 }
