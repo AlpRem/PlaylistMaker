@@ -1,13 +1,11 @@
 package com.practicum.playlistmaker.sharing.domain.impl
 
-import android.content.Context
-import com.practicum.playlistmaker.R
+
 import com.practicum.playlistmaker.sharing.data.EmailData
 import com.practicum.playlistmaker.sharing.domain.api.ExternalNavigator
 import com.practicum.playlistmaker.sharing.domain.api.SharingInteractor
 
-class SharingInteractorImpl(private val context: Context,
-                            private val externalNavigator: ExternalNavigator) : SharingInteractor {
+class SharingInteractorImpl(private val externalNavigator: ExternalNavigator) : SharingInteractor {
     override fun shareApp() {
         externalNavigator.shareLink(getShareAppLink(), getShareTitle())
     }
@@ -21,20 +19,25 @@ class SharingInteractorImpl(private val context: Context,
     }
 
     private fun getShareAppLink(): String {
-        return context.getString(R.string.shared_text)
+        return "https://practicum.yandex.ru/android-developer/"
     }
 
     private fun getShareTitle(): String {
-        return context.getString(R.string.shared_title)
+//        return context.getString(R.string.shared_title)
+        return "Share APK"
     }
 
     private fun getSupportEmailData(): EmailData {
-        return EmailData(email = context.getString(R.string.support_email),
-            subject = context.getString(R.string.support_subject),
-            text = context.getString(R.string.support_message))
+//        return EmailData(email = context.getString(R.string.support_email),
+//            subject = context.getString(R.string.support_subject),
+//            text = context.getString(R.string.support_message))
+        return EmailData(email = "alprem2016@yandex.ru",
+            subject = "Сообщение разработчикам и разработчицам приложения Playlist Maker",
+            text = "Спасибо разработчикам и разработчицам за крутое приложение!")
     }
 
     private fun getTermsLink(): String {
-        return context.getString(R.string.agreement_url)
+//        return context.getString(R.string.agreement_url)
+        return "https://yandex.ru/legal/practicum_offer/"
     }
 }

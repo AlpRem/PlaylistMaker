@@ -129,6 +129,7 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun clearInput() {
+        binding.searchEditText.text?.clear()
         viewModel.onSearchCleared()
         val ims = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
         val currentView = currentFocus ?: View(this)
