@@ -18,15 +18,6 @@ import com.practicum.playlistmaker.search.domain.model.Track
 import com.practicum.playlistmaker.search.domain.model.TrackState
 
 class SearchViewModel(context: Context): ViewModel() {
-    companion object {
-        const val SEARCH_DEBOUNCE_DELAY = 2000L
-        fun getFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SearchViewModel(context)
-            }
-        }
-    }
-
     private val tracksInteractor: TracksInteractor = Creator.provideTracksInteractor()
     private val historyTrackInteractor: HistoryTrackInteractor = Creator.provideHistoryTrackInteractor(context)
 
@@ -120,7 +111,12 @@ class SearchViewModel(context: Context): ViewModel() {
         handler.removeCallbacks(searchRunnable)
     }
 
-
-
-
+    companion object {
+        const val SEARCH_DEBOUNCE_DELAY = 2000L
+        fun getFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                SearchViewModel(context)
+            }
+        }
+    }
 }

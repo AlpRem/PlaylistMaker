@@ -14,10 +14,6 @@ import java.util.Locale
 
 class AudioPlayerViewModel(): ViewModel() {
 
-    companion object {
-        private const val TIMER_UPDATE_DELAY = 300L
-    }
-
     private val audioPlayerInteractor: AudioPlayerInteractor = Creator.providerAudioPlayer()
     private val handler: Handler = Handler(Looper.getMainLooper())
     private val timerRunnable = Runnable { setTimerValueRunnable() }
@@ -85,6 +81,8 @@ class AudioPlayerViewModel(): ViewModel() {
         handler.removeCallbacksAndMessages(null)
     }
 
-
+    companion object {
+        private const val TIMER_UPDATE_DELAY = 300L
+    }
 
 }

@@ -1,6 +1,15 @@
 package com.practicum.playlistmaker.common.component
 
 data class Page<T> (val meta: Meta, val data: Collection<T>) {
+    fun isEmpty(): Boolean = data.isEmpty()
+
+    fun hasErrors(): Boolean = meta.errors.isNotEmpty()
+
+    fun <R> map(transform: (T) -> R): Page<R> = Page(
+        meta = meta.copy(),
+        data = data.map(transform)
+    )
+
     companion object {
         fun <T> empty(): Page<T> = Page(
             meta = Meta(count = 0, errors = emptyList()),
@@ -16,12 +25,4 @@ data class Page<T> (val meta: Meta, val data: Collection<T>) {
             data = data
         )
     }
-    fun isEmpty(): Boolean = data.isEmpty()
-
-    fun hasErrors(): Boolean = meta.errors.isNotEmpty()
-
-    fun <R> map(transform: (T) -> R): Page<R> = Page(
-        meta = meta.copy(),
-        data = data.map(transform)
-    )
 }

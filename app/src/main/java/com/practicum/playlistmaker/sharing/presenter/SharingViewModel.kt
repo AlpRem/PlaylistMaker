@@ -17,12 +17,6 @@ class SharingViewModel(context: Context): ViewModel() {
     private val stateSharing = MutableLiveData<SharingState>()
     val observeStateSharing: LiveData<SharingState> = stateSharing
 
-    companion object {
-        fun getFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
-            initializer { SharingViewModel(context) }
-        }
-    }
-
     fun shareApp() {
         sharingInteractor.shareApp()
         stateSharing.value = SharingState(SharingState.SharingCommand.ShareApp)
@@ -36,5 +30,11 @@ class SharingViewModel(context: Context): ViewModel() {
     fun openAgreement() {
         sharingInteractor.openTerms()
         stateSharing.value = SharingState(SharingState.SharingCommand.OpenAgreement)
+    }
+
+    companion object {
+        fun getFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
+            initializer { SharingViewModel(context) }
+        }
     }
 }
