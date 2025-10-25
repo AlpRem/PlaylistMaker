@@ -3,11 +3,10 @@ package com.practicum.playlistmaker.search.di
 import android.content.Context
 import com.google.gson.Gson
 import com.practicum.playlistmaker.PLAYLIST_MAKER_PREFERENCES
+import com.practicum.playlistmaker.search.data.mapper.TrackMapper
 import com.practicum.playlistmaker.search.data.network.ItunesClient
 import com.practicum.playlistmaker.search.data.network.ItunesService
 import com.practicum.playlistmaker.search.data.network.NetworkClient
-import com.practicum.playlistmaker.search.data.repository.HistoryTrackRepositoryImpl
-import com.practicum.playlistmaker.search.domain.api.HistoryTrackRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -32,12 +31,9 @@ val searchDataModule = module {
 
     single  { Gson() }
 
+    single { TrackMapper() }
+
     single<NetworkClient> {
         ItunesClient(get())
     }
-
-    single<HistoryTrackRepository> {
-        HistoryTrackRepositoryImpl(get(), get())
-    }
-
 }

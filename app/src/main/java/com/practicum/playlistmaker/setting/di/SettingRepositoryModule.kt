@@ -4,7 +4,8 @@ import com.practicum.playlistmaker.setting.data.SettingsRepositoryImpl
 import com.practicum.playlistmaker.setting.domain.api.SettingsRepository
 import org.koin.dsl.module
 
-val settingsDataModule = module {
-
-
+val settingsRepositoryModule = module {
+    single<SettingsRepository> {
+        SettingsRepositoryImpl(get())
+    }
 }
