@@ -11,9 +11,8 @@ import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.setting.domain.api.SettingsInteractor
 import com.practicum.playlistmaker.setting.domain.model.SettingsState
 
-class SettingViewModel(context: Context): ViewModel() {
+class SettingViewModel(private val settingsInteractor: SettingsInteractor): ViewModel() {
 
-    private var settingsInteractor: SettingsInteractor = Creator.provideSettingsInteractor(context)
     private val stateTheme = MutableLiveData(SettingsState())
     val observeStateTheme: LiveData<SettingsState> = stateTheme
 
@@ -29,13 +28,4 @@ class SettingViewModel(context: Context): ViewModel() {
         stateTheme.value = SettingsState(isDarkTheme = enabled)
         stateApplyTheme.value = enabled
     }
-
-    companion object {
-        fun getFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SettingViewModel(context)
-            }
-        }
-    }
-
 }

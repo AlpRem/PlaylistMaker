@@ -5,19 +5,16 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerInteractor
 import com.practicum.playlistmaker.player.domain.model.AudioPlayerState
 import com.practicum.playlistmaker.search.domain.model.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class AudioPlayerViewModel(): ViewModel() {
+class AudioPlayerViewModel(private val audioPlayerInteractor: AudioPlayerInteractor): ViewModel() {
 
-    private val audioPlayerInteractor: AudioPlayerInteractor = Creator.providerAudioPlayer()
     private val handler: Handler = Handler(Looper.getMainLooper())
     private val timerRunnable = Runnable { setTimerValueRunnable() }
-//    private var track: Track? = null
 
     private val stateAudioPlayer = MutableLiveData<AudioPlayerState>(AudioPlayerState.Default)
     val observeStateAudioPlayer: LiveData<AudioPlayerState> = stateAudioPlayer

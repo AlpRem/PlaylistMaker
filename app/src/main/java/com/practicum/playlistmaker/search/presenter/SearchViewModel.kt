@@ -1,25 +1,20 @@
 package com.practicum.playlistmaker.search.presenter
 
-import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.common.component.Page
-import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.search.domain.api.HistoryTrackInteractor
 import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.search.domain.model.Track
 import com.practicum.playlistmaker.search.domain.model.TrackState
 
-class SearchViewModel(context: Context): ViewModel() {
-    private val tracksInteractor: TracksInteractor = Creator.provideTracksInteractor()
-    private val historyTrackInteractor: HistoryTrackInteractor = Creator.provideHistoryTrackInteractor(context)
+class SearchViewModel(private val tracksInteractor: TracksInteractor,
+                      private val historyTrackInteractor: HistoryTrackInteractor): ViewModel() {
+
 
     private val handler: Handler = Handler(Looper.getMainLooper())
     private var lastQuery: String? = ""
@@ -113,10 +108,5 @@ class SearchViewModel(context: Context): ViewModel() {
 
     companion object {
         const val SEARCH_DEBOUNCE_DELAY = 2000L
-        fun getFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SearchViewModel(context)
-            }
-        }
     }
 }

@@ -11,9 +11,8 @@ import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.sharing.domain.api.SharingInteractor
 import com.practicum.playlistmaker.sharing.domain.model.SharingState
 
-class SharingViewModel(context: Context): ViewModel() {
+class SharingViewModel(private val sharingInteractor: SharingInteractor): ViewModel() {
 
-    private var sharingInteractor: SharingInteractor = Creator.providerSharing(context)
     private val stateSharing = MutableLiveData<SharingState>()
     val observeStateSharing: LiveData<SharingState> = stateSharing
 
@@ -30,11 +29,5 @@ class SharingViewModel(context: Context): ViewModel() {
     fun openAgreement() {
         sharingInteractor.openTerms()
         stateSharing.value = SharingState(SharingState.SharingCommand.OpenAgreement)
-    }
-
-    companion object {
-        fun getFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
-            initializer { SharingViewModel(context) }
-        }
     }
 }
