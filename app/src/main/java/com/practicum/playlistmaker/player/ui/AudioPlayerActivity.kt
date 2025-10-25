@@ -3,7 +3,6 @@ package com.practicum.playlistmaker.player.ui
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -21,14 +20,15 @@ import com.practicum.playlistmaker.player.domain.model.AudioPlayerState
 import com.practicum.playlistmaker.player.presenter.AudioPlayerViewModel
 import com.practicum.playlistmaker.player.presenter.LikeViewModel
 import kotlin.getValue
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AudioPlayerActivity : BaseActivity() {
 
     private lateinit var binding: ActivityAudioPlayerBinding
 
-    private val audioPlayerViewModel: AudioPlayerViewModel by viewModels()
+    private val audioPlayerViewModel: AudioPlayerViewModel by viewModel()
 
-    private val  likeViewModel: LikeViewModel by viewModels()
+    private val  likeViewModel: LikeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

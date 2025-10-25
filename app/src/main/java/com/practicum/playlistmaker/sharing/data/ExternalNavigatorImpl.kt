@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.sharing.data
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.core.net.toUri
@@ -8,18 +9,23 @@ import com.practicum.playlistmaker.sharing.domain.api.ExternalNavigator
 
 class ExternalNavigatorImpl(private val context: Context): ExternalNavigator {
 
+    private val isActivityContext = context is Activity
+
     override fun shareLink() {
-        val intent = Intent.createChooser(
-            Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, getShareAppLink())
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK},
-            getShareTitle())
-        context.startActivity(intent)
+        val intentFromSend = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, getShareAppLink())
+        }
+        val intentFromChooser = Intent.createChooser(intentFromSend, getShareTitle())
+        if (!isActivityContext)
+            intentFromChooser.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        context.startActivity(intentFromChooser)
     }
 
     override fun openLink() {
         val intent = Intent(Intent.ACTION_VIEW, getTermLink().toUri())
+        if (!isActivityContext)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(intent)
     }
 
@@ -30,6 +36,8 @@ class ExternalNavigatorImpl(private val context: Context): ExternalNavigator {
             putExtra(Intent.EXTRA_SUBJECT, getSupportEmailData().subject)
             putExtra(Intent.EXTRA_TEXT, getSupportEmailData().text)
         }
+        if (!isActivityContext)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(intent)
     }
 
