@@ -19,15 +19,14 @@ import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.search.domain.model.Track
 import com.practicum.playlistmaker.search.domain.model.TrackState
 import com.practicum.playlistmaker.search.presenter.SearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
 
 class SearchActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySearchBinding
     private lateinit var trackAdapter: TrackAdapter
-    private val viewModel: SearchViewModel by viewModels {
-        SearchViewModel.getFactory(this)
-    }
+    private val viewModel: SearchViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

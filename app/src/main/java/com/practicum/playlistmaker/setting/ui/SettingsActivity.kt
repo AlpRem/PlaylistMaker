@@ -2,7 +2,6 @@ package com.practicum.playlistmaker.setting.ui
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
@@ -13,18 +12,15 @@ import com.practicum.playlistmaker.common.ui.BaseActivity
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 import com.practicum.playlistmaker.setting.presenter.SettingViewModel
 import com.practicum.playlistmaker.sharing.presenter.SharingViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
 
 class SettingsActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingsBinding
 
-    private val viewModel: SettingViewModel by viewModels {
-        SettingViewModel.getFactory(this)
-    }
+    private val viewModel: SettingViewModel by viewModel()
 
-    private val sharingViewModel: SharingViewModel by viewModels {
-        SharingViewModel.getFactory(this)
-    }
+    private val sharingViewModel: SharingViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
