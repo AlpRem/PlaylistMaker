@@ -53,5 +53,8 @@
     <dimen name="margin_bottom_information_audio_player">8dp</dimen>
     <dimen name="size_progressBar">44dp</dimen>
     <dimen name="margin_top_progressBar">140dp</dimen>
+    <dimen name="margin_bottom_btn_playlist">46dp</dimen>
+    <dimen name="margin_top_playlist">24dp</dimen>
+    <dimen name="margin_top_favorites">106dp</dimen>
 
 </resources>

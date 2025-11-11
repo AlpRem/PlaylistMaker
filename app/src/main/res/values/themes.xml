@@ -19,6 +19,7 @@
         <item name="colorNote">@color/color_note_light</item>
         <item name="colorControlPanel">@color/control_panel_color_light</item>
         <item name="colorInformationValue">@color/ap_information_value_light</item>
+        <item name="backgroundTab">@color/white</item>
 
     </style>
 
