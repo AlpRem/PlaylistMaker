@@ -192,4 +192,31 @@
 
     </style>
 
+    <style name="titleErrorLibraryStyle" parent="titleErrorStyle">
+        <item name="android:textFontWeight">500</item>
+        <item name="android:layout_marginTop">@dimen/margin_size_error</item>
+    </style>
+
+    <style name="createPlaylistBtn" parent="refreshBtn">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginBottom">46dp</item>
+        <item name="android:paddingVertical">@dimen/vertical_refresh</item>
+        <item name="android:paddingHorizontal">@dimen/horizontal_refresh</item>
+        <item name="android:minHeight">0dp</item>
+    </style>
+
+    <style name="fragmentPlaylistLibrary">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">24dp</item>
+    </style>
+
+    <style name="fragmentFavoritesLibrary" parent="fragmentPlaylistLibrary">
+        <item name="android:layout_marginTop">106dp</item>
+    </style>
+
 </resources>
