@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:id="@+id/activity_library"
     android:layout_width="match_parent"
@@ -27,7 +28,10 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/tabLibrary" />
+        app:tabTextColor="?attr/titleTrackColor"
+        style="@style/tabLibrary"
+        app:tabTextAppearance="@style/tabTextView"
+        />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

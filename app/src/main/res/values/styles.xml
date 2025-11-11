@@ -221,9 +221,14 @@
     </style>
 
     <style name="tabLibrary" parent="baseFont">
+        <item name="android:background">?attr/backgroundTab</item>
+    </style>
+
+    <style name="tabTextView" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/font_size_small</item>
         <item name="android:textColor">?attr/titleTrackColor</item>
-        <item name="android:background">?attr/backgroundTab</item>
     </style>
 
 </resources>
