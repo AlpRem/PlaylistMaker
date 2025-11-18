@@ -2,7 +2,6 @@ package com.practicum.playlistmaker.di
 
 import com.practicum.playlistmaker.library.presenter.FavoritesViewModel
 import com.practicum.playlistmaker.library.presenter.PlaylistViewModel
-import com.practicum.playlistmaker.library.ui.FavoritesFragment
 import com.practicum.playlistmaker.player.presenter.AudioPlayerViewModel
 import com.practicum.playlistmaker.player.presenter.LikeViewModel
 import com.practicum.playlistmaker.search.presenter.SearchViewModel
