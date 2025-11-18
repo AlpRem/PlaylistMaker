@@ -9,10 +9,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.practicum.playlistmaker.databinding.FragmentMainBinding
 import com.practicum.playlistmaker.library.ui.LibraryActivity
-import com.practicum.playlistmaker.search.ui.SearchActivity
 import com.practicum.playlistmaker.setting.ui.SettingsActivity
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.search.ui.SearchFragment
 
 class MainFragment: Fragment() {
 
@@ -35,8 +37,14 @@ class MainFragment: Fragment() {
         }
 
         binding.btnSearch.setOnClickListener {
-            val searchIntent = Intent(requireContext(), SearchActivity::class.java)
-            startActivity(searchIntent)
+            parentFragmentManager.commit {
+                replace(
+                R.id.rootFragmentContainerView,
+                    SearchFragment(),
+                    SearchFragment.TAG
+                )
+                addToBackStack(SearchFragment.TAG)
+            }
         }
 
         binding.btnLibrary.setOnClickListener {

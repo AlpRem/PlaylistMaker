@@ -8,7 +8,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.ui.BaseActivity
 import com.practicum.playlistmaker.databinding.ActivityLibraryBinding
-import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 
 class LibraryActivity : BaseActivity() {
     private lateinit var binding: ActivityLibraryBinding

@@ -1,66 +1,74 @@
 package com.practicum.playlistmaker.search.ui
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
+import android.widget.ImageView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
-import com.practicum.playlistmaker.common.ui.BaseActivity
 import com.practicum.playlistmaker.common.component.Page
-import com.practicum.playlistmaker.databinding.ActivitySearchBinding
+import com.practicum.playlistmaker.databinding.FragmentSearchBinding
+import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.search.domain.model.Track
 import com.practicum.playlistmaker.search.domain.model.TrackState
 import com.practicum.playlistmaker.search.presenter.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
 
-class SearchActivity : BaseActivity() {
+class SearchFragment: Fragment() {
+    companion object {
+        const val TAG = "SearchFragment"
+    }
 
-    private lateinit var binding: ActivitySearchBinding
+    private lateinit var binding: FragmentSearchBinding
     private lateinit var trackAdapter: TrackAdapter
     private val viewModel: SearchViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         onInitElement()
         onInitAdapter()
         onInitListener()
         hideEmptyTrack()
 
-        viewModel.observeState().observe(this) {
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
 
-        viewModel.observeStateOpenTrack.observe(this) { track ->
+        viewModel.observeStateOpenTrack.observe(viewLifecycleOwner) { track ->
             track?.let {
-                val intent = Intent(this, AudioPlayerActivity::class.java)
+                val intent = Intent(requireContext(), AudioPlayerActivity::class.java)
                     .apply { putExtra("TRACK", Gson().toJson(it)) }
                 startActivity(intent)
             }
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
+
     private fun onInitElement() {
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_search)) { view, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(top = systemBars.top)
             insets
         }
-        arrowBackButton(R.id.arrow_back)
+        arrowBackButton()
     }
 
     private fun onInitAdapter() {
@@ -130,9 +138,8 @@ class SearchActivity : BaseActivity() {
     private fun clearInput() {
         binding.searchEditText.text?.clear()
         viewModel.onSearchCleared()
-        val ims = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
-        val currentView = currentFocus ?: View(this)
-        ims?.hideSoftInputFromWindow(currentView.windowToken, 0)
+        val ims = requireContext().getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+        ims?.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
     }
     private fun showProgressBar(isVisibility: Int) {
         binding.progressBar.visibility = isVisibility
@@ -144,6 +151,12 @@ class SearchActivity : BaseActivity() {
             state.isError -> showErrors()
             state.isEmpty -> showEmptyTrack()
             else -> showContent(state.page, state.isHistory)
+        }
+    }
+
+    private fun arrowBackButton() {
+        binding.arrowBack.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 }
