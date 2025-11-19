@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".player.ui.AudioPlayerActivity">
+    tools:context=".player.ui.AudioPlayerFragment">
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/activity_audio_player"
