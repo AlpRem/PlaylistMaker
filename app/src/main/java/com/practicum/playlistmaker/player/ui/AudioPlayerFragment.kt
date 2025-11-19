@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -45,6 +46,8 @@ class AudioPlayerFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        arrowBackButton()
+
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(top = systemBars.top)
@@ -117,6 +120,12 @@ class AudioPlayerFragment: Fragment() {
             title.visibility = View.VISIBLE
             value.visibility = View.VISIBLE
             value.text = content
+        }
+    }
+
+    private fun arrowBackButton() {
+        binding.arrowBack.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 }
