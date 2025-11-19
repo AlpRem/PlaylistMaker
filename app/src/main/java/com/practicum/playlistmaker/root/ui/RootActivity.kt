@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.root.ui
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -9,6 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.practicum.playlistmaker.databinding.ActivityRootBinding
 import com.practicum.playlistmaker.R
+import androidx.core.view.isGone
 
 class RootActivity: AppCompatActivity() {
 
@@ -25,10 +27,19 @@ class RootActivity: AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setupWithNavController(navController)
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            bottomNavigationView.visibility =
+                if (destination.id == R.id.audioPlayerFragment) View.GONE
+                else View.VISIBLE
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             val iVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
-            binding.bottomNavigationView.visibility =
-                if (iVisible) BottomNavigationView.GONE else BottomNavigationView.VISIBLE
+            binding.bottomNavigationView.visibility = when {
+                iVisible -> View.GONE
+                binding.bottomNavigationView.isGone -> View.GONE
+                else -> View.VISIBLE
+            }
             insets
         }
     }
