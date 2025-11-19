@@ -4,12 +4,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.commit
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.practicum.playlistmaker.databinding.ActivityRootBinding
-import com.practicum.playlistmaker.main.ui.MainFragment
 import com.practicum.playlistmaker.R
 
 class RootActivity: AppCompatActivity() {

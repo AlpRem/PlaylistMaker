@@ -28,7 +28,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
     fun observeState(): LiveData<TrackState> = stateLiveData
 
     private val stateOpenTrack = MutableLiveData<Track?>()
-    val observeStateOpenTrack: LiveData<Track> = stateOpenTrack as LiveData<Track>
+    val observeStateOpenTrack: LiveData<Track?> = stateOpenTrack
 
     fun searchDebounce(changedText: String) {
         if (lastQuery == changedText) {
