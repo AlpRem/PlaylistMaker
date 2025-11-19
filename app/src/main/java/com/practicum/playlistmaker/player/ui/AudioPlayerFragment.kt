@@ -29,16 +29,8 @@ class AudioPlayerFragment: Fragment() {
 
     companion object {
         private const val ARGS_TRACK = "TRACK"
-
-        fun newInstance(track: Track): AudioPlayerFragment {
-            return AudioPlayerFragment().apply {
-                arguments = bundleOf(
-                    ARGS_TRACK to Gson().toJson(track)
-                )
-            }
-        }
-
-        const val TAG = "AudioPlayerFragment"
+        fun createArgs(track: Track): Bundle =
+            bundleOf(ARGS_TRACK to Gson().toJson(track))
     }
 
     private lateinit var binding: FragmentAudioPlayerBinding

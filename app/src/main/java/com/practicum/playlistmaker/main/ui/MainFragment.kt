@@ -9,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.databinding.FragmentMainBinding
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.library.ui.LibraryFragment
@@ -36,36 +37,15 @@ class MainFragment: Fragment() {
         }
 
         binding.btnSearch.setOnClickListener {
-            parentFragmentManager.commit {
-                replace(
-                R.id.rootFragmentContainerView,
-                    SearchFragment(),
-                    SearchFragment.TAG
-                )
-                addToBackStack(SearchFragment.TAG)
-            }
+            findNavController().navigate(R.id.action_mainFragment_to_searchFragment)
         }
 
         binding.btnLibrary.setOnClickListener {
-            parentFragmentManager.commit {
-                replace(
-                    R.id.rootFragmentContainerView,
-                    LibraryFragment(),
-                    LibraryFragment.TAG
-                )
-                addToBackStack(LibraryFragment.TAG)
-            }
+            findNavController().navigate(R.id.action_mainFragment_to_libraryFragment)
         }
 
         binding.btnSetting.setOnClickListener {
-            parentFragmentManager.commit {
-                replace(
-                    R.id.rootFragmentContainerView,
-                    SettingFragment(),
-                    SettingFragment.TAG
-                )
-                addToBackStack(SettingFragment.TAG)
-            }
+            findNavController().navigate(R.id.action_mainFragment_to_settingFragment)
         }
     }
 }

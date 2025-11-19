@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
@@ -25,10 +26,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
 
 class SearchFragment: Fragment() {
-    companion object {
-        const val TAG = "SearchFragment"
-    }
-
     private lateinit var binding: FragmentSearchBinding
     private lateinit var trackAdapter: TrackAdapter
     private val viewModel: SearchViewModel by viewModel()
@@ -53,15 +50,9 @@ class SearchFragment: Fragment() {
 
         viewModel.observeStateOpenTrack.observe(viewLifecycleOwner) { track ->
             track?.let {
-                parentFragmentManager.commit {
-                    replace(
-                        R.id.rootFragmentContainerView,
-                        AudioPlayerFragment.newInstance(track = track),
-                        AudioPlayerFragment.TAG
-                    )
-                    addToBackStack(AudioPlayerFragment.TAG)
-                }
                 viewModel.resetOpenTrackState()
+                findNavController().navigate(R.id.action_searchFragment_to_audioPlayerFragment,
+                    AudioPlayerFragment.createArgs(track))
             }
         }
     }

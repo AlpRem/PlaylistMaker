@@ -73,11 +73,6 @@ class AudioPlayerViewModel(private val audioPlayerInteractor: AudioPlayerInterac
         })
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        handler.removeCallbacksAndMessages(null)
-    }
-
     companion object {
         private const val TIMER_UPDATE_DELAY = 300L
     }
