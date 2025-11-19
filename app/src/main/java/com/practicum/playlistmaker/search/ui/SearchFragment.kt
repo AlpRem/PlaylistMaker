@@ -62,10 +62,6 @@ class SearchFragment: Fragment() {
                     addToBackStack(AudioPlayerFragment.TAG)
                 }
                 viewModel.resetOpenTrackState()
-
-//                val intent = Intent(requireContext(), AudioPlayerActivity::class.java)
-//                    .apply { putExtra("TRACK", Gson().toJson(it)) }
-//                startActivity(intent)
             }
         }
     }

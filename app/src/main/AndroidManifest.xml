@@ -24,9 +24,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".library.ui.LibraryActivity"
-            android:exported="false" />
-        <activity
             android:name=".setting.ui.SettingsActivity"
             android:exported="false" />
     </application>

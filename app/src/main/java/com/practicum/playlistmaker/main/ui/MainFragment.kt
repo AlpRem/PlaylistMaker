@@ -11,9 +11,9 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.practicum.playlistmaker.databinding.FragmentMainBinding
-import com.practicum.playlistmaker.library.ui.LibraryActivity
 import com.practicum.playlistmaker.setting.ui.SettingsActivity
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.library.ui.LibraryFragment
 import com.practicum.playlistmaker.search.ui.SearchFragment
 
 class MainFragment: Fragment() {
@@ -48,8 +48,14 @@ class MainFragment: Fragment() {
         }
 
         binding.btnLibrary.setOnClickListener {
-            val libraryIntent = Intent(requireContext(), LibraryActivity::class.java)
-            startActivity(libraryIntent)
+            parentFragmentManager.commit {
+                replace(
+                    R.id.rootFragmentContainerView,
+                    LibraryFragment(),
+                    LibraryFragment.TAG
+                )
+                addToBackStack(SearchFragment.TAG)
+            }
         }
 
         binding.btnSetting.setOnClickListener {
