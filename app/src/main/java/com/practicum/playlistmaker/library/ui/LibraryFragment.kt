@@ -13,11 +13,6 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentLibraryBinding
 
 class LibraryFragment: Fragment() {
-
-    companion object {
-        const val TAG = "LibraryFragment"
-    }
-
     private lateinit var binding: FragmentLibraryBinding
     private lateinit var tabMediator: TabLayoutMediator
 

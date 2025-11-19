@@ -28,12 +28,6 @@ import kotlin.getValue
 
 class AudioPlayerFragment: Fragment() {
 
-    companion object {
-        private const val ARGS_TRACK = "TRACK"
-        fun createArgs(track: Track): Bundle =
-            bundleOf(ARGS_TRACK to Gson().toJson(track))
-    }
-
     private lateinit var binding: FragmentAudioPlayerBinding
 
     private val audioPlayerViewModel: AudioPlayerViewModel by viewModel()
@@ -46,7 +40,7 @@ class AudioPlayerFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arrowBackButton()
+        toBackArrowButton()
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -123,9 +117,15 @@ class AudioPlayerFragment: Fragment() {
         }
     }
 
-    private fun arrowBackButton() {
+    private fun toBackArrowButton() {
         binding.arrowBack.setOnClickListener {
             findNavController().popBackStack()
         }
+    }
+
+    companion object {
+        private const val ARGS_TRACK = "TRACK"
+        fun createArgs(track: Track): Bundle =
+            bundleOf(ARGS_TRACK to Gson().toJson(track))
     }
 }
