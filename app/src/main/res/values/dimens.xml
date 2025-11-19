@@ -57,5 +57,6 @@
     <dimen name="margin_bottom_btn_playlist">46dp</dimen>
     <dimen name="margin_top_playlist">24dp</dimen>
     <dimen name="margin_top_favorites">106dp</dimen>
+    <dimen name="height_shadow_nav_menu">0.5dp</dimen>
 
 </resources>

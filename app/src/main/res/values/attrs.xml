@@ -10,4 +10,7 @@
     <attr name="colorInformationTitle" format="reference|color"/>
     <attr name="colorInformationValue" format="reference|color"/>
     <attr name="backgroundTab" format="reference|color"/>
+    <attr name="colorActiveTabNavMenu" format="reference|color"/>
+    <attr name="colorTabNavMenu" format="reference|color"/>
+    <attr name="backgroundNavMenu" format="reference|color"/>
 </resources>

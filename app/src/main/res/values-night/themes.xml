@@ -20,6 +20,9 @@
         <item name="colorControlPanel">@color/control_panel_color_dark</item>
         <item name="colorInformationValue">@color/ap_information_value_dark</item>
         <item name="backgroundTab">@color/blackish_blue</item>
+        <item name="colorActiveTabNavMenu">@color/active_tab_nav_menu_dark</item>
+        <item name="colorTabNavMenu">@color/tab_nav_menu_dark</item>
+        <item name="backgroundNavMenu">@color/background_nav_menu_dark</item>
     </style>
 
     <style name="Theme.PlaylistMaker.Main" parent="Base.Theme.PlaylistMaker" />

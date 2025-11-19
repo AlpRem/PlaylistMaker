@@ -20,7 +20,9 @@
         <item name="colorControlPanel">@color/control_panel_color_light</item>
         <item name="colorInformationValue">@color/ap_information_value_light</item>
         <item name="backgroundTab">@color/white</item>
-
+        <item name="colorActiveTabNavMenu">@color/active_tab_nav_menu_light</item>
+        <item name="colorTabNavMenu">@color/tab_nav_menu_light</item>
+        <item name="backgroundNavMenu">@color/background_nav_menu_light</item>
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
