@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.main.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +10,10 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.practicum.playlistmaker.databinding.FragmentMainBinding
-import com.practicum.playlistmaker.setting.ui.SettingsActivity
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.library.ui.LibraryFragment
 import com.practicum.playlistmaker.search.ui.SearchFragment
+import com.practicum.playlistmaker.setting.ui.SettingFragment
 
 class MainFragment: Fragment() {
 
@@ -54,13 +53,19 @@ class MainFragment: Fragment() {
                     LibraryFragment(),
                     LibraryFragment.TAG
                 )
-                addToBackStack(SearchFragment.TAG)
+                addToBackStack(LibraryFragment.TAG)
             }
         }
 
         binding.btnSetting.setOnClickListener {
-            val settingsIntent = Intent(requireContext(), SettingsActivity::class.java)
-            startActivity(settingsIntent)
+            parentFragmentManager.commit {
+                replace(
+                    R.id.rootFragmentContainerView,
+                    SettingFragment(),
+                    SettingFragment.TAG
+                )
+                addToBackStack(SettingFragment.TAG)
+            }
         }
     }
 }
