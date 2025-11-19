@@ -35,8 +35,6 @@ class LibraryFragment: Fragment() {
             insets
         }
 
-        arrowBackButton()
-
         binding.viewPager.adapter =
             LibraryViewPagerAdapter(
                 childFragmentManager,
@@ -51,11 +49,4 @@ class LibraryFragment: Fragment() {
         }
         tabMediator.attach()
     }
-
-    private fun arrowBackButton() {
-        binding.arrowBack.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-    }
-
 }

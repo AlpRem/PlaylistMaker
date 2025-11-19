@@ -45,8 +45,6 @@ class AudioPlayerFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arrowBackButton()
-
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(top = systemBars.top)
@@ -119,12 +117,6 @@ class AudioPlayerFragment: Fragment() {
             title.visibility = View.VISIBLE
             value.visibility = View.VISIBLE
             value.text = content
-        }
-    }
-
-    private fun arrowBackButton() {
-        binding.arrowBack.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 }

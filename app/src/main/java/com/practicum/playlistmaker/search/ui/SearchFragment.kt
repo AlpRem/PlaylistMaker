@@ -64,7 +64,6 @@ class SearchFragment: Fragment() {
             view.updatePadding(top = systemBars.top)
             insets
         }
-        arrowBackButton()
     }
 
     private fun onInitAdapter() {
@@ -147,12 +146,6 @@ class SearchFragment: Fragment() {
             state.isError -> showErrors()
             state.isEmpty -> showEmptyTrack()
             else -> showContent(state.page, state.isHistory)
-        }
-    }
-
-    private fun arrowBackButton() {
-        binding.arrowBack.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 }

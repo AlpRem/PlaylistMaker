@@ -34,7 +34,6 @@ class SettingFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arrowBackButton()
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -67,11 +66,5 @@ class SettingFragment: Fragment() {
         binding.textViewShared.setOnClickListener { sharingViewModel.shareApp() }
         binding.textViewSupport.setOnClickListener { sharingViewModel.openSupport() }
         binding.textViewAgreement.setOnClickListener { sharingViewModel.openAgreement() }
-    }
-
-    private fun arrowBackButton() {
-        binding.arrowBack.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
     }
 }

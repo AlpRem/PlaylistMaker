@@ -71,14 +71,6 @@
         country_title" />
 
     <ImageView
-        android:id="@+id/arrow_back"
-        android:src="@drawable/arrow_back"
-        app:layout_constraintStart_toEndOf="@+id/left_guideline"
-        app:layout_constraintTop_toTopOf="@+id/top_guide"
-        style="@style/imageInTitleActivity"
-         />
-
-    <ImageView
         android:id="@+id/cover"
         android:layout_width="@dimen/size_null"
         android:layout_height="@dimen/size_null"
