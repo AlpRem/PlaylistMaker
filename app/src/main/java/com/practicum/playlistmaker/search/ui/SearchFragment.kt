@@ -9,16 +9,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
-import com.google.gson.Gson
+import androidx.fragment.app.commit
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
-import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
+import com.practicum.playlistmaker.player.ui.AudioPlayerFragment
 import com.practicum.playlistmaker.search.domain.model.Track
 import com.practicum.playlistmaker.search.domain.model.TrackState
 import com.practicum.playlistmaker.search.presenter.SearchViewModel
@@ -54,9 +53,19 @@ class SearchFragment: Fragment() {
 
         viewModel.observeStateOpenTrack.observe(viewLifecycleOwner) { track ->
             track?.let {
-                val intent = Intent(requireContext(), AudioPlayerActivity::class.java)
-                    .apply { putExtra("TRACK", Gson().toJson(it)) }
-                startActivity(intent)
+                parentFragmentManager.commit {
+                    replace(
+                        R.id.rootFragmentContainerView,
+                        AudioPlayerFragment.newInstance(track = track),
+                        AudioPlayerFragment.TAG
+                    )
+                    addToBackStack(AudioPlayerFragment.TAG)
+                }
+                viewModel.resetOpenTrackState()
+
+//                val intent = Intent(requireContext(), AudioPlayerActivity::class.java)
+//                    .apply { putExtra("TRACK", Gson().toJson(it)) }
+//                startActivity(intent)
             }
         }
     }
