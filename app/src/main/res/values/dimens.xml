@@ -13,7 +13,8 @@
     <dimen name="btn_icon_padding">8dp</dimen>
     <dimen name="menu_padding_vertical">21dp</dimen>
     <dimen name="icon_size">24dp</dimen>
-    <dimen name="margin_icon_navigation">28dp</dimen>
+    <dimen name="margin_icon_navigation">0dp</dimen>
+    <dimen name="margin_bottom_title">8dp</dimen>
     <dimen name="setting_switch_margin_top">19dp</dimen>
     <dimen name="search_height">36dp</dimen>
     <dimen name="search_margin_vertical">8dp</dimen>
