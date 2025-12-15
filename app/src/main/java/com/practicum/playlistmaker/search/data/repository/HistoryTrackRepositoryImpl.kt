@@ -19,7 +19,7 @@ class HistoryTrackRepositoryImpl(private val sharedPreferences: SharedPreference
     override fun getHistory(): Flow<Page<Track>> = flow {
         val tracks = readTrack()
         emit(Page.of(tracks.reversed()))
-    }.flowOn(Dispatchers.IO)
+    }
 
     override fun setHistory(track: Track) {
         sharedPreferences.edit {

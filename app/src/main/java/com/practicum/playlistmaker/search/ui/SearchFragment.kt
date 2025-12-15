@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.component.Page
@@ -22,6 +23,9 @@ import com.practicum.playlistmaker.player.ui.AudioPlayerFragment
 import com.practicum.playlistmaker.search.domain.model.Track
 import com.practicum.playlistmaker.search.domain.model.TrackState
 import com.practicum.playlistmaker.search.presenter.SearchViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
 
@@ -29,6 +33,8 @@ class SearchFragment: Fragment() {
     private lateinit var binding: FragmentSearchBinding
     private lateinit var trackAdapter: TrackAdapter
     private val viewModel: SearchViewModel by viewModel()
+
+    private var clickJob: Job? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -57,7 +63,11 @@ class SearchFragment: Fragment() {
         }
     }
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        clickJob?.cancel()
+        clickJob = null
+    }
     private fun onInitElement() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -68,7 +78,9 @@ class SearchFragment: Fragment() {
 
     private fun onInitAdapter() {
         trackAdapter = TrackAdapter(emptyList()) { track ->
-            viewModel.onOpenAudioPlayer(track)
+            clickDebounce {
+                viewModel.onOpenAudioPlayer(track)
+            }
         }
         binding.trackRecyclerView.adapter = trackAdapter
     }
@@ -147,5 +159,18 @@ class SearchFragment: Fragment() {
             state.isEmpty -> showEmptyTrack()
             else -> showContent(state.page, state.isHistory)
         }
+    }
+
+    private fun clickDebounce(action: () -> Unit) {
+        if (clickJob?.isActive == true) return
+        action()
+        clickJob = viewLifecycleOwner.lifecycleScope.launch {
+            delay(CLICK_DEBOUNCE_DELAY)
+            clickJob = null
+        }
+    }
+
+    companion object {
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

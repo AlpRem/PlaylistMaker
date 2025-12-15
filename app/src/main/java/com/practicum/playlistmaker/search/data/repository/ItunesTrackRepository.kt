@@ -27,5 +27,5 @@ class ItunesTrackRepository(private val networkClient: NetworkClient,
         } else {
             emit(Page.withError("Server error: ${response.resultCode}"))
         }
-    }.flowOn(Dispatchers.IO)
+    }
 }
