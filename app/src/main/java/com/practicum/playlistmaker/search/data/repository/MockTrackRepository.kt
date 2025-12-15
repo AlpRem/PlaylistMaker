@@ -4,6 +4,8 @@ import com.practicum.playlistmaker.common.component.Meta
 import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.search.domain.api.TrackRepository
 import com.practicum.playlistmaker.search.domain.model.Track
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class MockTrackRepository: TrackRepository {
 
@@ -60,7 +62,7 @@ class MockTrackRepository: TrackRepository {
             "")
     )
 
-    override fun getTracks(query: String): Page<Track> {
-        return Page(meta=Meta(count = tracks.size, errors = emptyList()), data = tracks)
+    override fun getTracks(query: String): Flow<Page<Track>> = flow {
+        emit(Page(meta=Meta(count = tracks.size, errors = emptyList()), data = tracks))
     }
 }

@@ -7,15 +7,19 @@ import com.practicum.playlistmaker.HISTORY_TRACKS
 import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.search.domain.api.HistoryTrackRepository
 import com.practicum.playlistmaker.search.domain.model.Track
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 class HistoryTrackRepositoryImpl(private val sharedPreferences: SharedPreferences,
                                  private val gson: Gson
 ): HistoryTrackRepository {
 
-    override fun getHistory(): Page<Track> {
+    override fun getHistory(): Flow<Page<Track>> = flow {
         val tracks = readTrack()
-        return Page.Companion.of(tracks.reversed())
-    }
+        emit(Page.of(tracks.reversed()))
+    }.flowOn(Dispatchers.IO)
 
     override fun setHistory(track: Track) {
         sharedPreferences.edit {

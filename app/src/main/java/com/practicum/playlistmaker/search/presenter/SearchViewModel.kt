@@ -20,9 +20,6 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
                       private val historyTrackInteractor: HistoryTrackInteractor): ViewModel() {
 
     private var searchJob: Job? = null
-    private val handler: Handler = Handler(Looper.getMainLooper())
-    private var lastQuery: String? = ""
-
     private val stateLiveData = MutableLiveData<TrackState>()
     fun observeState(): LiveData<TrackState> = stateLiveData
 
@@ -30,10 +27,6 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
     val observeStateOpenTrack: LiveData<Track?> = stateOpenTrack
 
     fun searchDebounce(changedText: String) {
-        if (lastQuery == changedText) {
-            return
-        }
-        this.lastQuery = changedText
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY)
@@ -49,7 +42,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
 
     fun onOpenAudioPlayer(track: Track) {
         saveToHistory(track)
-        stateOpenTrack.postValue(track)
+        stateOpenTrack.value = track
     }
 
     fun clearHistory() {
@@ -60,32 +53,24 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
     private fun searchRequest(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
             renderState(TrackState.loading())
-
-            tracksInteractor.searchTracks(newSearchText, object: TracksInteractor.TracksConsumer {
-                override fun consume(page: Page<Track>) {
-                    handler.post {
-                        when {
-                            page.hasErrors() -> {
-                                renderState(TrackState.error())
-                            }
-                            page.isEmpty() -> {
-                                renderState(TrackState.empty())
-                            }
-                            else -> renderState(TrackState.content(page))
-                        }
+            viewModelScope.launch {
+                tracksInteractor.searchTracks(newSearchText).collect { page ->
+                    when {
+                        page.isEmpty() -> renderState(TrackState.empty())
+                        page.hasErrors() -> renderState(TrackState.error())
+                        else -> renderState(TrackState.content(page))
                     }
                 }
-            })
+            }
         } else
             loadHistory()
     }
 
     private fun loadHistory() {
-        historyTrackInteractor.getHistory { page ->
-            handler.post {
-                if (page.data.isNotEmpty()) {
+        viewModelScope.launch {
+            historyTrackInteractor.getHistory().collect { page ->
+                if (page.data.isNotEmpty())
                     renderState(TrackState.content(page, isHistory = true))
-                }
             }
         }
     }

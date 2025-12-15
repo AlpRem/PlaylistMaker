@@ -7,20 +7,25 @@ import com.practicum.playlistmaker.search.data.dto.TracksSearchResponse
 import com.practicum.playlistmaker.search.data.mapper.TrackMapper
 import com.practicum.playlistmaker.search.domain.api.TrackRepository
 import com.practicum.playlistmaker.search.domain.model.Track
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 class ItunesTrackRepository(private val networkClient: NetworkClient,
                             private val mapper: TrackMapper) : TrackRepository {
 
-    override fun getTracks(query: String): Page<Track> {
+    override fun getTracks(query: String): Flow<Page<Track>> = flow {
         if (query.isBlank()) {
-            return Page.empty()
+            emit(Page.empty())
+            return@flow
         }
         val response = networkClient.doRequest(TracksSearchRequest(query))
 
-        return if (response.resultCode == 200) {
-            Page.of(mapper.mapList((response as TracksSearchResponse).results))
+        if (response.resultCode == 200) {
+            emit(Page.of(mapper.mapList((response as TracksSearchResponse).results)))
         } else {
-            Page.withError("Server error: ${response.resultCode}")
+            emit(Page.withError("Server error: ${response.resultCode}"))
         }
-    }
+    }.flowOn(Dispatchers.IO)
 }
