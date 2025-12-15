@@ -6,23 +6,22 @@ import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.search.domain.api.HistoryTrackInteractor
 import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.search.domain.model.Track
 import com.practicum.playlistmaker.search.domain.model.TrackState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchViewModel(private val tracksInteractor: TracksInteractor,
                       private val historyTrackInteractor: HistoryTrackInteractor): ViewModel() {
 
-
+    private var searchJob: Job? = null
     private val handler: Handler = Handler(Looper.getMainLooper())
     private var lastQuery: String? = ""
-
-    private val searchRunnable = Runnable {
-        val newSearchText = lastQuery ?: ""
-        searchRequest(newSearchText)
-    }
 
     private val stateLiveData = MutableLiveData<TrackState>()
     fun observeState(): LiveData<TrackState> = stateLiveData
@@ -35,8 +34,11 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
             return
         }
         this.lastQuery = changedText
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY)
+            searchRequest(changedText)
+        }
     }
 
     fun onSearchFocusChange(hasFocus: Boolean, searchEditText: Editable?) {
@@ -102,12 +104,6 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
 
     fun resetOpenTrackState() {
         stateOpenTrack.value = null
-    }
-
-
-    override fun onCleared() {
-        super.onCleared()
-        handler.removeCallbacks(searchRunnable)
     }
 
     companion object {
