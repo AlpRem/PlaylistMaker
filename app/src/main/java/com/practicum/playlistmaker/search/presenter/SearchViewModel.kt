@@ -6,24 +6,20 @@ import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.search.domain.api.HistoryTrackInteractor
 import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.search.domain.model.Track
 import com.practicum.playlistmaker.search.domain.model.TrackState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchViewModel(private val tracksInteractor: TracksInteractor,
                       private val historyTrackInteractor: HistoryTrackInteractor): ViewModel() {
 
-
-    private val handler: Handler = Handler(Looper.getMainLooper())
-    private var lastQuery: String? = ""
-
-    private val searchRunnable = Runnable {
-        val newSearchText = lastQuery ?: ""
-        searchRequest(newSearchText)
-    }
-
+    private var searchJob: Job? = null
     private val stateLiveData = MutableLiveData<TrackState>()
     fun observeState(): LiveData<TrackState> = stateLiveData
 
@@ -31,12 +27,11 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
     val observeStateOpenTrack: LiveData<Track?> = stateOpenTrack
 
     fun searchDebounce(changedText: String) {
-        if (lastQuery == changedText) {
-            return
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY)
+            searchRequest(changedText)
         }
-        this.lastQuery = changedText
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
     fun onSearchFocusChange(hasFocus: Boolean, searchEditText: Editable?) {
@@ -47,7 +42,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
 
     fun onOpenAudioPlayer(track: Track) {
         saveToHistory(track)
-        stateOpenTrack.postValue(track)
+        stateOpenTrack.value = track
     }
 
     fun clearHistory() {
@@ -58,32 +53,24 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
     private fun searchRequest(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
             renderState(TrackState.loading())
-
-            tracksInteractor.searchTracks(newSearchText, object: TracksInteractor.TracksConsumer {
-                override fun consume(page: Page<Track>) {
-                    handler.post {
-                        when {
-                            page.hasErrors() -> {
-                                renderState(TrackState.error())
-                            }
-                            page.isEmpty() -> {
-                                renderState(TrackState.empty())
-                            }
-                            else -> renderState(TrackState.content(page))
-                        }
+            viewModelScope.launch {
+                tracksInteractor.searchTracks(newSearchText).collect { page ->
+                    when {
+                        page.isEmpty() -> renderState(TrackState.empty())
+                        page.hasErrors() -> renderState(TrackState.error())
+                        else -> renderState(TrackState.content(page))
                     }
                 }
-            })
+            }
         } else
             loadHistory()
     }
 
     private fun loadHistory() {
-        historyTrackInteractor.getHistory { page ->
-            handler.post {
-                if (page.data.isNotEmpty()) {
+        viewModelScope.launch {
+            historyTrackInteractor.getHistory().collect { page ->
+                if (page.data.isNotEmpty())
                     renderState(TrackState.content(page, isHistory = true))
-                }
             }
         }
     }
@@ -102,12 +89,6 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
 
     fun resetOpenTrackState() {
         stateOpenTrack.value = null
-    }
-
-
-    override fun onCleared() {
-        super.onCleared()
-        handler.removeCallbacks(searchRunnable)
     }
 
     companion object {

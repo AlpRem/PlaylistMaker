@@ -7,12 +7,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ItunesClient(private val itunesService: ItunesService) : NetworkClient {
 
-    override fun doRequest(dto: Any): Response {
+    override suspend fun doRequest(dto: Any): Response {
         return if (dto is TracksSearchRequest) {
             try {
-                val resp = itunesService.search(dto.query).execute()
-                val body = resp.body() ?: Response()
-                body.apply { resultCode = resp.code() }
+                val body = itunesService.search(dto.query)
+                body.apply { resultCode = 200 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 Response().apply { resultCode = 500 }
