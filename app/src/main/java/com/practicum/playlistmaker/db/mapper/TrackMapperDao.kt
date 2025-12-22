@@ -1,6 +1,6 @@
-package com.practicum.playlistmaker.library.mapper
+package com.practicum.playlistmaker.db.mapper
 
-import com.practicum.playlistmaker.library.db.entity.TrackEntity
+import com.practicum.playlistmaker.db.data.entity.TrackEntity
 import com.practicum.playlistmaker.util.formatDuration
 import com.practicum.playlistmaker.search.domain.model.Track
 

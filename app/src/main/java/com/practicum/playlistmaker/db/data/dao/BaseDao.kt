@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.library.db.dao
+package com.practicum.playlistmaker.db.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete

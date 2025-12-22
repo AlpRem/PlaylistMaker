@@ -1,5 +1,7 @@
 package com.practicum.playlistmaker.di
 
+import com.practicum.playlistmaker.db.domain.api.TrackDbInteractor
+import com.practicum.playlistmaker.db.domain.impl.TrackDbInteractorImpl
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerInteractor
 import com.practicum.playlistmaker.player.domain.impl.AudioPlayerInteractorImpl
 import com.practicum.playlistmaker.search.domain.api.HistoryTrackInteractor
@@ -31,5 +33,9 @@ val interactorModule = module {
 
     factory<SharingInteractor> {
         SharingInteractorImpl(get())
+    }
+
+    single<TrackDbInteractor> {
+        TrackDbInteractorImpl(get())
     }
 }

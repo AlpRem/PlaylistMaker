@@ -5,6 +5,7 @@ import androidx.core.content.edit
 import com.google.gson.Gson
 import com.practicum.playlistmaker.HISTORY_TRACKS
 import com.practicum.playlistmaker.common.component.Page
+import com.practicum.playlistmaker.db.data.AppDatabase
 import com.practicum.playlistmaker.search.domain.api.HistoryTrackRepository
 import com.practicum.playlistmaker.search.domain.model.Track
 import kotlinx.coroutines.Dispatchers
@@ -13,11 +14,20 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 class HistoryTrackRepositoryImpl(private val sharedPreferences: SharedPreferences,
-                                 private val gson: Gson
+                                 private val gson: Gson,
+                                 private val appDatabase: AppDatabase
 ): HistoryTrackRepository {
 
     override fun getHistory(): Flow<Page<Track>> = flow {
         val tracks = readTrack()
+        val favoriteIds = appDatabase
+            .trackDao()
+            .list()
+            .map { it.id }
+            .toSet()
+        tracks.forEach { track ->
+            track.isFavorite = favoriteIds.contains(track.trackId)
+        }
         emit(Page.of(tracks.reversed()))
     }
 

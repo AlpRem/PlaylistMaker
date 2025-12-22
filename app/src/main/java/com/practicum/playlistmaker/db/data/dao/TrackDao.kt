@@ -1,8 +1,8 @@
-package com.practicum.playlistmaker.library.db.dao
+package com.practicum.playlistmaker.db.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.practicum.playlistmaker.library.db.entity.TrackEntity
+import com.practicum.playlistmaker.db.data.entity.TrackEntity
 
 @Dao
 interface TrackDao: BaseDao<TrackEntity>  {
