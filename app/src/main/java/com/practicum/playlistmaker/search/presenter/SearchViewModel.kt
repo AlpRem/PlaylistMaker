@@ -42,6 +42,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
 
     fun onOpenAudioPlayer(track: Track) {
         saveToHistory(track)
+        stateLiveData.value = TrackState.loading()
         stateOpenTrack.value = track
     }
 

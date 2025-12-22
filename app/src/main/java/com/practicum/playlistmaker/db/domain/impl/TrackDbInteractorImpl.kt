@@ -13,4 +13,12 @@ class TrackDbInteractorImpl(private val trackDbRepository: TrackDbRepository): T
         }
     }
 
+    override suspend fun save(track: Track) {
+        return trackDbRepository.save(track)
+    }
+
+    override suspend fun delete(id: String) {
+        return trackDbRepository.delete(id)
+    }
+
 }

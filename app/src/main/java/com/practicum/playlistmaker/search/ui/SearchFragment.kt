@@ -56,9 +56,9 @@ class SearchFragment: Fragment() {
 
         viewModel.observeStateOpenTrack.observe(viewLifecycleOwner) { track ->
             track?.let {
-                viewModel.resetOpenTrackState()
                 findNavController().navigate(R.id.action_searchFragment_to_audioPlayerFragment,
                     AudioPlayerFragment.createArgs(track))
+                viewModel.resetOpenTrackState()
             }
         }
     }

@@ -17,8 +17,8 @@ class TrackDbRepositoryImpl(
         emit(convert(tracks))
     }
 
-    override suspend fun save(track: TrackEntity) {
-        appDatabase.trackDao().save(track)
+    override suspend fun save(track: Track) {
+        appDatabase.trackDao().save(trackMapper.map(track))
     }
 
     override suspend fun delete(id: String) {

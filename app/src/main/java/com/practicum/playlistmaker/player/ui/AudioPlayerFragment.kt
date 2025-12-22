@@ -21,7 +21,6 @@ import com.practicum.playlistmaker.common.util.dpToPx
 import com.practicum.playlistmaker.databinding.FragmentAudioPlayerBinding
 import com.practicum.playlistmaker.player.domain.model.AudioPlayerState
 import com.practicum.playlistmaker.player.presenter.AudioPlayerViewModel
-import com.practicum.playlistmaker.player.presenter.LikeViewModel
 import com.practicum.playlistmaker.search.domain.model.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
@@ -31,7 +30,6 @@ class AudioPlayerFragment: Fragment() {
     private lateinit var binding: FragmentAudioPlayerBinding
 
     private val audioPlayerViewModel: AudioPlayerViewModel by viewModel()
-    private val  likeViewModel: LikeViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentAudioPlayerBinding.inflate(inflater, container, false)
@@ -58,16 +56,16 @@ class AudioPlayerFragment: Fragment() {
                 else -> binding.play.setImageResource(R.drawable.play)
             }
         }
-
         audioPlayerViewModel.observeTimer.observe(viewLifecycleOwner) { binding.timer.text = it }
 
-        likeViewModel.observeLike.observe(viewLifecycleOwner) {isLike ->
+        audioPlayerViewModel.observeStateLike.observe(viewLifecycleOwner) { isLike ->
             binding.like.setImageResource(
                 if (isLike) R.drawable.like_full else R.drawable.like
             )
         }
+
         binding.play.setOnClickListener { audioPlayerViewModel.playbackControl() }
-        binding.like.setOnClickListener { likeViewModel.toggleLike() }
+        binding.like.setOnClickListener { audioPlayerViewModel.toggleLike() }
     }
 
     override fun onPause() {

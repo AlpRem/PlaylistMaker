@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface  TrackDbRepository {
     fun list(): Flow<List<Track>>
-    suspend fun save(track: TrackEntity)
+    suspend fun save(track: Track)
     suspend fun delete(id: String)
 }

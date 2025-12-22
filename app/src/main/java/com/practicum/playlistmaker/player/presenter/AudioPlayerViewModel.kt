@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.practicum.playlistmaker.db.domain.api.TrackDbInteractor
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerInteractor
 import com.practicum.playlistmaker.player.domain.model.AudioPlayerState
 import com.practicum.playlistmaker.search.domain.model.Track
@@ -15,10 +16,14 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class AudioPlayerViewModel(private val audioPlayerInteractor: AudioPlayerInteractor): ViewModel() {
+class AudioPlayerViewModel(private val audioPlayerInteractor: AudioPlayerInteractor,
+    private val trackDbInteractor: TrackDbInteractor): ViewModel() {
 
     private val stateAudioPlayer = MutableLiveData<AudioPlayerState>(AudioPlayerState.Default)
     val observeStateAudioPlayer: LiveData<AudioPlayerState> = stateAudioPlayer
+
+    private val stateLike = MutableLiveData(false)
+    val observeStateLike: LiveData<Boolean> = stateLike
 
     private val stateTimer = MutableLiveData("00:00")
     val observeTimer: LiveData<String> = stateTimer
@@ -31,6 +36,7 @@ class AudioPlayerViewModel(private val audioPlayerInteractor: AudioPlayerInterac
 
     fun preparePlayer(track: Track) {
         this.track = track
+        stateLike.value = track.isFavorite
         audioPlayerInteractor.preparePlayer(track,
             onPrepared = {
                 stateAudioPlayer.postValue(AudioPlayerState.Prepared)
@@ -51,6 +57,19 @@ class AudioPlayerViewModel(private val audioPlayerInteractor: AudioPlayerInterac
 
     fun onPause() {
         pausePlayer()
+    }
+
+    fun toggleLike() {
+        val currentTrack = track ?: return
+        val oldLike = stateLike.value ?: false
+        viewModelScope.launch {
+            if (oldLike)
+                trackDbInteractor.delete(currentTrack.trackId)
+            else
+                trackDbInteractor.save(currentTrack)
+            stateLike.postValue(!oldLike)
+            track = currentTrack.copy(isFavorite = !oldLike)
+        }
     }
 
     private fun startPlayer() {
