@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.di
 
+import com.practicum.playlistmaker.library.mapper.TrackMapperDao
 import com.practicum.playlistmaker.player.data.AudioPlayerRepositoryImpl
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerRepository
 import com.practicum.playlistmaker.search.data.repository.HistoryTrackRepositoryImpl
@@ -14,6 +15,8 @@ val repositoryModule = module {
     factory<AudioPlayerRepository> {
         AudioPlayerRepositoryImpl(get())
     }
+
+    factory { TrackMapperDao() }
 
     single<HistoryTrackRepository> {
         HistoryTrackRepositoryImpl(get(), get())

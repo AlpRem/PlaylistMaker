@@ -4,16 +4,14 @@ import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.search.data.network.NetworkClient
 import com.practicum.playlistmaker.search.data.dto.TracksSearchRequest
 import com.practicum.playlistmaker.search.data.dto.TracksSearchResponse
-import com.practicum.playlistmaker.search.data.mapper.TrackMapper
+import com.practicum.playlistmaker.search.data.mapper.TrackMapperDto
 import com.practicum.playlistmaker.search.domain.api.TrackRepository
 import com.practicum.playlistmaker.search.domain.model.Track
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 
 class ItunesTrackRepository(private val networkClient: NetworkClient,
-                            private val mapper: TrackMapper) : TrackRepository {
+                            private val mapper: TrackMapperDto) : TrackRepository {
 
     override fun getTracks(query: String): Flow<Page<Track>> = flow {
         if (query.isBlank()) {

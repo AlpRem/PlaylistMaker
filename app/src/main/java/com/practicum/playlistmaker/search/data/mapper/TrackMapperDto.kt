@@ -3,13 +3,10 @@ package com.practicum.playlistmaker.search.data.mapper
 import com.practicum.playlistmaker.common.component.EntityMapper
 import com.practicum.playlistmaker.search.data.dto.TrackDto
 import com.practicum.playlistmaker.search.domain.model.Track
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeParseException
-import java.util.Locale
+import com.practicum.playlistmaker.util.extractYear
+import com.practicum.playlistmaker.util.formatDuration
 
-class TrackMapper: EntityMapper<TrackDto, Track> {
+class TrackMapperDto: EntityMapper<TrackDto, Track> {
 
     override fun map(entity: TrackDto): Track {
         return Track(
@@ -26,20 +23,5 @@ class TrackMapper: EntityMapper<TrackDto, Track> {
         )
     }
 
-    fun formatDuration(millis: Long?): String {
-        return millis?.let {
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(it)
-        } ?: "00:00"
-    }
 
-    fun extractYear(dateString: String?): String {
-        if (dateString.isNullOrEmpty()) {
-            return ""
-        }
-        return try {
-            Instant.parse(dateString).atZone(ZoneId.systemDefault()).year.toString()
-        } catch (e: DateTimeParseException) {
-            ""
-        }
-    }
 }
