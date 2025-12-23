@@ -17,7 +17,7 @@ class TrackMapperDao {
         return Track(
             track.id, track.trackName, track.artistName, formatDuration(track.trackTimeMillis),
             track.artworkUrl100, track.collectionName, track.releaseDate,
-            track.primaryGenreName, track.country, track.previewUrl
+            track.primaryGenreName, track.country, track.previewUrl, isFavorite = true
         )
     }
 }

@@ -9,6 +9,7 @@ import com.practicum.playlistmaker.search.data.mapper.TrackMapperDto
 import com.practicum.playlistmaker.search.domain.api.TrackRepository
 import com.practicum.playlistmaker.search.domain.model.Track
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 
 class ItunesTrackRepository(private val networkClient: NetworkClient,
@@ -24,7 +25,7 @@ class ItunesTrackRepository(private val networkClient: NetworkClient,
 
         if (response.resultCode == 200) {
             val tracks = mapper.mapList((response as TracksSearchResponse).results)
-            val favoriteIds = appDatabase.trackDao().list().map { it.id }.toSet()
+            val favoriteIds = appDatabase.trackDao().list().first(). map { it.id }.toSet()
             tracks.forEach { t ->
                 t.isFavorite = favoriteIds.contains(t.trackId)
             }

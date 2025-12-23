@@ -10,6 +10,7 @@ import com.practicum.playlistmaker.search.domain.api.HistoryTrackRepository
 import com.practicum.playlistmaker.search.domain.model.Track
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
@@ -23,6 +24,7 @@ class HistoryTrackRepositoryImpl(private val sharedPreferences: SharedPreference
         val favoriteIds = appDatabase
             .trackDao()
             .list()
+            .first()
             .map { it.id }
             .toSet()
         tracks.forEach { track ->

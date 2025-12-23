@@ -3,10 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".library.ui.FavoritesFragment">
+    tools:context=".library.ui.FavoritesFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favoritesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/size_progressBar"
+        android:layout_height="@dimen/size_progressBar"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
 
     <LinearLayout
-        style="@style/fragmentFavoritesLibrary">
+        android:id="@+id/emptyLayout"
+        style="@style/fragmentFavoritesLibrary"
+        android:visibility="gone">
 
 
 
