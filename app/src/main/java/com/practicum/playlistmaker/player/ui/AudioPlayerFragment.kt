@@ -19,7 +19,7 @@ import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.util.dpToPx
 import com.practicum.playlistmaker.databinding.FragmentAudioPlayerBinding
-import com.practicum.playlistmaker.player.domain.model.AudioPlayerState
+import com.practicum.playlistmaker.player.domain.model.PlayerState
 import com.practicum.playlistmaker.player.presenter.AudioPlayerViewModel
 import com.practicum.playlistmaker.search.domain.model.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -51,17 +51,13 @@ class AudioPlayerFragment: Fragment() {
             audioPlayerViewModel.preparePlayer(track)
 
         audioPlayerViewModel.observeStateAudioPlayer.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is AudioPlayerState.Playing -> binding.play.setImageResource(R.drawable.pause)
+            when (state.playerState) {
+                is PlayerState.Playing -> binding.play.setImageResource(R.drawable.pause)
                 else -> binding.play.setImageResource(R.drawable.play)
             }
-        }
-        audioPlayerViewModel.observeTimer.observe(viewLifecycleOwner) { binding.timer.text = it }
+            binding.timer.text = state.timerState
+            binding.like.setImageResource(if (state.likeState) R.drawable.like_full else R.drawable.like)
 
-        audioPlayerViewModel.observeStateLike.observe(viewLifecycleOwner) { isLike ->
-            binding.like.setImageResource(
-                if (isLike) R.drawable.like_full else R.drawable.like
-            )
         }
 
         binding.play.setOnClickListener { audioPlayerViewModel.playbackControl() }

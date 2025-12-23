@@ -1,6 +1,6 @@
 package com.practicum.playlistmaker.player.domain.impl
 
-import com.practicum.playlistmaker.player.domain.model.AudioPlayerState
+import com.practicum.playlistmaker.player.domain.model.PlayerState
 import com.practicum.playlistmaker.search.domain.model.Track
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerInteractor
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerRepository
@@ -23,7 +23,7 @@ class AudioPlayerInteractorImpl(private val audioPlayerRepository: AudioPlayerRe
         audioPlayerRepository.pausePlayer(onPause)
     }
 
-    override fun getAudioPlayerState(): AudioPlayerState {
+    override fun getAudioPlayerState(): PlayerState {
         return audioPlayerRepository.getAudioPlayerState()
     }
 
