@@ -42,7 +42,6 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
 
     fun onOpenAudioPlayer(track: Track) {
         saveToHistory(track)
-        stateLiveData.value = TrackState.loading()
         stateOpenTrack.value = track
     }
 
@@ -90,6 +89,16 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
 
     fun resetOpenTrackState() {
         stateOpenTrack.value = null
+    }
+
+    fun refreshOnResume(currentText: String?) {
+        searchJob?.cancel()
+
+        if (currentText.isNullOrEmpty()) {
+            loadHistory()
+        } else {
+            searchRequest(currentText)
+        }
     }
 
     companion object {

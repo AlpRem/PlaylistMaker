@@ -68,6 +68,11 @@ class SearchFragment: Fragment() {
         clickJob?.cancel()
         clickJob = null
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshOnResume(binding.searchEditText.text?.toString())
+    }
     private fun onInitElement() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
