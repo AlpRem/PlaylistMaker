@@ -56,9 +56,9 @@ class SearchFragment: Fragment() {
 
         viewModel.observeStateOpenTrack.observe(viewLifecycleOwner) { track ->
             track?.let {
-                viewModel.resetOpenTrackState()
                 findNavController().navigate(R.id.action_searchFragment_to_audioPlayerFragment,
                     AudioPlayerFragment.createArgs(track))
+                viewModel.resetOpenTrackState()
             }
         }
     }
@@ -67,6 +67,11 @@ class SearchFragment: Fragment() {
         super.onDestroyView()
         clickJob?.cancel()
         clickJob = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshOnResume(binding.searchEditText.text?.toString())
     }
     private fun onInitElement() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->

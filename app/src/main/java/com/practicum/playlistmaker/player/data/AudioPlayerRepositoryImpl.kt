@@ -2,41 +2,41 @@ package com.practicum.playlistmaker.player.data
 
 import android.media.MediaPlayer
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerRepository
-import com.practicum.playlistmaker.player.domain.model.AudioPlayerState
+import com.practicum.playlistmaker.player.domain.model.PlayerState
 import com.practicum.playlistmaker.search.domain.model.Track
 
 class AudioPlayerRepositoryImpl(private val mediaPlayer: MediaPlayer) : AudioPlayerRepository {
 
-    private var audioPlayerState: AudioPlayerState = AudioPlayerState.Default
+    private var playerState: PlayerState = PlayerState.Default
 
     override fun preparePlayer(track: Track, onPrepared: () -> Unit, onCompletion: () -> Unit) {
         mediaPlayer.setDataSource(track.previewUrl)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
-            audioPlayerState = AudioPlayerState.Prepared
+            playerState = PlayerState.Prepared
             onPrepared()
         }
         mediaPlayer.setOnCompletionListener {
-            audioPlayerState = AudioPlayerState.Prepared
+            playerState = PlayerState.Prepared
             onCompletion()
         }
     }
 
     override fun startPlayer(onStart: () -> Unit) {
         mediaPlayer.start()
-        audioPlayerState = AudioPlayerState.Playing
+        playerState = PlayerState.Playing
         onStart()
     }
 
     override fun pausePlayer(onPause: () -> Unit) {
         mediaPlayer.pause()
-        audioPlayerState = AudioPlayerState.Paused
+        playerState = PlayerState.Paused
         onPause()
     }
 
-    override fun getAudioPlayerState(): AudioPlayerState = audioPlayerState
+    override fun getAudioPlayerState(): PlayerState = playerState
     override fun isPlaying(): Boolean {
-        return audioPlayerState == AudioPlayerState.Playing
+        return playerState == PlayerState.Playing
     }
 
     override fun currentPosition(): Int {

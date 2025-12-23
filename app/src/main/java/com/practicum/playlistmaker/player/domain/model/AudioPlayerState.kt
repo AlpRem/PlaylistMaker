@@ -1,8 +1,7 @@
 package com.practicum.playlistmaker.player.domain.model
 
-sealed class AudioPlayerState {
-    object Default : AudioPlayerState()
-    object Prepared : AudioPlayerState()
-    object Playing : AudioPlayerState()
-    object Paused : AudioPlayerState()
-}
+data class AudioPlayerState (
+    val playerState: PlayerState = PlayerState.Default,
+    val timerState: String = "00:00",
+    val likeState: Boolean = false
+)

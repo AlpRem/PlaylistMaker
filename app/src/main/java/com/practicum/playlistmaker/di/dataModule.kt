@@ -2,9 +2,11 @@ package com.practicum.playlistmaker.di
 
 import android.content.Context
 import android.media.MediaPlayer
+import androidx.room.Room
 import com.google.gson.Gson
 import com.practicum.playlistmaker.PLAYLIST_MAKER_PREFERENCES
-import com.practicum.playlistmaker.search.data.mapper.TrackMapper
+import com.practicum.playlistmaker.db.data.AppDatabase
+import com.practicum.playlistmaker.search.data.mapper.TrackMapperDto
 import com.practicum.playlistmaker.search.data.network.ItunesClient
 import com.practicum.playlistmaker.search.data.network.ItunesService
 import com.practicum.playlistmaker.search.data.network.NetworkClient
@@ -35,7 +37,7 @@ val dataModule = module {
 
     single  { Gson() }
 
-    single { TrackMapper() }
+    single { TrackMapperDto() }
 
     single<NetworkClient> {
         ItunesClient(get())
@@ -43,6 +45,11 @@ val dataModule = module {
 
     single<ExternalNavigator> {
         ExternalNavigatorImpl(androidContext())
+    }
+
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "playlist_maker.db")
+            .build()
     }
 
 }
