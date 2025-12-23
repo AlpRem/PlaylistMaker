@@ -10,6 +10,7 @@ import com.practicum.playlistmaker.search.domain.api.HistoryTrackRepository
 import com.practicum.playlistmaker.search.domain.model.Track
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -19,18 +20,17 @@ class HistoryTrackRepositoryImpl(private val sharedPreferences: SharedPreference
                                  private val appDatabase: AppDatabase
 ): HistoryTrackRepository {
 
-    override fun getHistory(): Flow<Page<Track>> = flow {
-        val tracks = readTrack()
-        val favoriteIds = appDatabase
-            .trackDao()
-            .list()
-            .first()
-            .map { it.id }
-            .toSet()
-        tracks.forEach { track ->
-            track.isFavorite = favoriteIds.contains(track.trackId)
-        }
-        emit(Page.of(tracks.reversed()))
+    override fun getHistory(): Flow<Page<Track>> = combine(
+        flow {
+            emit(readTrack())
+             },
+        appDatabase.trackDao().listAllIds()) {
+                                             historyTracks, favoriteIds ->
+        val favoriteSet = favoriteIds.toSet()
+        val updatedTracks = historyTracks
+            .map { track -> track.copy(isFavorite = favoriteSet.contains(track.trackId))}
+            .reversed()
+        Page.of(updatedTracks)
     }
 
     override fun setHistory(track: Track) {

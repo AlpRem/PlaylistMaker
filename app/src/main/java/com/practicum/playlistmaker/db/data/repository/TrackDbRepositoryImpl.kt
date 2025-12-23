@@ -2,12 +2,10 @@ package com.practicum.playlistmaker.db.data.repository
 
 import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.db.data.AppDatabase
-import com.practicum.playlistmaker.db.data.entity.TrackEntity
 import com.practicum.playlistmaker.db.domain.api.TrackDbRepository
 import com.practicum.playlistmaker.db.mapper.TrackMapperDao
 import com.practicum.playlistmaker.search.domain.model.Track
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
 class TrackDbRepositoryImpl(
@@ -18,7 +16,7 @@ class TrackDbRepositoryImpl(
         return appDatabase
             .trackDao()
             .list()
-            .map { t -> Page.of(t.map { trackMapper.map(it) }) }
+            .map { t -> Page.of(t.asReversed().map { trackMapper.map(it) }) }
     }
 
     override suspend fun save(track: Track) {
@@ -29,9 +27,5 @@ class TrackDbRepositoryImpl(
         val track = appDatabase.trackDao().findById(id)
         if (track != null)
             appDatabase.trackDao().delete(track)
-    }
-
-    private fun convert(tracks: List<TrackEntity>): List<Track> {
-        return tracks.map { movie -> trackMapper.map(movie) }
     }
 }
