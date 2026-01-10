@@ -1,0 +1,31 @@
+package com.practicum.playlistmaker.db.data.repository
+
+import com.practicum.playlistmaker.common.component.Page
+import com.practicum.playlistmaker.db.data.AppDatabase
+import com.practicum.playlistmaker.db.domain.api.TrackDbRepository
+import com.practicum.playlistmaker.db.mapper.TrackMapperDao
+import com.practicum.playlistmaker.search.domain.model.Track
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+class TrackDbRepositoryImpl(
+    private val appDatabase: AppDatabase,
+    private val trackMapper: TrackMapperDao,
+): TrackDbRepository {
+    override fun list(): Flow<Page<Track>> {
+        return appDatabase
+            .trackDao()
+            .list()
+            .map { t -> Page.of(t.asReversed().map { trackMapper.map(it) }) }
+    }
+
+    override suspend fun save(track: Track) {
+        appDatabase.trackDao().save(trackMapper.map(track))
+    }
+
+    override suspend fun delete(id: String) {
+        val track = appDatabase.trackDao().findById(id)
+        if (track != null)
+            appDatabase.trackDao().delete(track)
+    }
+}

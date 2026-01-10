@@ -91,6 +91,16 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
         stateOpenTrack.value = null
     }
 
+    fun refreshOnResume(currentText: String?) {
+        searchJob?.cancel()
+
+        if (currentText.isNullOrEmpty()) {
+            loadHistory()
+        } else {
+            searchRequest(currentText)
+        }
+    }
+
     companion object {
         const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
