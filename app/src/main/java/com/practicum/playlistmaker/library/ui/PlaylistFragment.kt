@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.databinding.FragmentPlaylistBinding
 import com.practicum.playlistmaker.library.presenter.PlaylistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
+import com.practicum.playlistmaker.R
 
 class PlaylistFragment: Fragment() {
 
@@ -30,6 +32,13 @@ class PlaylistFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        binding.createPlaylistBtn.setOnClickListener {
+            requireParentFragment()
+                .findNavController()
+                .navigate(R.id.action_libraryFragment_to_playlistAddFragment)
+        }
     }
 
     override fun onDestroyView() {
