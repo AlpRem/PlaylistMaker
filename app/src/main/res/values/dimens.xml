@@ -70,6 +70,6 @@
     <dimen name="padding_horizontal_edit_text_playlist_add">16dp</dimen>
     <dimen name="padding_top_edit_text_playlist_add">18dp</dimen>
     <dimen name="padding_bottom_edit_text_playlist_add">19dp</dimen>
-    <dimen name="bottom_playlist_add">18dp</dimen>
+    <dimen name="padding_bottom_playlist_add">32dp</dimen>
 
 </resources>

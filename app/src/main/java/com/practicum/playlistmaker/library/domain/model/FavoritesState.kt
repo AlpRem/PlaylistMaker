@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.library.domain
+package com.practicum.playlistmaker.library.domain.model
 
 import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.search.domain.model.Track
@@ -12,13 +12,13 @@ data class FavoritesState (
     companion object {
 
         fun loading() = FavoritesState(
-            Page.empty(),
+            Page.Companion.empty(),
             isLoading = true,
             isEmpty = false
         )
 
         fun empty() = FavoritesState(
-            Page.empty(),
+            Page.Companion.empty(),
             isLoading = false,
             isEmpty = true
         )
