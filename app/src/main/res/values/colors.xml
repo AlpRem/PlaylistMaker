@@ -5,6 +5,7 @@
     <color name="main_background">#3772E7</color>
     <color name="blackish_blue">#1A1B22</color>
     <color name="icon_color_light">#AEAFB4</color>
+    <color name="btn_click">#0D2A6A</color>
     <color name="thumb_color_light">@color/icon_color_light</color>
     <color name="thumb_color_dark">#3772E7</color>
     <color name="track_color_light">#E6E8EB</color>

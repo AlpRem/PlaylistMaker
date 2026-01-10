@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/btn_click" />
+            <corners android:radius="@dimen/radius_image_rectangle" />
+        </shape>
+    </item>
+    <item android:state_enabled="false">
+        <shape>
+            <solid android:color="@color/icon_color_light" />
+            <corners android:radius="@dimen/radius_image_rectangle" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@color/active_tab_nav_menu_light" />
+            <corners android:radius="@dimen/radius_image_rectangle" />
+        </shape>
+    </item>
 </selector>

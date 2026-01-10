@@ -3,6 +3,7 @@
     <dimen name="size_null">0dp</dimen>
     <dimen name="font_size">22sp</dimen>
     <dimen name="font_size_small">14sp</dimen>
+    <dimen name="font_size_placeholder">16sp</dimen>
     <dimen name="font_size_information">13sp</dimen>
     <dimen name="font_size_title_history">19sp</dimen>
     <dimen name="menu_font_size">16sp</dimen>
@@ -14,7 +15,8 @@
     <dimen name="menu_padding_vertical">21dp</dimen>
     <dimen name="icon_size">24dp</dimen>
     <dimen name="margin_icon_navigation">0dp</dimen>
-    <dimen name="margin_bottom_title">8dp</dimen>
+    <dimen name="margin_icon_navigation_playlist">24dp</dimen>
+<!--    <dimen name="margin_bottom_title">2dp</dimen>-->
     <dimen name="setting_switch_margin_top">19dp</dimen>
     <dimen name="search_height">36dp</dimen>
     <dimen name="search_margin_vertical">8dp</dimen>
@@ -58,5 +60,16 @@
     <dimen name="margin_top_playlist">24dp</dimen>
     <dimen name="margin_top_favorites">106dp</dimen>
     <dimen name="height_shadow_nav_menu">0.5dp</dimen>
+    <dimen name="width_image_rectangle">1dp</dimen>
+    <dimen name="dash_width_image_rectangle">30dp</dimen>
+    <dimen name="dash_gap_image_rectangle">30dp</dimen>
+    <dimen name="radius_image_rectangle">8dp</dimen>
+    <dimen name="margin_top_image_playlist_add">26dp</dimen>
+    <dimen name="margin_bottom_image_playlist_add">32dp</dimen>
+    <dimen name="margin_bottom_edit_text_playlist_add">16dp</dimen>
+    <dimen name="padding_horizontal_edit_text_playlist_add">16dp</dimen>
+    <dimen name="padding_top_edit_text_playlist_add">18dp</dimen>
+    <dimen name="padding_bottom_edit_text_playlist_add">19dp</dimen>
+    <dimen name="bottom_playlist_add">18dp</dimen>
 
 </resources>
