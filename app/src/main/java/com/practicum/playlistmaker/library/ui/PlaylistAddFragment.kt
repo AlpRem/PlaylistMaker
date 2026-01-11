@@ -40,8 +40,9 @@ class PlaylistAddFragment: Fragment() {
             val imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
             val imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
             val systemBottom = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+            val rootPaddingBottom = binding.root.paddingBottom
             binding.bottomSpacer.layoutParams.height =
-                if (imeVisible) imeBottom+binding.addPlaylistBtn.height else binding.addPlaylistBtn.height + systemBottom
+                if (imeVisible) imeBottom - rootPaddingBottom else systemBottom
             binding.bottomSpacer.requestLayout()
             insets
         }
