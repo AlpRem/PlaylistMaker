@@ -8,14 +8,38 @@ import com.practicum.playlistmaker.search.domain.model.TrackState
 
 class PlaylistAddViewModel: ViewModel() {
 
-    private val stateLiveData = MutableLiveData<PlaylistAddState>(
-        PlaylistAddState(isAddPlaylistBtnEnabled = false)
-    )
+    private val stateLiveData = MutableLiveData(PlaylistAddState())
     fun observeState(): LiveData<PlaylistAddState> = stateLiveData
 
     fun onChangedNamePlaylist(name: String?) {
-        stateLiveData.value = PlaylistAddState(
-            isAddPlaylistBtnEnabled = !name.isNullOrBlank()
-        )
+        updateState { current ->
+            val newName = name.orEmpty()
+            current.copy(
+                namePlaylist = newName,
+                isAddPlaylistBtnEnabled = newName.isNotBlank(),
+            )
+        }
+    }
+
+    fun onChangedDescriptionPlaylist(description: String?) {
+        updateState { current ->
+            val newDescription = description.orEmpty()
+            current.copy(
+                descriptionPlaylist = newDescription,
+            )
+        }
+    }
+
+    fun onSelectCoverPlaylist(uri: String?) {
+        updateState { current ->
+            val newUri = uri.orEmpty()
+            current.copy(
+                coverPlaylistUri  = newUri,
+            )
+        }
+    }
+
+    private fun updateState(update: (PlaylistAddState) -> PlaylistAddState) {
+        stateLiveData.value = update(stateLiveData.value!!)
     }
 }
