@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,6 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
 import androidx.core.net.toUri
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.practicum.playlistmaker.R
 
 class PlaylistAddFragment: Fragment() {
     private lateinit var binding: FragmentPlaylistAddBinding
@@ -58,7 +60,14 @@ class PlaylistAddFragment: Fragment() {
         }
 
         binding.addPlaylistBtn.setOnClickListener {
-            findNavController().popBackStack()
+            val state = viewModel.observeState().value ?: return@setOnClickListener
+            Toast.makeText(
+                requireContext(),
+                "Плейлист ${state.namePlaylist} создан",
+                Toast.LENGTH_SHORT
+            ).show()
+            findNavController().previousBackStackEntry?.savedStateHandle?.set("tab", 0)
+            findNavController().popBackStack(R.id.libraryFragment, false)
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->

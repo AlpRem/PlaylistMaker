@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentLibraryBinding
@@ -43,5 +44,13 @@ class LibraryFragment: Fragment() {
             }
         }
         tabMediator.attach()
+
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Int>("tab")
+            ?.observe(viewLifecycleOwner) { tabIndex ->
+                binding.viewPager.setCurrentItem(tabIndex, false)
+            findNavController()
+                .currentBackStackEntry?.savedStateHandle?.remove<Int>("tab")
+            }
     }
 }
