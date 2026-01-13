@@ -33,6 +33,8 @@ class PlaylistFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        observeViewModel()
+        viewModel.listPlaylist()
 
         binding.createPlaylistBtn.setOnClickListener {
             requireParentFragment()
@@ -44,5 +46,28 @@ class PlaylistFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun observeViewModel() {
+        viewModel.observeState().observe(viewLifecycleOwner) { state ->
+            when {
+                state.isLoading -> {
+                    // пока ничего не делаем, позже добавите ProgressBar
+                }
+
+                state.isError -> {
+                    // можно просто залогировать
+                }
+
+                state.isEmpty -> {
+                    // пустое состояние (заглушка)
+                }
+
+                else -> {
+                    // контент загружен
+                    // сейчас ничего не делаем, данные уже логируются во ViewModel
+                }
+            }
+        }
     }
 }

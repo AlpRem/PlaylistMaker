@@ -28,10 +28,15 @@ class PlaylistDbRepositoryImpl(
     override suspend fun addTrackToPlaylist(playlistId: Long, trackId: Long) {
         val playlistDao = appDatabase.playlistDao()
         val playlistEntity = playlistDao.findById(playlistId) ?: return
-        val trackIds = gson.fromJson(
-            playlistEntity.tracksIds,
-            Array<Long>::class.java
-        ).toMutableList()
+        val trackIds: MutableList<Long> =
+            if (playlistEntity.tracksIds.isNotEmpty()) {
+                gson.fromJson(
+                    playlistEntity.tracksIds,
+                    Array<Long>::class.java
+                ).toMutableList()
+            } else {
+                mutableListOf()
+            }
 
         if (trackIds.contains(trackId)) return
         trackIds.add(trackId)

@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.google.gson.Gson
 import com.practicum.playlistmaker.PLAYLIST_MAKER_PREFERENCES
 import com.practicum.playlistmaker.db.data.AppDatabase
+import com.practicum.playlistmaker.db.mapper.PlaylistMapperDao
 import com.practicum.playlistmaker.search.data.mapper.TrackMapperDto
 import com.practicum.playlistmaker.search.data.network.ItunesClient
 import com.practicum.playlistmaker.search.data.network.ItunesService
@@ -38,6 +39,8 @@ val dataModule = module {
     single  { Gson() }
 
     single { TrackMapperDto() }
+
+    single { PlaylistMapperDao() }
 
     single<NetworkClient> {
         ItunesClient(get())
