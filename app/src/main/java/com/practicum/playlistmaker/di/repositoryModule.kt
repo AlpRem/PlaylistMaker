@@ -1,6 +1,8 @@
 package com.practicum.playlistmaker.di
 
+import com.practicum.playlistmaker.db.data.repository.PlaylistDbRepositoryImpl
 import com.practicum.playlistmaker.db.data.repository.TrackDbRepositoryImpl
+import com.practicum.playlistmaker.db.domain.api.PlaylistDbRepository
 import com.practicum.playlistmaker.db.domain.api.TrackDbRepository
 import com.practicum.playlistmaker.db.mapper.TrackMapperDao
 import com.practicum.playlistmaker.player.data.AudioPlayerRepositoryImpl
@@ -34,5 +36,9 @@ val repositoryModule = module {
 
     single<TrackDbRepository> {
         TrackDbRepositoryImpl(get(), get())
+    }
+
+    single<PlaylistDbRepository> {
+        PlaylistDbRepositoryImpl(get(), get(), get())
     }
 }
