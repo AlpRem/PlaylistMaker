@@ -49,6 +49,7 @@ class PlaylistAddFragment: Fragment() {
         initTextWatcher()
         toBackArrowButton()
         toHandleBack()
+        savePlaylist()
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
@@ -57,17 +58,6 @@ class PlaylistAddFragment: Fragment() {
             pickMedia.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
             )
-        }
-
-        binding.addPlaylistBtn.setOnClickListener {
-            val state = viewModel.observeState().value ?: return@setOnClickListener
-            Toast.makeText(
-                requireContext(),
-                "Плейлист ${state.namePlaylist} создан",
-                Toast.LENGTH_SHORT
-            ).show()
-            findNavController().previousBackStackEntry?.savedStateHandle?.set("tab", 0)
-            findNavController().popBackStack(R.id.libraryFragment, false)
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
@@ -150,5 +140,19 @@ class PlaylistAddFragment: Fragment() {
             confirmDialog.show()
         else
             findNavController().popBackStack()
+    }
+
+    private fun savePlaylist() {
+        binding.addPlaylistBtn.setOnClickListener {
+            viewModel.savePlaylist()
+            val state = viewModel.observeState().value ?: return@setOnClickListener
+            Toast.makeText(
+                requireContext(),
+                "Плейлист ${state.namePlaylist} создан",
+                Toast.LENGTH_SHORT
+            ).show()
+            findNavController().previousBackStackEntry?.savedStateHandle?.set("tab", 0)
+            findNavController().popBackStack(R.id.libraryFragment, false)
+        }
     }
 }
