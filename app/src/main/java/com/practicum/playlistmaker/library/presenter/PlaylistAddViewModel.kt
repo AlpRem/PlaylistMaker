@@ -55,22 +55,40 @@ class PlaylistAddViewModel(
         val state = stateLiveData.value ?: return
         if (state.namePlaylist.isBlank()) return
 
-        viewModelScope.launch {
-            val imagePath = if (!state.coverPlaylistUri.isNullOrBlank()) {
-                imageStorageInteractor.saveImage(state.coverPlaylistUri.toUri())
-            } else {
-                ""
-            }
+        stateLiveData.value = state.copy(
+            isSaveError = false
+        )
 
-            val playlist = Playlist(
-                id = 0,
-                name = state.namePlaylist,
-                description = state.descriptionPlaylist.orEmpty(),
-                image = imagePath,
-                tracksIds = "[]",
-                countTracks = 0
-            )
-            playlistDbInteractor.save(playlist)
+        viewModelScope.launch {
+            try {
+                val imagePath = if (!state.coverPlaylistUri.isNullOrBlank()) {
+                    imageStorageInteractor.saveImage(state.coverPlaylistUri.toUri())
+                } else {
+                    ""
+                }
+
+                val playlist = Playlist(
+                    id = 0,
+                    name = state.namePlaylist,
+                    description = state.descriptionPlaylist.orEmpty(),
+                    image = imagePath,
+                    tracksIds = "[]",
+                    countTracks = 0
+                )
+                playlistDbInteractor.save(playlist)
+
+                stateLiveData.postValue(
+                    state.copy(
+                        isSaveSuccess = true
+                    )
+                )
+            } catch (ex: Exception) {
+                stateLiveData.postValue(
+                    state.copy(
+                        isSaveError = true
+                    )
+                )
+            }
         }
     }
 }

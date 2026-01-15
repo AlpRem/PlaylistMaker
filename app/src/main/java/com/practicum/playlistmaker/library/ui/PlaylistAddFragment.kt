@@ -93,6 +93,15 @@ class PlaylistAddFragment: Fragment() {
     }
     private fun render(state: PlaylistAddState) {
         binding.addPlaylistBtn.isEnabled = state.isAddPlaylistBtnEnabled
+        if (state.isSaveSuccess) {
+            Toast.makeText(
+                requireContext(),
+                "Плейлист ${state.namePlaylist} создан",
+                Toast.LENGTH_SHORT
+            ).show()
+            findNavController().previousBackStackEntry?.savedStateHandle?.set("tab", 0)
+            findNavController().popBackStack(R.id.libraryFragment, false)
+        }
 
         state.coverPlaylistUri?.let {
             binding.addPhoto.setImageURI(it.toUri())
@@ -145,14 +154,6 @@ class PlaylistAddFragment: Fragment() {
     private fun savePlaylist() {
         binding.addPlaylistBtn.setOnClickListener {
             viewModel.savePlaylist()
-            val state = viewModel.observeState().value ?: return@setOnClickListener
-            Toast.makeText(
-                requireContext(),
-                "Плейлист ${state.namePlaylist} создан",
-                Toast.LENGTH_SHORT
-            ).show()
-            findNavController().previousBackStackEntry?.savedStateHandle?.set("tab", 0)
-            findNavController().popBackStack(R.id.libraryFragment, false)
         }
     }
 }
