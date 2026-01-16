@@ -99,7 +99,7 @@ class PlaylistAddFragment: Fragment() {
                 "Плейлист ${state.namePlaylist} создан",
                 Toast.LENGTH_SHORT
             ).show()
-            findNavController().previousBackStackEntry?.savedStateHandle?.set("tab", 0)
+            findNavController().previousBackStackEntry?.savedStateHandle?.set("tab", 1)
             findNavController().popBackStack(R.id.libraryFragment, false)
         }
 

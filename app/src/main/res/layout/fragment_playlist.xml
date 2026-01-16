@@ -22,6 +22,13 @@
             style="@style/titleErrorLibraryStyle"
             android:text="@string/playlist_not_created" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_marginTop="@dimen/btn_padding_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
     </LinearLayout>
+
 
 </FrameLayout>

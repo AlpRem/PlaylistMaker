@@ -85,6 +85,7 @@
     </style>
 
     <style name="errorTrack">
+        <item name="android:layout_marginTop">@dimen/margin_bottom_btn_playlist</item>
         <item name="android:layout_width">@dimen/icon_error</item>
         <item name="android:layout_height">@dimen/icon_error</item>
         <item name="android:layout_gravity">center|top</item>
@@ -207,7 +208,7 @@
         <item name="android:insetBottom">@dimen/size_null</item>
         <item name="android:layout_marginTop">@dimen/size_null</item>
         <item name="android:minHeight">@dimen/size_null</item>
-        <item name="android:layout_marginBottom">@dimen/margin_bottom_btn_playlist</item>
+
         <item name="android:paddingVertical">@dimen/vertical_refresh</item>
         <item name="android:paddingHorizontal">@dimen/horizontal_refresh</item>
 
@@ -262,6 +263,12 @@
         <item name="boxCornerRadiusTopEnd">@dimen/radius_image_rectangle</item>
         <item name="boxCornerRadiusBottomStart">@dimen/radius_image_rectangle</item>
         <item name="boxCornerRadiusBottomEnd">@dimen/radius_image_rectangle</item>
+    </style>
+
+    <style name="playlist_text">
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">?attr/colorNote</item>
+        <item name="android:textSize">@dimen/font_size_text_playlist</item>
     </style>
 
 </resources>

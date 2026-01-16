@@ -25,21 +25,10 @@ class PlaylistViewModel(private val playlistDbInteractor: PlaylistDbInteractor):
                         page.hasErrors() -> renderState(PlaylistState.error())
                         page.isEmpty() -> renderState(PlaylistState.empty())
                         else -> {
-                            logPlaylists(page)
                             renderState(PlaylistState.content(page))
                         }
                     }
                 }
-        }
-    }
-    private fun logPlaylists(page: com.practicum.playlistmaker.common.component.Page<*>) {
-        Log.d(TAG, "Playlists count: ${page.data.size}")
-        page.data.forEach {
-            val playlist = it as com.practicum.playlistmaker.library.domain.model.Playlist
-            Log.d(
-                TAG,
-                "Playlist: id=${playlist.id}, name=${playlist.name}, tracks=${playlist.countTracks}"
-            )
         }
     }
 
