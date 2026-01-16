@@ -12,19 +12,13 @@ import java.io.File
 
 class PlaylistViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-    private val imagePlaylist: ImageView
-    private val namePlaylist: TextView
-    private val countTrack: TextView
-
-    init {
-        imagePlaylist = itemView.findViewById(R.id.playlist_image)
-        namePlaylist = itemView.findViewById(R.id.name_playlist)
-        countTrack = itemView.findViewById(R.id.count_track)
-    }
+    private val imagePlaylist: ImageView = itemView.findViewById(R.id.playlist_image)
+    private val namePlaylist: TextView = itemView.findViewById(R.id.name_playlist)
+    private val countTrack: TextView = itemView.findViewById(R.id.count_track)
 
     fun bind(model: Playlist) {
         namePlaylist.text = model.name
-        countTrack.text = model.countTracks.toString() + " трек"
+        "${model.countTracks} ${trackTransformValue(model.countTracks)}".also { countTrack.text = it }
         if (model.image.isBlank())
             imagePlaylist.setImageResource(R.drawable.placeholder)
         else
@@ -35,5 +29,13 @@ class PlaylistViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                 .centerCrop()
                 .into(imagePlaylist)
 
+    }
+
+    private fun trackTransformValue(count: Int): String {
+        return when {
+            count % 10 == 1 && count % 100 != 11 -> "трек"
+            count % 10 in 2..4 && count % 100 !in 12..14 -> "трека"
+            else -> "треков"
+        }
     }
 }
