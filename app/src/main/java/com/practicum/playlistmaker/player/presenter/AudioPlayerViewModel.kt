@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.db.domain.api.PlaylistDbInteractor
 import com.practicum.playlistmaker.db.domain.api.TrackDbInteractor
+import com.practicum.playlistmaker.library.domain.model.Playlist
 import com.practicum.playlistmaker.library.domain.model.PlaylistState
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerInteractor
 import com.practicum.playlistmaker.player.domain.model.AudioPlayerFragmentState
@@ -60,7 +61,7 @@ class AudioPlayerViewModel(private val audioPlayerInteractor: AudioPlayerInterac
         pausePlayer()
     }
 
-    fun addToPlaylist() {
+    fun getPlaylist() {
         renderState(PlaylistState.loading())
 
         viewModelScope.launch {
@@ -89,6 +90,16 @@ class AudioPlayerViewModel(private val audioPlayerInteractor: AudioPlayerInterac
             stateAudioPlayer.value = stateAudioPlayer.value?.copy(
                 stateAudioPlayer.value!!.audioPlayerState.copy(likeState = !oldLike))
             track = currentTrack.copy(isFavorite = !oldLike)
+        }
+    }
+
+    fun addPlaylist(playlist: Playlist) {
+        val currentTrack = track ?: return
+        viewModelScope.launch {
+            playlistDbInteractor.addTrackToPlaylist(
+                playlistId = playlist.id,
+                trackId = currentTrack.trackId
+            )
         }
     }
 

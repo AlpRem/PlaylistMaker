@@ -7,7 +7,8 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.library.domain.model.Playlist
 
-class AudioPlayerAdapter(var playlists: List<Playlist>): RecyclerView.Adapter<AudioPlayerViewHolder>() {
+class AudioPlayerAdapter(var playlists: List<Playlist>,
+                         private val onAddPlaylistClick: (Playlist) -> Unit): RecyclerView.Adapter<AudioPlayerViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -21,6 +22,9 @@ class AudioPlayerAdapter(var playlists: List<Playlist>): RecyclerView.Adapter<Au
         position: Int
     ) {
         holder.bind(playlists[position])
+        holder.itemView.setOnClickListener {
+            onAddPlaylistClick(playlists[position])
+        }
     }
 
     override fun getItemCount(): Int {

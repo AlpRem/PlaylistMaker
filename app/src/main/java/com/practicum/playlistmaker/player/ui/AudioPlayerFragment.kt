@@ -96,7 +96,7 @@ class AudioPlayerFragment: Fragment() {
         binding.play.setOnClickListener { audioPlayerViewModel.playbackControl() }
         binding.like.setOnClickListener { audioPlayerViewModel.toggleLike() }
         binding.addToPlaylist.setOnClickListener {
-            audioPlayerViewModel.addToPlaylist()
+            audioPlayerViewModel.getPlaylist()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
@@ -160,7 +160,11 @@ class AudioPlayerFragment: Fragment() {
     }
 
     private fun initRecyclerView() {
-        audioPlayerAdapter = AudioPlayerAdapter(emptyList())
+        audioPlayerAdapter = AudioPlayerAdapter(emptyList()) {
+            playlist ->
+            audioPlayerViewModel.addPlaylist(playlist)
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         binding.recyclerView.adapter = audioPlayerAdapter
