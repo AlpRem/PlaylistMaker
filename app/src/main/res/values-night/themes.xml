@@ -24,6 +24,8 @@
         <item name="colorTabNavMenu">@color/tab_nav_menu_dark</item>
         <item name="backgroundNavMenu">@color/background_nav_menu_dark</item>
         <item name="borderPlaylistAdd">@color/white</item>
+        <item name="colorLineBottomSheet">@color/color_line_bottom_sheet_dark</item>
+        <item name="bgBottomSheet">@color/bg_bottom_sheet_dark</item>
     </style>
 
     <style name="Theme.PlaylistMaker.Main" parent="Base.Theme.PlaylistMaker" />

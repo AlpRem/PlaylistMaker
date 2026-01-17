@@ -1,9 +1,11 @@
 package com.practicum.playlistmaker.player.ui
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
@@ -11,14 +13,22 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.common.util.dpToPx
 import com.practicum.playlistmaker.databinding.FragmentAudioPlayerBinding
+import com.practicum.playlistmaker.library.domain.model.Playlist
+import com.practicum.playlistmaker.library.domain.model.PlaylistState
+import com.practicum.playlistmaker.library.ui.PlaylistAdapter
 import com.practicum.playlistmaker.player.domain.model.PlayerState
 import com.practicum.playlistmaker.player.presenter.AudioPlayerViewModel
 import com.practicum.playlistmaker.search.domain.model.Track
@@ -28,6 +38,8 @@ import kotlin.getValue
 class AudioPlayerFragment: Fragment() {
 
     private lateinit var binding: FragmentAudioPlayerBinding
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+    private lateinit var audioPlayerAdapter: AudioPlayerAdapter
 
     private val audioPlayerViewModel: AudioPlayerViewModel by viewModel()
 
@@ -51,17 +63,42 @@ class AudioPlayerFragment: Fragment() {
             audioPlayerViewModel.preparePlayer(track)
 
         audioPlayerViewModel.observeStateAudioPlayer.observe(viewLifecycleOwner) { state ->
-            when (state.playerState) {
+            when (state.audioPlayerState.playerState) {
                 is PlayerState.Playing -> binding.play.setImageResource(R.drawable.pause)
                 else -> binding.play.setImageResource(R.drawable.play)
             }
-            binding.timer.text = state.timerState
-            binding.like.setImageResource(if (state.likeState) R.drawable.like_full else R.drawable.like)
+            binding.timer.text = state.audioPlayerState.timerState
+            binding.like.setImageResource(if (state.audioPlayerState.likeState) R.drawable.like_full else R.drawable.like)
+            render(state.playlistState)
 
         }
 
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.standardBottomSheet).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+        bottomSheetBehavior.addBottomSheetCallback(
+            object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    binding.overlay.visibility =
+                        if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                            View.GONE
+                        } else {
+                            View.VISIBLE
+                        }
+                }
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                }
+            }
+        )
+
+        initRecyclerView()
+
         binding.play.setOnClickListener { audioPlayerViewModel.playbackControl() }
         binding.like.setOnClickListener { audioPlayerViewModel.toggleLike() }
+        binding.addToPlaylist.setOnClickListener {
+            audioPlayerViewModel.addToPlaylist()
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
     }
 
     override fun onPause() {
@@ -115,6 +152,31 @@ class AudioPlayerFragment: Fragment() {
         binding.arrowBack.setOnClickListener {
             findNavController().popBackStack()
         }
+    }
+
+    private fun initRecyclerView() {
+        audioPlayerAdapter = AudioPlayerAdapter(emptyList())
+        binding.recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        binding.recyclerView.adapter = audioPlayerAdapter
+    }
+
+    private fun render(state: PlaylistState) {
+        when {
+            state.isLoading -> {}
+            state.isError -> showErrors()
+            state.isEmpty -> showErrors()
+            else -> showContent(state.page)
+        }
+    }
+
+    private fun showErrors() {
+        binding.recyclerView.visibility = View.GONE
+    }
+
+    private fun showContent(playlists: Page<Playlist>) {
+        binding.recyclerView.visibility = View.VISIBLE
+        audioPlayerAdapter.updatePage(playlists)
     }
 
     companion object {
