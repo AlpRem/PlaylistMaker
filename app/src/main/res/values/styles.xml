@@ -271,4 +271,20 @@
         <item name="android:textSize">@dimen/font_size_text_playlist</item>
     </style>
 
+    <style name="titleAddToPlaylist">
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textSize">@dimen/font_size_title_playlist</item>
+        <item name="android:textColor">?attr/colorNote</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">@dimen/margin_top_title_add_to_playlist</item>
+        <item name="android:paddingTop">@dimen/padding_top_line_bottom_sheet</item>
+        <item name="android:paddingBottom">@dimen/padding_bottom_line_bottom_sheet</item>
+    </style>
+
+    <style name="addToPlaylistBtn" parent="createPlaylistBtn">
+        <item name="android:layout_marginTop">@dimen/btn_padding_bottom</item>
+        <item name="android:layout_marginBottom">@dimen/padding_bottom_add_to_playlist_btn</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
 </resources>

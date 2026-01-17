@@ -291,12 +291,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="Добавить в плейлист"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            style="@style/titleAddToPlaylist"
+            android:text="@string/title_add_to_playlist" />
+
+        <Button
+            android:id="@+id/createPlaylistBtn"
+            style="@style/addToPlaylistBtn"
+            android:text="@string/playlist_created" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

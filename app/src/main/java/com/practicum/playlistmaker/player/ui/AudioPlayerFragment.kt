@@ -99,6 +99,11 @@ class AudioPlayerFragment: Fragment() {
             audioPlayerViewModel.addToPlaylist()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
+
+        binding.createPlaylistBtn.setOnClickListener {
+            findNavController()
+                .navigate(R.id.action_audioPlayerFragment_to_playlistAddFragment)
+        }
     }
 
     override fun onPause() {
