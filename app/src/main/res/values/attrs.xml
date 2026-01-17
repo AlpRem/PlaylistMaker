@@ -16,4 +16,5 @@
     <attr name="borderPlaylistAdd" format="reference|color"/>
     <attr name="colorLineBottomSheet" format="reference|color"/>
     <attr name="bgBottomSheet" format="reference|color"/>
+    <attr name="colorNameInBS" format="reference|color"/>
 </resources>

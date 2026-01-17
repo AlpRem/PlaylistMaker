@@ -31,4 +31,6 @@
     <color name="color_line_bottom_sheet_dark">#FFFFFF</color>
     <color name="bg_bottom_sheet_light">#FFFFFF</color>
     <color name="bg_bottom_sheet_dark">#1A1B22</color>
+    <color name="color_name_in_bs_light">#000000</color>
+    <color name="color_name_in_bs_dark">#FFFFFF</color>
 </resources>

@@ -287,4 +287,18 @@
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
 
+    <style name="playlist_name_in_bs">
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">?attr/colorNameInBS</item>
+        <item name="android:textSize">@dimen/font_size_name_in_bs</item>
+        <item name="android:layout_marginLeft">@dimen/margin_right_img_bottom_sheet</item>
+    </style>
+
+    <style name="playlist_count_track_in_bs">
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">?attr/colorNote</item>
+        <item name="android:textSize">@dimen/font_size_count_track_in_bs</item>
+        <item name="android:layout_marginLeft">@dimen/margin_right_img_bottom_sheet</item>
+    </style>
+
 </resources>

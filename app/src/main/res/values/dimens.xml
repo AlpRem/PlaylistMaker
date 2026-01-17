@@ -64,6 +64,7 @@
     <dimen name="dash_width_image_rectangle">30dp</dimen>
     <dimen name="dash_gap_image_rectangle">30dp</dimen>
     <dimen name="radius_image_rectangle">8dp</dimen>
+    <dimen name="radius_image_rectangle_small">2dp</dimen>
     <dimen name="radius_bottom_sheet">16dp</dimen>
     <dimen name="margin_top_image_playlist_add">26dp</dimen>
     <dimen name="margin_bottom_image_playlist_add">32dp</dimen>
@@ -83,5 +84,10 @@
     <dimen name="padding_top_line_bottom_sheet">18dp</dimen>
     <dimen name="padding_bottom_line_bottom_sheet">12dp</dimen>
     <dimen name="padding_bottom_add_to_playlist_btn">24dp</dimen>
+    <dimen name="size_img_bottom_sheet">45dp</dimen>
+    <dimen name="padding_vertical_item_bottom_sheet">8dp</dimen>
+    <dimen name="font_size_name_in_bs">16dp</dimen>
+    <dimen name="font_size_count_track_in_bs">11dp</dimen>
+    <dimen name="margin_right_img_bottom_sheet">8dp</dimen>
 
 </resources>

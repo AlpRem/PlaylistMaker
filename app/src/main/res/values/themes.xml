@@ -26,6 +26,7 @@
         <item name="borderPlaylistAdd">@color/ap_information_title</item>
         <item name="colorLineBottomSheet">@color/color_line_bottom_sheet_light</item>
         <item name="bgBottomSheet">@color/bg_bottom_sheet_light</item>
+        <item name="colorNameInBS">@color/color_name_in_bs_light</item>
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
