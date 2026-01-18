@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/size_null"
     app:cardElevation="@dimen/size_null"
-    app:cardBackgroundColor="@android:color/white">
+    app:cardBackgroundColor="?attr/playlistBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

@@ -17,4 +17,6 @@
     <attr name="colorLineBottomSheet" format="reference|color"/>
     <attr name="bgBottomSheet" format="reference|color"/>
     <attr name="colorNameInBS" format="reference|color"/>
+    <attr name="playlistBackground" format="reference|color"/>
+    <attr name="addPlaylistTextEditBorder" format="reference|color"/>
 </resources>

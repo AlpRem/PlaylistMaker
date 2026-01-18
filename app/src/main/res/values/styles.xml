@@ -256,7 +256,6 @@
         <item name="boxBackgroundMode">outline</item>
         <item name="boxStrokeWidth">@dimen/width_image_rectangle</item>
         <item name="boxStrokeWidthFocused">@dimen/width_image_rectangle</item>
-        <item name="boxStrokeColor">@color/icon_color_light</item>
         <item name="boxBackgroundColor">@android:color/transparent</item>
         <item name="hintTextColor">?attr/borderPlaylistAdd</item>
         <item name="boxCornerRadiusTopStart">@dimen/radius_image_rectangle</item>
