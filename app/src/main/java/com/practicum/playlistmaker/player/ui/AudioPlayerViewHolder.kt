@@ -33,12 +33,4 @@ class AudioPlayerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                 .into(imagePlaylist)
 
     }
-
-//    private fun trackTransformValue(count: Int): String {
-//        return when {
-//            count % 10 == 1 && count % 100 != 11 -> "трек"
-//            count % 10 in 2..4 && count % 100 !in 12..14 -> "трека"
-//            else -> "треков"
-//        }
-//    }
 }
