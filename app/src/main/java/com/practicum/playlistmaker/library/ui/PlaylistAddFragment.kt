@@ -121,11 +121,11 @@ class PlaylistAddFragment: Fragment() {
 
     private fun initConfirmDialog() {
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Завершить создание плейлиста?")
-            .setNeutralButton("Отмена") { dialog, _ ->
+            .setTitle(R.string.end_add_playlist)
+            .setNeutralButton(R.string.cansel) { dialog, _ ->
                 dialog.dismiss()
             }
-            .setNegativeButton("Завершить") { dialog, _ ->
+            .setNegativeButton(R.string.ending) { dialog, _ ->
                 dialog.dismiss()
                 findNavController().popBackStack()
             }
