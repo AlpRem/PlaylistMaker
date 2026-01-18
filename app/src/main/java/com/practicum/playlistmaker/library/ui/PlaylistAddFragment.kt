@@ -59,17 +59,6 @@ class PlaylistAddFragment: Fragment() {
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
             )
         }
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
-            val imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
-            val systemBottom = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
-            val rootPaddingBottom = binding.root.paddingBottom
-            binding.bottomSpacer.layoutParams.height =
-                if (imeVisible) imeBottom - rootPaddingBottom else systemBottom
-            binding.bottomSpacer.requestLayout()
-            insets
-        }
     }
     private fun toHandleBack() {
         requireActivity().onBackPressedDispatcher.addCallback(
