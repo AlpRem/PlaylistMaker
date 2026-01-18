@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.db.data.AppDatabase
 import com.practicum.playlistmaker.db.domain.api.PlaylistDbRepository
+import com.practicum.playlistmaker.db.domain.model.AddTrackToPlaylistResult
 import com.practicum.playlistmaker.db.mapper.PlaylistMapperDao
 import com.practicum.playlistmaker.library.domain.model.Playlist
 import kotlinx.coroutines.flow.Flow
@@ -25,9 +26,9 @@ class PlaylistDbRepositoryImpl(
         appDatabase.playlistDao().save(playlistMapper.map(playlist))
     }
 
-    override suspend fun addTrackToPlaylist(playlistId: Long, trackId: String) {
+    override suspend fun addTrackToPlaylist(playlistId: Long, trackId: String): AddTrackToPlaylistResult {
         val playlistDao = appDatabase.playlistDao()
-        val playlistEntity = playlistDao.findById(playlistId) ?: return
+        val playlistEntity = playlistDao.findById(playlistId) ?: return AddTrackToPlaylistResult.TrackIsExists
         val trackIds: MutableList<String> =
             if (playlistEntity.tracksIds.isNotEmpty()) {
                 gson.fromJson(
@@ -38,7 +39,8 @@ class PlaylistDbRepositoryImpl(
                 mutableListOf()
             }
 
-        if (trackIds.contains(trackId)) return
+        if (trackIds.contains(trackId))
+            return AddTrackToPlaylistResult.TrackIsExists
         trackIds.add(trackId)
 
         val updatedPlaylist = playlistEntity.copy(
@@ -47,5 +49,6 @@ class PlaylistDbRepositoryImpl(
         )
 
         playlistDao.update(updatedPlaylist)
+        return AddTrackToPlaylistResult.ToAdded
     }
 }

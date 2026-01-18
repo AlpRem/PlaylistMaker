@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -29,6 +30,9 @@ import com.practicum.playlistmaker.databinding.FragmentAudioPlayerBinding
 import com.practicum.playlistmaker.library.domain.model.Playlist
 import com.practicum.playlistmaker.library.domain.model.PlaylistState
 import com.practicum.playlistmaker.library.ui.PlaylistAdapter
+import com.practicum.playlistmaker.player.domain.model.AddTrackToPlaylistState
+import com.practicum.playlistmaker.player.domain.model.AudioPlayerFragmentState
+import com.practicum.playlistmaker.player.domain.model.AudioPlayerState
 import com.practicum.playlistmaker.player.domain.model.PlayerState
 import com.practicum.playlistmaker.player.presenter.AudioPlayerViewModel
 import com.practicum.playlistmaker.search.domain.model.Track
@@ -69,7 +73,8 @@ class AudioPlayerFragment: Fragment() {
             }
             binding.timer.text = state.audioPlayerState.timerState
             binding.like.setImageResource(if (state.audioPlayerState.likeState) R.drawable.like_full else R.drawable.like)
-            render(state.playlistState)
+            renderPlaylists(state.playlistState)
+            renderAddTrackState(state.addTrackState)
 
         }
 
@@ -170,7 +175,21 @@ class AudioPlayerFragment: Fragment() {
         binding.recyclerView.adapter = audioPlayerAdapter
     }
 
-    private fun render(state: PlaylistState) {
+    private fun renderAddTrackState(state: AddTrackToPlaylistState) {
+        when {
+            state.isAdded -> {
+                showToast(getString(R.string.track_added), state.playlistName)
+                audioPlayerViewModel.clearAddTrackState()
+            }
+
+            state.isExists -> {
+                showToast(getString(R.string.track_is_exists),state.playlistName)
+                audioPlayerViewModel.clearAddTrackState()
+            }
+        }
+    }
+
+    private fun renderPlaylists(state: PlaylistState) {
         when {
             state.isLoading -> {}
             state.isError -> showErrors()
@@ -186,6 +205,10 @@ class AudioPlayerFragment: Fragment() {
     private fun showContent(playlists: Page<Playlist>) {
         binding.recyclerView.visibility = View.VISIBLE
         audioPlayerAdapter.updatePage(playlists)
+    }
+
+    private fun showToast(message: String, playlistName: String) {
+        Toast.makeText(requireContext(), "$message $playlistName",Toast.LENGTH_SHORT).show()
     }
 
     companion object {

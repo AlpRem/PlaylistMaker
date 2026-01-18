@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.db.domain.api.PlaylistDbInteractor
 import com.practicum.playlistmaker.db.domain.api.TrackDbInteractor
+import com.practicum.playlistmaker.db.domain.model.AddTrackToPlaylistResult
 import com.practicum.playlistmaker.library.domain.model.Playlist
 import com.practicum.playlistmaker.library.domain.model.PlaylistState
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerInteractor
+import com.practicum.playlistmaker.player.domain.model.AddTrackToPlaylistState
 import com.practicum.playlistmaker.player.domain.model.AudioPlayerFragmentState
 import com.practicum.playlistmaker.player.domain.model.AudioPlayerState
 import com.practicum.playlistmaker.player.domain.model.PlayerState
@@ -96,11 +98,25 @@ class AudioPlayerViewModel(private val audioPlayerInteractor: AudioPlayerInterac
     fun addPlaylist(playlist: Playlist) {
         val currentTrack = track ?: return
         viewModelScope.launch {
-            playlistDbInteractor.addTrackToPlaylist(
+            val result = playlistDbInteractor.addTrackToPlaylist(
                 playlistId = playlist.id,
                 trackId = currentTrack.trackId
             )
+            stateAudioPlayer.value = stateAudioPlayer.value?.copy(
+                addTrackState = when (result) {
+                    AddTrackToPlaylistResult.ToAdded ->
+                        AddTrackToPlaylistState.added(playlist.name)
+                    AddTrackToPlaylistResult.TrackIsExists ->
+                        AddTrackToPlaylistState.exists(playlist.name)
+                }
+            )
         }
+    }
+
+    fun clearAddTrackState() {
+        stateAudioPlayer.value = stateAudioPlayer.value?.copy(
+            addTrackState = AddTrackToPlaylistState.clear()
+        )
     }
 
     private fun startPlayer() {

@@ -4,5 +4,6 @@ import com.practicum.playlistmaker.library.domain.model.PlaylistState
 
 data class AudioPlayerFragmentState (
     val audioPlayerState: AudioPlayerState = AudioPlayerState(),
-    val playlistState: PlaylistState = PlaylistState.clear()
+    val playlistState: PlaylistState = PlaylistState.clear(),
+    val addTrackState: AddTrackToPlaylistState = AddTrackToPlaylistState.clear()
 )
