@@ -35,12 +35,9 @@ class RootActivity: AppCompatActivity() {
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val iVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
-            binding.bottomNavigationView.visibility = when {
-                iVisible -> View.GONE
-                binding.bottomNavigationView.isGone -> View.GONE
-                else -> View.VISIBLE
-            }
+            val isImeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
+            binding.bottomNavigationView.visibility =
+                if (isImeVisible) View.GONE else View.VISIBLE
             insets
         }
     }
