@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.di
 
+import com.practicum.playlistmaker.db.data.AppDatabase
 import com.practicum.playlistmaker.db.data.repository.PlaylistDbRepositoryImpl
 import com.practicum.playlistmaker.db.data.repository.TrackDbRepositoryImpl
 import com.practicum.playlistmaker.db.domain.api.PlaylistDbRepository
@@ -41,7 +42,7 @@ val repositoryModule = module {
     }
 
     single<PlaylistDbRepository> {
-        PlaylistDbRepositoryImpl(get(), get(), get())
+        PlaylistDbRepositoryImpl(get<AppDatabase>().playlistDao(),get(),get())
     }
 
     single<ImageStorageRepository> {

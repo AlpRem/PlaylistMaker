@@ -3,6 +3,7 @@ package com.practicum.playlistmaker.db.data.repository
 import com.google.gson.Gson
 import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.db.data.AppDatabase
+import com.practicum.playlistmaker.db.data.dao.PlaylistDao
 import com.practicum.playlistmaker.db.domain.api.PlaylistDbRepository
 import com.practicum.playlistmaker.db.domain.model.AddTrackToPlaylistResult
 import com.practicum.playlistmaker.db.mapper.PlaylistMapperDao
@@ -11,23 +12,22 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class PlaylistDbRepositoryImpl(
-    private val appDatabase: AppDatabase,
+    private val playlistDao: PlaylistDao,
     private val playlistMapper: PlaylistMapperDao,
     private val gson: Gson
 ): PlaylistDbRepository {
     override fun list(): Flow<Page<Playlist>> {
-        return appDatabase
-            .playlistDao()
+        return playlistDao
             .listPlaylist()
             .map { p -> Page.of(p.asReversed().map {playlistMapper.map(it)}) }
     }
 
     override suspend fun save(playlist: Playlist) {
-        appDatabase.playlistDao().save(playlistMapper.map(playlist))
+        playlistDao.save(playlistMapper.map(playlist))
     }
 
     override suspend fun addTrackToPlaylist(playlistId: Long, trackId: String): AddTrackToPlaylistResult {
-        val playlistDao = appDatabase.playlistDao()
+        val playlistDao = playlistDao
         val playlistEntity = playlistDao.findById(playlistId) ?: return AddTrackToPlaylistResult.TrackIsExists
         val trackIds: MutableList<String> =
             if (playlistEntity.tracksIds.isNotEmpty()) {
