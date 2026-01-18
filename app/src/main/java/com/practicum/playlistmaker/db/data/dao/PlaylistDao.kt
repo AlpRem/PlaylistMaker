@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PlaylistDao: BaseDao<PlaylistEntity> {
     @Query("SELECT * FROM playlist")
-    fun list(): Flow<List<PlaylistEntity>>
+    fun listPlaylist(): Flow<List<PlaylistEntity>>
 
     @Query("SELECT * FROM playlist WHERE id = :id")
     suspend fun findById(id: Long): PlaylistEntity?

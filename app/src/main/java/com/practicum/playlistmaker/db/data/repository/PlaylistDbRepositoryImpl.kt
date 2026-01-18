@@ -18,7 +18,7 @@ class PlaylistDbRepositoryImpl(
     override fun list(): Flow<Page<Playlist>> {
         return appDatabase
             .playlistDao()
-            .list()
+            .listPlaylist()
             .map { p -> Page.of(p.asReversed().map {playlistMapper.map(it)}) }
     }
 
