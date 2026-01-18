@@ -18,7 +18,11 @@ class PlaylistViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
     fun bind(model: Playlist) {
         namePlaylist.text = model.name
-        "${model.countTracks} ${trackTransformValue(model.countTracks)}".also { countTrack.text = it }
+        countTrack.text = itemView.resources.getQuantityString(
+            R.plurals.tracks_count,
+            model.countTracks,
+            model.countTracks
+        )
         if (model.image.isBlank())
             imagePlaylist.setImageResource(R.drawable.placeholder)
         else
@@ -31,11 +35,11 @@ class PlaylistViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
     }
 
-    private fun trackTransformValue(count: Int): String {
-        return when {
-            count % 10 == 1 && count % 100 != 11 -> "трек"
-            count % 10 in 2..4 && count % 100 !in 12..14 -> "трека"
-            else -> "треков"
-        }
-    }
+//    private fun trackTransformValue(count: Int): String {
+//        return when {
+//            count % 10 == 1 && count % 100 != 11 -> "трек"
+//            count % 10 in 2..4 && count % 100 !in 12..14 -> "трека"
+//            else -> "треков"
+//        }
+//    }
 }
