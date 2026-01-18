@@ -1,6 +1,6 @@
 package com.practicum.playlistmaker.db.domain.model
 
-sealed class AddTrackToPlaylistResult {
-    object ToAdded : AddTrackToPlaylistResult()
-    object TrackIsExists : AddTrackToPlaylistResult()
+sealed interface AddTrackToPlaylistResult {
+    object ToAdded : AddTrackToPlaylistResult
+    object TrackIsExists : AddTrackToPlaylistResult
 }
