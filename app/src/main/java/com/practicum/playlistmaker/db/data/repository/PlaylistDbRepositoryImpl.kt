@@ -9,6 +9,7 @@ import com.practicum.playlistmaker.db.domain.model.AddTrackToPlaylistResult
 import com.practicum.playlistmaker.db.mapper.PlaylistMapperDao
 import com.practicum.playlistmaker.library.domain.model.Playlist
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 class PlaylistDbRepositoryImpl(
@@ -20,6 +21,7 @@ class PlaylistDbRepositoryImpl(
         return playlistDao
             .listPlaylist()
             .map { p -> Page.of(p.asReversed().map {playlistMapper.map(it)}) }
+            .distinctUntilChanged()
     }
 
     override suspend fun save(playlist: Playlist) {
