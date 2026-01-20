@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".player.ui.AudioPlayerFragment">
+
+<androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -120,7 +126,7 @@
         />
 
     <ImageView
-        android:id="@+id/add"
+        android:id="@+id/add_to_playlist"
         android:layout_width="@dimen/size_control_panel_btn"
         android:layout_height="@dimen/size_control_panel_btn"
         android:scaleType="fitStart"
@@ -255,7 +261,49 @@
         app:layout_constraintBottom_toBottomOf="@id/country_title"
         style="@style/apInformationValue"
         />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
+
+    <View android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/standard_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/padding_vertical_bottom_sheet"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="@dimen/height_bottom_sheet"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:background="@drawable/bg_bottom_sheet">
+
+        <View
+            android:layout_width="@dimen/width_line_bottom_sheet"
+            android:layout_height="@dimen/height_line_bottom_sheet"
+            android:background="?attr/colorLineBottomSheet"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_top_line_bottom_sheet" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/titleAddToPlaylist"
+            android:text="@string/title_add_to_playlist" />
+
+        <Button
+            android:id="@+id/createPlaylistBtn"
+            style="@style/addToPlaylistBtn"
+            android:text="@string/playlist_created" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_marginTop="@dimen/btn_padding_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

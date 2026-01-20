@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+
+android:id="@+id/playlist_add_fragment"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+style="@style/mainActivity"
+tools:context=".library.ui.PlaylistAddFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/left_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/size_null"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/right_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/size_null"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/size_null"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottom_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/padding_bottom_playlist_add"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_image_playlist_add"
+        app:layout_constraintStart_toEndOf="@id/left_guideline"
+        app:layout_constraintEnd_toStartOf="@id/right_guideline"
+        app:layout_constraintTop_toTopOf="parent">
+
+    <ImageView
+        android:id="@+id/arrow_back"
+        style="@style/imageInTitleActivity"
+        android:layout_height="wrap_content"
+        android:src="@drawable/arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:text="@string/btn_playlist_add"
+        app:layout_constraintStart_toEndOf="@id/arrow_back"
+        app:layout_constraintTop_toTopOf="@id/arrow_back"
+        app:layout_constraintBottom_toBottomOf="@id/arrow_back"
+        style="@style/titlePlaylistActivity"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/header_container"
+        app:layout_constraintBottom_toTopOf="@id/bottom_spacer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/left_guide_content_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/margin_guide_content_audio_player"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/right_content_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/margin_guide_content_audio_player"/>
+
+    <ImageView
+        android:id="@+id/add_photo"
+        android:layout_width="@dimen/size_null"
+        android:layout_height="@dimen/size_null"
+        android:layout_marginTop="@dimen/margin_top_image_playlist_add"
+        android:contentDescription="@string/content_description_playlist"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/right_content_guideline"
+        app:layout_constraintStart_toStartOf="@+id/left_guide_content_line"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/image_rectangle"
+        />
+
+    <ImageView
+        android:id="@+id/icon_add_photo_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/add_photo"
+        android:contentDescription="@string/content_description_playlist"
+        app:layout_constraintTop_toTopOf="@id/add_photo"
+        app:layout_constraintBottom_toBottomOf="@id/add_photo"
+        app:layout_constraintStart_toStartOf="@id/add_photo"
+        app:layout_constraintEnd_toEndOf="@id/add_photo" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/name_playlistLayout"
+        style="@style/playlist_edit_text_Layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_bottom_image_playlist_add"
+        app:layout_constraintStart_toStartOf="@id/add_photo"
+        app:layout_constraintEnd_toEndOf="@id/add_photo"
+        app:layout_constraintTop_toBottomOf="@id/add_photo">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/name_playlist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/playlist_name"
+            style="@style/playlist_edit_text"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/description_PlaylistLayout"
+        style="@style/playlist_edit_text_Layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_bottom_edit_text_playlist_add"
+        app:layout_constraintStart_toStartOf="@id/name_playlistLayout"
+        app:layout_constraintEnd_toEndOf="@id/name_playlistLayout"
+        app:layout_constraintTop_toBottomOf="@id/name_playlistLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/description_playlist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/playlist_description"
+            style="@style/playlist_edit_text"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/add_playlist_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/playlist_btn_add"
+        android:background="@drawable/button_add_playlist"
+        android:enabled="false"
+        style="@style/playlist_btn"
+        app:layout_constraintStart_toEndOf="@+id/left_guideline"
+        app:layout_constraintEnd_toStartOf="@id/right_guideline"
+        app:layout_constraintBottom_toBottomOf="@+id/bottom_guide"
+        />
+
+    <View
+        android:id="@+id/bottom_spacer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

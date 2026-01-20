@@ -13,4 +13,10 @@
     <attr name="colorActiveTabNavMenu" format="reference|color"/>
     <attr name="colorTabNavMenu" format="reference|color"/>
     <attr name="backgroundNavMenu" format="reference|color"/>
+    <attr name="borderPlaylistAdd" format="reference|color"/>
+    <attr name="colorLineBottomSheet" format="reference|color"/>
+    <attr name="bgBottomSheet" format="reference|color"/>
+    <attr name="colorNameInBS" format="reference|color"/>
+    <attr name="playlistBackground" format="reference|color"/>
+    <attr name="addPlaylistTextEditBorder" format="reference|color"/>
 </resources>

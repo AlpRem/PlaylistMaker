@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.databinding.FragmentFavoritesBinding
-import com.practicum.playlistmaker.library.domain.FavoritesState
+import com.practicum.playlistmaker.library.domain.model.FavoritesState
 import com.practicum.playlistmaker.library.presenter.FavoritesViewModel
 import com.practicum.playlistmaker.player.ui.AudioPlayerFragment
 import com.practicum.playlistmaker.search.domain.model.Track

@@ -2,9 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
     <color name="main_background">#3772E7</color>
     <color name="blackish_blue">#1A1B22</color>
     <color name="icon_color_light">#AEAFB4</color>
+    <color name="icon_color_dark">#FFFFFF</color>
+    <color name="btn_click">#0D2A6A</color>
     <color name="thumb_color_light">@color/icon_color_light</color>
     <color name="thumb_color_dark">#3772E7</color>
     <color name="track_color_light">#E6E8EB</color>
@@ -26,4 +29,12 @@
     <color name="background_nav_menu_light">#FFFFFFFF</color>
     <color name="background_nav_menu_dark">#1A1B22</color>
     <color name="color_shadow_nav_menu">#737373</color>
+    <color name="color_line_bottom_sheet_light">#E6E8EB</color>
+    <color name="color_line_bottom_sheet_dark">#FFFFFF</color>
+    <color name="bg_bottom_sheet_light">#FFFFFF</color>
+    <color name="bg_bottom_sheet_dark">#1A1B22</color>
+    <color name="color_name_in_bs_light">#000000</color>
+    <color name="color_name_in_bs_dark">#FFFFFF</color>
+    <color name="color_playlist_background_light">#FFFFFF</color>
+    <color name="color_playlist_background_dark">#1A1B22</color>
 </resources>

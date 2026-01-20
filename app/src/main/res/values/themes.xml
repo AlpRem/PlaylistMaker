@@ -23,6 +23,12 @@
         <item name="colorActiveTabNavMenu">@color/active_tab_nav_menu_light</item>
         <item name="colorTabNavMenu">@color/tab_nav_menu_light</item>
         <item name="backgroundNavMenu">@color/background_nav_menu_light</item>
+        <item name="borderPlaylistAdd">@color/ap_information_title</item>
+        <item name="colorLineBottomSheet">@color/color_line_bottom_sheet_light</item>
+        <item name="bgBottomSheet">@color/bg_bottom_sheet_light</item>
+        <item name="colorNameInBS">@color/color_name_in_bs_light</item>
+        <item name="playlistBackground">@color/color_playlist_background_light</item>
+        <item name="addPlaylistTextEditBorder">@color/icon_color_light</item>
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
