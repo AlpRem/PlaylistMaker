@@ -6,6 +6,8 @@
     <dimen name="font_size_placeholder">16sp</dimen>
     <dimen name="font_size_information">13sp</dimen>
     <dimen name="font_size_title_history">19sp</dimen>
+    <dimen name="font_size_bold_playlist_details">24sp</dimen>
+    <dimen name="font_size_playlist_details">18sp</dimen>
     <dimen name="menu_font_size">16sp</dimen>
     <dimen name="main_padding_horizontal">16dp</dimen>
     <dimen name="main_padding_vertical">14dp</dimen>
@@ -89,5 +91,13 @@
     <dimen name="font_size_name_in_bs">16dp</dimen>
     <dimen name="font_size_count_track_in_bs">11dp</dimen>
     <dimen name="margin_right_img_bottom_sheet">8dp</dimen>
+    <dimen name="margin_top_name_playlist_details">24dp</dimen>
+    <dimen name="margin_top_text_playlist_details">8dp</dimen>
+    <dimen name="margin_top_icon_playlist_details">16dp</dimen>
+    <dimen name="size_point">3dp</dimen>
+    <dimen name="margin_horizontal_point">5dp</dimen>
+    <dimen name="size_icon_playlist">24dp</dimen>
+    <dimen name="margin_right_icon_playlist_details">16dp</dimen>
+    <dimen name="margin_top_arrow">16dp</dimen>
 
 </resources>

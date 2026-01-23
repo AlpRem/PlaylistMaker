@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import com.practicum.playlistmaker.databinding.FragmentPlaylistDetailsBinding
 import com.practicum.playlistmaker.library.presenter.PlaylistDetailsViewModel
@@ -23,11 +26,22 @@ class PlaylistDetailsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        toBackArrowButton()
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(top = systemBars.top)
+            insets
+        }
         val playlistId = requireArguments().getLong(PLAYLIST_ID)
         viewModel.loadPlaylist(playlistId)
     }
 
 
+    private fun toBackArrowButton() {
+        binding.arrowBack.setOnClickListener {
+        }
+    }
     companion object {
         private const val PLAYLIST_ID = "PLAYLIST_ID"
         fun createArgs(id: Long): Bundle =

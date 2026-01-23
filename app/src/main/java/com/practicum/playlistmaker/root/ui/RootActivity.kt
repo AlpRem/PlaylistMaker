@@ -15,6 +15,7 @@ import androidx.core.view.isGone
 class RootActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityRootBinding
+    private var isBottomNavAllowed = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,16 +29,19 @@ class RootActivity: AppCompatActivity() {
         bottomNavigationView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            isBottomNavAllowed =
+                destination.id != R.id.audioPlayerFragment &&
+                        destination.id != R.id.playlistAddFragment &&
+                        destination.id != R.id.playlistDetailsFragment
+
             bottomNavigationView.visibility =
-                if ((destination.id == R.id.audioPlayerFragment)||
-                    (destination.id == R.id.playlistAddFragment)) View.GONE
-                else View.VISIBLE
+                if (isBottomNavAllowed) View.VISIBLE else View.GONE
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             val isImeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
             binding.bottomNavigationView.visibility =
-                if (isImeVisible) View.GONE else View.VISIBLE
+                if (isImeVisible || !isBottomNavAllowed) View.GONE else View.VISIBLE
             insets
         }
     }

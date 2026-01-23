@@ -54,7 +54,6 @@
     </style>
 
     <style name="imageInTitleActivity">
-        <item name="android:paddingTop">3dp</item>
         <item name="android:layout_width">@dimen/icon_size</item>
         <item name="android:layout_height">@dimen/icon_size</item>
     </style>
@@ -298,6 +297,19 @@
         <item name="android:textColor">?attr/colorNote</item>
         <item name="android:textSize">@dimen/font_size_count_track_in_bs</item>
         <item name="android:layout_marginLeft">@dimen/margin_right_img_bottom_sheet</item>
+    </style>
+
+    <style name="font_bold_playlist_detail">
+        <item name="android:textFontWeight">700</item>
+        <item name="android:textSize">@dimen/font_size_bold_playlist_details</item>
+        <item name="android:textColor">@color/color_text_playlist_details</item>
+        <item name="android:layout_marginTop">@dimen/margin_top_name_playlist_details</item>
+    </style>
+
+    <style name="font_playlist_detail">
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">@dimen/font_size_playlist_details</item>
+        <item name="android:textColor">@color/color_text_playlist_details</item>
     </style>
 
 </resources>

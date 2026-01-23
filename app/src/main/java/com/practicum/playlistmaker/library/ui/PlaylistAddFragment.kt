@@ -23,6 +23,7 @@ import com.practicum.playlistmaker.library.presenter.PlaylistAddViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
 import androidx.core.net.toUri
+import androidx.core.view.updatePadding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.R
 
@@ -45,9 +46,15 @@ class PlaylistAddFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        toBackArrowButton()
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(top = systemBars.top)
+            insets
+        }
         initConfirmDialog()
         initTextWatcher()
-        toBackArrowButton()
         toHandleBack()
         savePlaylist()
         viewModel.observeState().observe(viewLifecycleOwner) {
