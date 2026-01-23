@@ -15,7 +15,6 @@ class AudioPlayerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val countTrack: TextView = itemView.findViewById(R.id.count_track)
 
     fun bind(model: Playlist) {
-
         namePlaylist.text = model.name
         countTrack.text = itemView.resources.getQuantityString(
             R.plurals.tracks_count,

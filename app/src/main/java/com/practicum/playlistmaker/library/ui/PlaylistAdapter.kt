@@ -8,7 +8,8 @@ import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.library.domain.model.Playlist
 import com.practicum.playlistmaker.search.domain.model.Track
 
-class PlaylistAdapter(var playlists: List<Playlist>): RecyclerView.Adapter<PlaylistViewHolder>() {
+class PlaylistAdapter(var playlists: List<Playlist>,
+                      private val onPlaylistClick: (Playlist) -> Unit): RecyclerView.Adapter<PlaylistViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -22,6 +23,9 @@ class PlaylistAdapter(var playlists: List<Playlist>): RecyclerView.Adapter<Playl
         position: Int
     ) {
         holder.bind(playlists[position])
+        holder.itemView.setOnClickListener {
+            onPlaylistClick(playlists[position])
+        }
     }
 
     override fun getItemCount(): Int {

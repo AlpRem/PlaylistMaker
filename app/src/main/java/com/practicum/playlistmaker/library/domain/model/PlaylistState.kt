@@ -6,7 +6,8 @@ data class PlaylistState(
     val page: Page<Playlist>,
     val isLoading: Boolean,
     val isError: Boolean,
-    val isEmpty: Boolean
+    val isEmpty: Boolean,
+    val openPlaylistId: Long? = null
 ) {
     companion object {
 
@@ -21,14 +22,16 @@ data class PlaylistState(
             Page.empty(),
             isLoading = false,
             isError = true,
-            isEmpty = false
+            isEmpty = false,
+            openPlaylistId = null
         )
 
         fun empty() = PlaylistState(
             Page.empty(),
             isLoading = false,
             isError = false,
-            isEmpty = true
+            isEmpty = true,
+            openPlaylistId = null
         )
 
         fun content(page: Page<Playlist>) =
@@ -36,7 +39,17 @@ data class PlaylistState(
                 page,
                 isLoading = false,
                 isError = false,
-                isEmpty = page.isEmpty()
+                isEmpty = page.isEmpty(),
+                openPlaylistId = null
+            )
+
+        fun openPlaylist(page: Page<Playlist>, playlistId: Long) =
+            PlaylistState(
+                page,
+                isLoading = false,
+                isError = false,
+                isEmpty = page.isEmpty(),
+                openPlaylistId = playlistId
             )
 
         fun clear() =
@@ -44,7 +57,8 @@ data class PlaylistState(
                 Page.empty(),
                 isLoading = false,
                 isError = false,
-                isEmpty = false
+                isEmpty = false,
+                openPlaylistId = null
             )
     }
 }

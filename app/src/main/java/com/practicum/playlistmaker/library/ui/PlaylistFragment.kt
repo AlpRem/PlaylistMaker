@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -36,8 +37,15 @@ class PlaylistFragment: Fragment() {
 
         initRecyclerView()
 
-        viewModel.observeState().observe(viewLifecycleOwner) {
-            render(it)
+        viewModel.observeState().observe(viewLifecycleOwner) { state ->
+            render(state)
+            state.openPlaylistId?.let { playlistId ->
+                findNavController().navigate(
+                    R.id.action_libraryFragment_to_playlistDetailsFragment,
+                    PlaylistDetailsFragment.createArgs(playlistId)
+                )
+                viewModel.clearOpenPlaylist()
+            }
         }
 
         viewModel.listPlaylist()
@@ -57,7 +65,10 @@ class PlaylistFragment: Fragment() {
     private fun initRecyclerView() {
         val recyclerView  = GridLayoutManager(requireContext(), 2)
         binding.recyclerView.layoutManager = recyclerView
-        playlistAdapter = PlaylistAdapter(emptyList())
+        playlistAdapter = PlaylistAdapter(emptyList(),
+            onPlaylistClick = { playlist ->
+                viewModel.onPlaylistClicked(playlist)
+            })
         binding.recyclerView.adapter = playlistAdapter
 
         binding.recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
