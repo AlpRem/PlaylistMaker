@@ -19,4 +19,8 @@ class PlaylistDbInteractorImpl(private val playlistDbRepository: PlaylistDbRepos
     override suspend fun addTrackToPlaylist(playlistId: Long, trackId: String): AddTrackToPlaylistResult {
         return playlistDbRepository.addTrackToPlaylist(playlistId, trackId)
     }
+
+    override suspend fun findById(id: Long): Playlist? {
+        return playlistDbRepository.findById(id)
+    }
 }

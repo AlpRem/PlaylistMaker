@@ -8,12 +8,9 @@ import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.db.data.AppDatabase
 import com.practicum.playlistmaker.search.domain.api.HistoryTrackRepository
 import com.practicum.playlistmaker.search.domain.model.Track
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 
 class HistoryTrackRepositoryImpl(private val sharedPreferences: SharedPreferences,
                                  private val gson: Gson,

@@ -8,8 +8,10 @@ import com.practicum.playlistmaker.db.domain.api.PlaylistDbRepository
 import com.practicum.playlistmaker.db.domain.model.AddTrackToPlaylistResult
 import com.practicum.playlistmaker.db.mapper.PlaylistMapperDao
 import com.practicum.playlistmaker.library.domain.model.Playlist
+import com.practicum.playlistmaker.search.domain.model.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
 class PlaylistDbRepositoryImpl(
@@ -52,5 +54,9 @@ class PlaylistDbRepositoryImpl(
 
         playlistDao.update(updatedPlaylist)
         return AddTrackToPlaylistResult.ToAdded
+    }
+
+    override suspend fun findById(id: Long): Playlist? {
+        return  playlistDao.findById(id)?.let { playlistMapper.map(it) }
     }
 }

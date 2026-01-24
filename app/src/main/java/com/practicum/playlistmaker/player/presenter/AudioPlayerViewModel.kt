@@ -12,7 +12,6 @@ import com.practicum.playlistmaker.library.domain.model.PlaylistState
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerInteractor
 import com.practicum.playlistmaker.player.domain.model.AddTrackToPlaylistState
 import com.practicum.playlistmaker.player.domain.model.AudioPlayerFragmentState
-import com.practicum.playlistmaker.player.domain.model.AudioPlayerState
 import com.practicum.playlistmaker.player.domain.model.PlayerState
 import com.practicum.playlistmaker.search.domain.model.Track
 import kotlinx.coroutines.Job

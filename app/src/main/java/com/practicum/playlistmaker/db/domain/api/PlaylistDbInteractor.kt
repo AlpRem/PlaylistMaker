@@ -9,4 +9,6 @@ interface PlaylistDbInteractor {
     fun list(): Flow<Page<Playlist>>
     suspend fun save(playlist: Playlist)
     suspend fun addTrackToPlaylist(playlistId: Long, trackId: String): AddTrackToPlaylistResult
+
+    suspend fun findById(id: Long): Playlist?
 }

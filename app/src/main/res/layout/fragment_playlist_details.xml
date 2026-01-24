@@ -39,8 +39,7 @@
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/placeholder"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_container"
@@ -69,7 +68,6 @@
         app:layout_constraintStart_toStartOf="@id/left_guide_content_line"
         app:layout_constraintTop_toBottomOf="@id/playlist_image"
         style="@style/font_bold_playlist_detail"
-        android:text="Best soung"
         />
 
     <TextView
@@ -80,7 +78,6 @@
         app:layout_constraintTop_toBottomOf="@+id/name"
         android:layout_marginTop="@dimen/margin_top_text_playlist_details"
         style="@style/font_playlist_detail"
-        android:text="2022"
         />
 
     <LinearLayout
@@ -116,7 +113,6 @@
             app:layout_constraintStart_toEndOf="@+id/time"
             app:layout_constraintTop_toBottomOf="@+id/description"
             style="@style/font_playlist_detail"
-            android:text="98 треков"
             />
 
     </LinearLayout>
@@ -126,7 +122,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginTop="@dimen/margin_top_text_playlist_details"
+        android:layout_marginTop="@dimen/margin_top_icon_playlist_details"
         app:layout_constraintStart_toStartOf="@id/left_guide_content_line"
         app:layout_constraintTop_toBottomOf="@id/info_Layout">
 
