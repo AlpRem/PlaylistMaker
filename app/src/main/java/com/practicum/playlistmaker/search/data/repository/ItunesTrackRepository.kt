@@ -29,7 +29,7 @@ class ItunesTrackRepository(private val networkClient: NetworkClient,
             } else {
                 emit(Page.withError("Server error: ${response.resultCode}"))
             }
-        },appDatabase.trackDao().listAllIds()
+        },appDatabase.trackDao().findByFavoriteAllIds()
     ) {page, favoriteIds ->
         if (page.hasErrors() || page.isEmpty())
             page

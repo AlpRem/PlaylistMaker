@@ -9,7 +9,8 @@ class TrackMapperDao {
         return TrackEntity(
             track.trackId, track.trackName, track.artistName,
             formatDuration(track.trackTime), track.artworkUrl100, track.collectionName,
-            track.releaseDate, track.primaryGenreName, track.country, track.previewUrl
+            track.releaseDate, track.primaryGenreName, track.country, track.previewUrl,
+            track.isFavorite, track.isPlaylist
         )
     }
 
@@ -17,6 +18,7 @@ class TrackMapperDao {
         return Track(
             track.id, track.trackName, track.artistName, formatDuration(track.trackTimeMillis),
             track.artworkUrl100, track.collectionName, track.releaseDate,
-            track.primaryGenreName, track.country, track.previewUrl, isFavorite = true)
+            track.primaryGenreName, track.country, track.previewUrl, track.isFavorite,
+            track.isPlaylist)
     }
 }

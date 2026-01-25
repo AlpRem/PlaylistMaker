@@ -8,16 +8,22 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class TrackDbInteractorImpl(private val trackDbRepository: TrackDbRepository): TrackDbInteractor {
-    override fun list(): Flow<Page<Track>> {
-        return trackDbRepository.list()
+    override fun findByFavorite(): Flow<Page<Track>> {
+        return trackDbRepository.findByFavorite()
+    }
+
+    override fun findByPlaylist(): Flow<Page<Track>> {
+        return trackDbRepository.findByPlaylist()
     }
 
     override suspend fun save(track: Track) {
         return trackDbRepository.save(track)
     }
 
-    override suspend fun delete(id: String) {
-        return trackDbRepository.delete(id)
+    private suspend fun garbageCollector(track: Track) {
+        if (!track.isFavorite && !track.isPlaylist) {
+            trackDbRepository.delete(track.trackId)
+        }
     }
 
 }

@@ -19,7 +19,7 @@ class FavoritesViewModel(private val trackDbInteractor: TrackDbInteractor): View
     private fun fillData() {
         renderState(FavoritesState.loading())
         viewModelScope.launch {
-            trackDbInteractor.list().collect { page ->
+            trackDbInteractor.findByFavorite().collect { page ->
                 when {
                     page.isEmpty() -> renderState(FavoritesState.empty())
                     else -> renderState(FavoritesState.content(page))

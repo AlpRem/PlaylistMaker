@@ -7,12 +7,18 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TrackDao: BaseDao<TrackEntity>  {
-    @Query("SELECT * FROM track")
-    fun list(): Flow<List<TrackEntity>>
+    @Query("SELECT * FROM track WHERE isFavorite = 1")
+    fun findByFavorite(): Flow<List<TrackEntity>>
 
-    @Query("SELECT id FROM track")
-    fun listAllIds(): Flow<List<String>>
+    @Query("SELECT * FROM track WHERE isPlaylist = 1")
+    fun findByPlaylist(): Flow<List<TrackEntity>>
 
-    @Query("SELECT * FROM track WHERE id = :id")
-    suspend fun findById(id: String): TrackEntity?
+    @Query("SELECT id FROM track WHERE isFavorite = 1")
+    fun findByFavoriteAllIds(): Flow<List<String>>
+
+    @Query("SELECT * FROM track WHERE id = :id AND isFavorite = 1")
+    suspend fun findByIdAndFavorite(id: String): TrackEntity?
+
+    @Query("UPDATE track SET isFavorite = :isFavorite WHERE id = :id")
+    suspend fun updateFavorite(id: String, isFavorite: Boolean)
 }

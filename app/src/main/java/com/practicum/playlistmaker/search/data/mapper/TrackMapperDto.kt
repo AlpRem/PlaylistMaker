@@ -19,7 +19,9 @@ class TrackMapperDto: EntityMapper<TrackDto, Track> {
             releaseDate = extractYear(entity.releaseDate),
             primaryGenreName = entity.primaryGenreName,
             country = entity.country,
-            previewUrl = entity.previewUrl
+            previewUrl = entity.previewUrl,
+            isFavorite = entity.isFavorite,
+            isPlaylist = entity.isPlaylist
         )
     }
 

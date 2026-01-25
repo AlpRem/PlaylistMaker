@@ -21,7 +21,7 @@ class HistoryTrackRepositoryImpl(private val sharedPreferences: SharedPreference
         flow {
             emit(readTrack())
              },
-        appDatabase.trackDao().listAllIds()) {
+        appDatabase.trackDao().findByFavoriteAllIds()) {
                                              historyTracks, favoriteIds ->
         val favoriteSet = favoriteIds.toSet()
         val updatedTracks = historyTracks

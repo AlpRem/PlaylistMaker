@@ -19,7 +19,7 @@ class MockTrackRepository: TrackRepository {
             "2013-03-26T07:00:00Z",
             "Country",
             "USA",
-            ""),
+            "", false, false),
         Track("2",
             "Billie Jean",
             "Michael Jackson",
@@ -29,7 +29,7 @@ class MockTrackRepository: TrackRepository {
             "2013-03-26T07:00:00Z",
             "Country",
             "USA",
-            ""),
+            "", false, false),
         Track("3",
             "Stayin' Alive",
             "Bee Gees",
@@ -39,7 +39,7 @@ class MockTrackRepository: TrackRepository {
             "2013-03-26T07:00:00Z",
             "Country",
             "USA",
-            ""),
+            "", false, false),
         Track("4",
             "Whole Lotta Love",
             "Led Zeppelin",
@@ -49,7 +49,7 @@ class MockTrackRepository: TrackRepository {
             "2013-03-26T07:00:00Z",
             "Country",
             "USA",
-            ""),
+            "", false, false),
         Track("5",
             "Sweet Child O'Mine",
             "Guns N' Roses",
@@ -59,7 +59,7 @@ class MockTrackRepository: TrackRepository {
             "2013-03-26T07:00:00Z",
             "Country",
             "USA",
-            "")
+            "", false, false)
     )
 
     override fun getTracks(query: String): Flow<Page<Track>> = flow {

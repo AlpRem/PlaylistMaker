@@ -82,15 +82,13 @@ class AudioPlayerViewModel(private val audioPlayerInteractor: AudioPlayerInterac
 
     fun toggleLike() {
         val currentTrack = track ?: return
-        val oldLike = stateAudioPlayer.value?.audioPlayerState?.likeState ?: false
         viewModelScope.launch {
-            if (oldLike)
-                trackDbInteractor.delete(currentTrack.trackId)
-            else
-                trackDbInteractor.save(currentTrack)
+            val newLikeStatus = !currentTrack.isFavorite
+            val newTrack = currentTrack.copy(isFavorite = newLikeStatus)
+            trackDbInteractor.save(newTrack)
+            track = newTrack
             stateAudioPlayer.value = stateAudioPlayer.value?.copy(
-                stateAudioPlayer.value!!.audioPlayerState.copy(likeState = !oldLike))
-            track = currentTrack.copy(isFavorite = !oldLike)
+                stateAudioPlayer.value!!.audioPlayerState.copy(likeState = newLikeStatus))
         }
     }
 

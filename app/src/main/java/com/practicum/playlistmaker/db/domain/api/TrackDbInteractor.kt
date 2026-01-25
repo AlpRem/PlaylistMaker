@@ -6,7 +6,8 @@ import com.practicum.playlistmaker.search.domain.model.Track
 import kotlinx.coroutines.flow.Flow
 
 interface TrackDbInteractor {
-    fun list(): Flow<Page<Track>>
+    fun findByFavorite(): Flow<Page<Track>>
+
+    fun findByPlaylist(): Flow<Page<Track>>
     suspend fun save(track: Track)
-    suspend fun delete(id: String)
 }

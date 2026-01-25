@@ -42,7 +42,7 @@ val repositoryModule = module {
     }
 
     single<PlaylistDbRepository> {
-        PlaylistDbRepositoryImpl(get<AppDatabase>().playlistDao(),get(),get())
+        PlaylistDbRepositoryImpl(get(),get(),get())
     }
 
     single<ImageStorageRepository> {
