@@ -62,7 +62,7 @@ class PlaylistDetailsFragment: Fragment() {
         when {
             state.isLoading -> showLoading()
             state.isEmpty -> showEmpty()
-            state.playlist != null -> showPlaylist(state.playlist)
+            state.playlist != null -> showPlaylist(state.playlist, state.totalDurationMillis)
         }
     }
     private fun showLoading() {
@@ -71,7 +71,7 @@ class PlaylistDetailsFragment: Fragment() {
     private fun showEmpty() {
     }
 
-    private fun showPlaylist(playlist: Playlist) {
+    private fun showPlaylist(playlist: Playlist, durationMillis: Long) {
         if (playlist.image.isBlank())
             binding.playlistImage.setImageResource(R.drawable.placeholder)
         else
@@ -83,6 +83,13 @@ class PlaylistDetailsFragment: Fragment() {
                 .into(binding.playlistImage)
         binding.name.text = playlist.name
         binding.description.text = playlist.description
+        val minutes = durationMillis / 1000 / 60
+        binding.time.text = this.resources.getQuantityString(
+            R.plurals.time_count,
+            minutes.toInt() ,
+            minutes
+        )
+
         binding.countTrack.text = this.resources.getQuantityString(
             R.plurals.tracks_count,
             playlist.countTracks,

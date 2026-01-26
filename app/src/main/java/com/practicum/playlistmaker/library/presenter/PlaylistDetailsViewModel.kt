@@ -18,12 +18,13 @@ class PlaylistDetailsViewModel(
         stateLiveData.value = stateLiveData.value?.copy(
             isLoading = true, isEmpty = false)
         viewModelScope.launch {
-            val playlist = playlistDbInteractor.findById(id)
+            val playlistDetails = playlistDbInteractor.findById(id)
 
             stateLiveData.value = PlaylistDetailsState(
                 isLoading = false,
-                playlist = playlist,
-                isEmpty = playlist == null
+                playlist = playlistDetails?.playlist,
+                totalDurationMillis = playlistDetails?.totalDurationMillis ?: 0L,
+                isEmpty = playlistDetails == null
             )
         }
     }

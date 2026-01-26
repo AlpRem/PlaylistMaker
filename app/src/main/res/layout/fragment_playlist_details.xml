@@ -97,7 +97,6 @@
             app:layout_constraintStart_toStartOf="@+id/left_guide_content_line"
             app:layout_constraintTop_toBottomOf="@+id/description"
             style="@style/font_playlist_detail"
-            android:text="300 минут"
             />
 
         <View

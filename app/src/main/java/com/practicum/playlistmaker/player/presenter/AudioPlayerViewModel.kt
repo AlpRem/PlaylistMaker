@@ -97,7 +97,7 @@ class AudioPlayerViewModel(private val audioPlayerInteractor: AudioPlayerInterac
         viewModelScope.launch {
             val result = playlistDbInteractor.addTrackToPlaylist(
                 playlistId = playlist.id,
-                trackId = currentTrack.trackId
+                track = currentTrack
             )
             stateAudioPlayer.value = stateAudioPlayer.value?.copy(
                 addTrackState = when (result) {

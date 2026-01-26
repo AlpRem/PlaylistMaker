@@ -6,7 +6,9 @@ import com.practicum.playlistmaker.db.data.AppDatabase
 import com.practicum.playlistmaker.db.data.dao.PlaylistDao
 import com.practicum.playlistmaker.db.domain.api.PlaylistDbRepository
 import com.practicum.playlistmaker.db.domain.model.AddTrackToPlaylistResult
+import com.practicum.playlistmaker.db.domain.model.PlaylistDetails
 import com.practicum.playlistmaker.db.mapper.PlaylistMapperDao
+import com.practicum.playlistmaker.db.mapper.TrackMapperDao
 import com.practicum.playlistmaker.library.domain.model.Playlist
 import com.practicum.playlistmaker.search.domain.model.Track
 import kotlinx.coroutines.flow.Flow
@@ -17,6 +19,7 @@ import kotlinx.coroutines.flow.map
 class PlaylistDbRepositoryImpl(
     private val appDatabase: AppDatabase,
     private val playlistMapper: PlaylistMapperDao,
+    private val trackMapper: TrackMapperDao,
     private val gson: Gson
 ): PlaylistDbRepository {
     override fun list(): Flow<Page<Playlist>> {
@@ -30,8 +33,9 @@ class PlaylistDbRepositoryImpl(
         appDatabase.playlistDao().save(playlistMapper.map(playlist))
     }
 
-    override suspend fun addTrackToPlaylist(playlistId: Long, trackId: String): AddTrackToPlaylistResult {
+    override suspend fun addTrackToPlaylist(playlistId: Long, track: Track): AddTrackToPlaylistResult {
         val playlistDao = appDatabase.playlistDao()
+        val trackDao = appDatabase.trackDao()
         val playlistEntity = playlistDao.findById(playlistId) ?: return AddTrackToPlaylistResult.TrackIsExists
         val trackIds: MutableList<String> =
             if (playlistEntity.tracksIds.isNotEmpty()) {
@@ -43,10 +47,20 @@ class PlaylistDbRepositoryImpl(
                 mutableListOf()
             }
 
-        if (trackIds.contains(trackId))
+        if (trackIds.contains(track.trackId))
             return AddTrackToPlaylistResult.TrackIsExists
-        trackIds.add(trackId)
 
+        val trackInDB = trackDao.findById(track.trackId)
+        if (trackInDB == null)
+            trackDao.save(
+                trackMapper.map(
+                    track.copy(isPlaylist = true)
+                )
+            )
+        else
+            trackDao.updatePlaylist(track.trackId, true)
+
+        trackIds.add(track.trackId)
         val updatedPlaylist = playlistEntity.copy(
             tracksIds = gson.toJson(trackIds),
             countTracks = trackIds.size
@@ -56,7 +70,24 @@ class PlaylistDbRepositoryImpl(
         return AddTrackToPlaylistResult.ToAdded
     }
 
-    override suspend fun findById(id: Long): Playlist? {
-        return  appDatabase.playlistDao().findById(id)?.let { playlistMapper.map(it) }
+    override suspend fun findById(id: Long): PlaylistDetails? {
+        val playlist = appDatabase.playlistDao().findById(id) ?: return null
+        val trackIds = if (playlist.tracksIds.isNotEmpty()) {
+            gson.fromJson(
+                playlist.tracksIds,
+                Array<String>::class.java
+            ).toList()
+        } else {
+            emptyList()
+        }
+        val tracks = appDatabase
+            .trackDao()
+            .findByIds(trackIds)
+
+        val totalDuration = tracks.sumOf { it.trackTimeMillis ?: 0L }
+        return PlaylistDetails(
+            playlist = playlistMapper.map(playlist),
+            totalDurationMillis = totalDuration
+        )
     }
 }
