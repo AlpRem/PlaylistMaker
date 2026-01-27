@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_playlist_details_background"
@@ -117,6 +120,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layout_group_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -144,6 +148,28 @@
             app:layout_constraintTop_toBottomOf="@+id/count_track"
             android:src="@drawable/playlist_icon_menu"/>
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/standard_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/padding_vertical_bottom_sheet"
+        app:behavior_peekHeight="266dp"
+        app:behavior_hideable="false"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:background="@drawable/bg_bottom_sheet"
+
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <View
+            android:layout_width="@dimen/width_line_bottom_sheet"
+            android:layout_height="@dimen/height_line_bottom_sheet"
+            android:background="?attr/colorLineBottomSheet"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_top_line_bottom_sheet" />
+
+    </LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -11,9 +11,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.MultiTransformation
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.util.dpToPx
 import com.practicum.playlistmaker.databinding.FragmentPlaylistDetailsBinding
@@ -38,7 +36,6 @@ class PlaylistDetailsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         toBackArrowButton()
-
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(top = systemBars.top)
@@ -95,7 +92,28 @@ class PlaylistDetailsFragment: Fragment() {
             playlist.countTracks,
             playlist.countTracks
         )
+//        initPeekHeight()
     }
+
+//    private fun initPeekHeight() {
+//        val bottomSheet = binding.standardBottomSheet
+//        val iconsLayout = binding.layoutGroupBtn
+//        val coordinator = binding.root
+//        bottomSheet.visibility = View.INVISIBLE
+//        binding.root.post {
+//            val parentHeight = coordinator.height
+//            val iconsBottom = iconsLayout.bottom
+//            val peekHeight = parentHeight - iconsBottom - iconsLayout.height
+//            BottomSheetBehavior.from(bottomSheet).apply {
+//                isFitToContents = false
+//                isHideable = false
+//                this.peekHeight = peekHeight
+//                expandedOffset = iconsBottom
+//                state = BottomSheetBehavior.STATE_COLLAPSED
+//            }
+//            bottomSheet.visibility = View.VISIBLE
+//        }
+//    }
 
 
 
