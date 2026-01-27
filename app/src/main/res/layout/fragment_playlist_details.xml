@@ -4,10 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_playlist_details_background">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/color_playlist_details_background"
     tools:context=".library.ui.PlaylistAddFragment">
 
@@ -126,6 +128,7 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:layout_marginTop="@dimen/margin_top_icon_playlist_details"
+        android:paddingBottom="@dimen/padding_bottom_add_to_playlist_btn"
         app:layout_constraintStart_toStartOf="@id/left_guide_content_line"
         app:layout_constraintTop_toBottomOf="@id/info_Layout">
 
@@ -155,11 +158,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/padding_vertical_bottom_sheet"
-        app:behavior_peekHeight="266dp"
         app:behavior_hideable="false"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         android:background="@drawable/bg_bottom_sheet"
-
         app:layout_constraintBottom_toBottomOf="parent">
 
         <View
@@ -172,6 +173,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_marginTop="@dimen/btn_padding_bottom"
+            android:background="@drawable/bg_bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

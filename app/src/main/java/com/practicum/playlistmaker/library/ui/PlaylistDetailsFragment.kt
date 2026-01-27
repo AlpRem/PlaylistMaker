@@ -57,6 +57,7 @@ class PlaylistDetailsFragment: Fragment() {
             render(state)
         }
         viewModel.loadPlaylist(requireArguments().getLong(PLAYLIST_ID))
+        initBottomSheetPeekHeight()
     }
 
 
@@ -144,6 +145,20 @@ class PlaylistDetailsFragment: Fragment() {
             .create()
 
         confirmDialog.show()
+    }
+
+    private fun initBottomSheetPeekHeight() {
+        val bottomSheet = binding.standardBottomSheet
+        val content = binding.content
+        bottomSheet.post {
+            val behavior = BottomSheetBehavior.from(bottomSheet)
+            val rootHeight = binding.root.height
+            val contentBottom = content.bottom
+            val peekHeight = rootHeight - contentBottom
+            behavior.peekHeight = peekHeight
+            behavior.isHideable = false
+            behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
     }
 
     companion object {
