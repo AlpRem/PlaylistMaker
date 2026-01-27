@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.common.util.dpToPx
@@ -24,6 +26,7 @@ import com.practicum.playlistmaker.library.domain.model.PlaylistDetailsState
 import com.practicum.playlistmaker.library.presenter.PlaylistDetailsViewModel
 import com.practicum.playlistmaker.player.ui.AudioPlayerAdapter
 import com.practicum.playlistmaker.player.ui.AudioPlayerFragment
+import com.practicum.playlistmaker.search.domain.model.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
@@ -31,6 +34,7 @@ class PlaylistDetailsFragment: Fragment() {
     private lateinit var binding: FragmentPlaylistDetailsBinding
     private val viewModel: PlaylistDetailsViewModel by viewModel()
     private lateinit var playlistDetailsAdapter: PlaylistDetailsAdapter
+    private lateinit var confirmDialog: AlertDialog
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -118,13 +122,28 @@ class PlaylistDetailsFragment: Fragment() {
                 viewModel.onOpenAudioPlayer(track)
             },
             onTrackLongClick = { track ->
-                viewModel.delete(track)
+                showDialog(track)
             }
         )
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = playlistDetailsAdapter
         }
+    }
+
+    private fun showDialog(track: Track) {
+        confirmDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.delete_track_dialog)
+            .setNeutralButton(R.string.no) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setNegativeButton(R.string.yes) { dialog, _ ->
+                dialog.dismiss()
+                viewModel.delete(track)
+            }
+            .create()
+
+        confirmDialog.show()
     }
 
     companion object {
