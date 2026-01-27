@@ -10,21 +10,27 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.common.component.Page
 import com.practicum.playlistmaker.common.util.dpToPx
 import com.practicum.playlistmaker.databinding.FragmentPlaylistDetailsBinding
 import com.practicum.playlistmaker.library.domain.model.Playlist
 import com.practicum.playlistmaker.library.domain.model.PlaylistAddState
 import com.practicum.playlistmaker.library.domain.model.PlaylistDetailsState
 import com.practicum.playlistmaker.library.presenter.PlaylistDetailsViewModel
+import com.practicum.playlistmaker.player.ui.AudioPlayerAdapter
+import com.practicum.playlistmaker.player.ui.AudioPlayerFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
 class PlaylistDetailsFragment: Fragment() {
     private lateinit var binding: FragmentPlaylistDetailsBinding
     private val viewModel: PlaylistDetailsViewModel by viewModel()
+    private lateinit var playlistDetailsAdapter: PlaylistDetailsAdapter
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -35,6 +41,7 @@ class PlaylistDetailsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initRecycler()
         toBackArrowButton()
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -56,10 +63,20 @@ class PlaylistDetailsFragment: Fragment() {
     }
 
     private fun render(state: PlaylistDetailsState) {
+        state.playerTrack?.let { track ->
+            findNavController().navigate(
+                R.id.action_playlistDetailsFragment_to_audioPlayerFragment,
+                AudioPlayerFragment.createArgs(track)
+            )
+            viewModel.resetOpenTrack()
+        }
         when {
             state.isLoading -> showLoading()
             state.isEmpty -> showEmpty()
-            state.playlist != null -> showPlaylist(state.playlist, state.totalDurationMillis)
+            state.playlist != null -> {
+                showPlaylist(state.playlist, state.totalDurationMillis)
+                playlistDetailsAdapter.updatePage(Page.of(state.tracks))
+            }
         }
     }
     private fun showLoading() {
@@ -92,30 +109,23 @@ class PlaylistDetailsFragment: Fragment() {
             playlist.countTracks,
             playlist.countTracks
         )
-//        initPeekHeight()
     }
 
-//    private fun initPeekHeight() {
-//        val bottomSheet = binding.standardBottomSheet
-//        val iconsLayout = binding.layoutGroupBtn
-//        val coordinator = binding.root
-//        bottomSheet.visibility = View.INVISIBLE
-//        binding.root.post {
-//            val parentHeight = coordinator.height
-//            val iconsBottom = iconsLayout.bottom
-//            val peekHeight = parentHeight - iconsBottom - iconsLayout.height
-//            BottomSheetBehavior.from(bottomSheet).apply {
-//                isFitToContents = false
-//                isHideable = false
-//                this.peekHeight = peekHeight
-//                expandedOffset = iconsBottom
-//                state = BottomSheetBehavior.STATE_COLLAPSED
-//            }
-//            bottomSheet.visibility = View.VISIBLE
-//        }
-//    }
-
-
+    private fun initRecycler() {
+        playlistDetailsAdapter = PlaylistDetailsAdapter(
+            tracks = emptyList(),
+            onTrackClick = { track ->
+                viewModel.onOpenAudioPlayer(track)
+            },
+            onTrackLongClick = { track ->
+                viewModel.delete(track)
+            }
+        )
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = playlistDetailsAdapter
+        }
+    }
 
     companion object {
         private const val PLAYLIST_ID = "PLAYLIST_ID"

@@ -80,13 +80,15 @@ class PlaylistDbRepositoryImpl(
         } else {
             emptyList()
         }
-        val tracks = appDatabase
+        val trackDB  = appDatabase
             .trackDao()
             .findByIds(trackIds)
+        val tracks = trackDB.map { trackMapper.map(it) }
+        val totalDuration = trackDB .sumOf { it.trackTimeMillis ?: 0L }
 
-        val totalDuration = tracks.sumOf { it.trackTimeMillis ?: 0L }
         return PlaylistDetails(
             playlist = playlistMapper.map(playlist),
+            tracks = tracks,
             totalDurationMillis = totalDuration
         )
     }

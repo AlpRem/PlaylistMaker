@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.db.domain.api.PlaylistDbInteractor
 import com.practicum.playlistmaker.library.domain.model.PlaylistDetailsState
+import com.practicum.playlistmaker.search.domain.model.Track
 import kotlinx.coroutines.launch
 
 class PlaylistDetailsViewModel(
@@ -23,9 +24,26 @@ class PlaylistDetailsViewModel(
             stateLiveData.value = PlaylistDetailsState(
                 isLoading = false,
                 playlist = playlistDetails?.playlist,
+                tracks = playlistDetails?.tracks.orEmpty(),
                 totalDurationMillis = playlistDetails?.totalDurationMillis ?: 0L,
                 isEmpty = playlistDetails == null
             )
+        }
+    }
+
+    fun onOpenAudioPlayer(track: Track) {
+        val currentState = stateLiveData.value ?: PlaylistDetailsState()
+        stateLiveData.value = currentState.copy(playerTrack = track)
+    }
+
+    fun delete(track: Track) {
+
+    }
+
+    fun resetOpenTrack() {
+        val currentState = stateLiveData.value ?: return
+        if (currentState.playerTrack != null) {
+            stateLiveData.value = currentState.copy(playerTrack = null)
         }
     }
 }
