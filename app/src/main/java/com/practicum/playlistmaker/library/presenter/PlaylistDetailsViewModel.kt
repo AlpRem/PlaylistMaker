@@ -37,7 +37,11 @@ class PlaylistDetailsViewModel(
     }
 
     fun delete(track: Track) {
-
+        val playlistId = stateLiveData.value?.playlist?.id ?: return
+        viewModelScope.launch {
+            playlistDbInteractor.deleteTrackToPlaylist(playlistId, track)
+            loadPlaylist(playlistId)
+        }
     }
 
     fun resetOpenTrack() {
