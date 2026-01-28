@@ -4,6 +4,10 @@ import com.practicum.playlistmaker.sharing.domain.api.ExternalNavigator
 import com.practicum.playlistmaker.sharing.domain.api.SharingInteractor
 
 class SharingInteractorImpl(private val externalNavigator: ExternalNavigator) : SharingInteractor {
+    override fun sharePlaylistApp(playlistInfo: String) {
+        externalNavigator.sharePlaylist(playlistInfo)
+    }
+
     override fun shareApp() {
         externalNavigator.shareLink()
     }

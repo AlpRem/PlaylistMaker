@@ -58,6 +58,12 @@ class PlaylistDetailsFragment: Fragment() {
         }
         viewModel.loadPlaylist(requireArguments().getLong(PLAYLIST_ID))
         initBottomSheetPeekHeight()
+
+        binding.playlistIconShared.setOnClickListener { viewModel.shareApp() }
+
+        binding.playlistIconMenu.setOnClickListener {
+
+        }
     }
 
 

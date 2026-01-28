@@ -8,6 +8,7 @@ import com.practicum.playlistmaker.library.domain.api.ImageStorageInteractor
 import com.practicum.playlistmaker.library.domain.impl.ImageStorageInteractorImpl
 import com.practicum.playlistmaker.player.domain.api.AudioPlayerInteractor
 import com.practicum.playlistmaker.player.domain.impl.AudioPlayerInteractorImpl
+import com.practicum.playlistmaker.player.domain.util.PlaylistToText
 import com.practicum.playlistmaker.search.domain.api.HistoryTrackInteractor
 import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.search.domain.impl.HistoryTrackInteractorImpl
@@ -19,6 +20,8 @@ import com.practicum.playlistmaker.sharing.domain.impl.SharingInteractorImpl
 import org.koin.dsl.module
 
 val interactorModule = module {
+    factory { PlaylistToText() }
+
     factory<AudioPlayerInteractor> {
         AudioPlayerInteractorImpl(get())
     }

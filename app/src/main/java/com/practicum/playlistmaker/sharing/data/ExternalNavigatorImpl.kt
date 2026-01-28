@@ -10,6 +10,17 @@ import com.practicum.playlistmaker.sharing.domain.api.ExternalNavigator
 class ExternalNavigatorImpl(private val context: Context): ExternalNavigator {
 
     private val isActivityContext = context is Activity
+    override fun sharePlaylist(playlistInfo: String) {
+        val intentFromSend = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, playlistInfo)
+        }
+        val intentFromChooser = Intent.createChooser(intentFromSend, getShareTitle())
+        if (!isActivityContext) {
+            intentFromChooser.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        context.startActivity(intentFromChooser)
+    }
 
     override fun shareLink() {
         val intentFromSend = Intent(Intent.ACTION_SEND).apply {

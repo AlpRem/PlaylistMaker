@@ -1,16 +1,23 @@
 package com.practicum.playlistmaker.library.presenter
 
+import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.db.domain.api.PlaylistDbInteractor
 import com.practicum.playlistmaker.library.domain.model.PlaylistDetailsState
+import com.practicum.playlistmaker.player.domain.util.PlaylistToText
 import com.practicum.playlistmaker.search.domain.model.Track
+import com.practicum.playlistmaker.sharing.domain.api.SharingInteractor
+import com.practicum.playlistmaker.R
 import kotlinx.coroutines.launch
 
 class PlaylistDetailsViewModel(
-    private val playlistDbInteractor: PlaylistDbInteractor): ViewModel() {
+    private val playlistDbInteractor: PlaylistDbInteractor,
+    private val playlistToText: PlaylistToText,
+    private val sharingInteractor: SharingInteractor,
+    private val resources: Resources): ViewModel() {
 
     private val stateLiveData = MutableLiveData(PlaylistDetailsState())
     fun observeState(): LiveData<PlaylistDetailsState> = stateLiveData
@@ -50,4 +57,20 @@ class PlaylistDetailsViewModel(
             stateLiveData.value = currentState.copy(playerTrack = null)
         }
     }
-}
+
+    fun shareApp() {
+        val state = stateLiveData.value ?: return
+        val playlist = state.playlist ?: return
+        val countTrack = resources.getQuantityString(
+            R.plurals.tracks_count,
+            state.tracks.size,
+            state.tracks.size
+        )
+        val playlistInfo = playlistToText.build(
+            name = playlist.name,
+            description = playlist.description,
+            countTrack = countTrack,
+            tracks = state.tracks
+        )
+        sharingInteractor.sharePlaylistApp(playlistInfo)
+    }}
