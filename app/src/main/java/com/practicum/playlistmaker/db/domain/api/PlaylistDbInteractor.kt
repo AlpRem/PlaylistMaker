@@ -13,6 +13,8 @@ interface PlaylistDbInteractor {
     suspend fun addTrackToPlaylist(playlistId: Long, track: Track): AddTrackToPlaylistResult
     suspend fun deleteTrackToPlaylist(playlistId: Long, track: Track)
 
+    suspend fun deletePlaylist(playlistId: Long, tracks: List<Track>)
+
     suspend fun findById(id: Long): PlaylistDetails?
 
 }

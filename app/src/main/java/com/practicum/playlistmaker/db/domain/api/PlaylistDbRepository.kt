@@ -12,5 +12,6 @@ interface PlaylistDbRepository {
     suspend fun save(playlist: Playlist)
     suspend fun addTrackToPlaylist(playlistId: Long, track: Track): AddTrackToPlaylistResult
     suspend fun deleteTrackFromPlaylist(playlistId: Long, track: Track)
+    suspend fun deletePlaylist(playlistId: Long, tracks: List<Track>)
     suspend fun findById(id: Long): PlaylistDetails?
 }

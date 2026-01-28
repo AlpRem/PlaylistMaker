@@ -29,6 +29,10 @@ class PlaylistDbInteractorImpl(private val playlistDbRepository: PlaylistDbRepos
         return playlistDbRepository.deleteTrackFromPlaylist(playlistId, track)
     }
 
+    override suspend fun deletePlaylist(playlistId: Long, tracks: List<Track>) {
+        return playlistDbRepository.deletePlaylist(playlistId, tracks)
+    }
+
     override suspend fun findById(id: Long): PlaylistDetails? {
         return playlistDbRepository.findById(id)
     }

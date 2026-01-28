@@ -8,5 +8,6 @@ data class PlaylistDetailsState (
     val tracks: List<Track> = emptyList(),
     val isEmpty: Boolean = false,
     val totalDurationMillis: Long = 0L,
-    val playerTrack: Track? = null
+    val playerTrack: Track? = null,
+    val completerDelete: Boolean = false
 )

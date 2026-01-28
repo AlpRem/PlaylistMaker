@@ -51,6 +51,23 @@ class PlaylistDetailsViewModel(
         }
     }
 
+    fun delete() {
+        val state = stateLiveData.value ?: return
+        val playlistId = state.playlist?.id ?: return
+        viewModelScope.launch {
+            playlistDbInteractor.deletePlaylist(playlistId, state.tracks)
+            stateLiveData.postValue(
+                state.copy(completerDelete = true)
+            )
+        }
+    }
+
+    fun changeFlagCompleterDelete() {
+        val state = stateLiveData.value ?: return
+        if (state.completerDelete)
+            stateLiveData.value = state.copy(completerDelete = false)
+    }
+
     fun resetOpenTrack() {
         val currentState = stateLiveData.value ?: return
         if (currentState.playerTrack != null) {

@@ -13,6 +13,7 @@ import com.practicum.playlistmaker.library.domain.model.Playlist
 import com.practicum.playlistmaker.search.domain.model.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
@@ -105,6 +106,27 @@ class PlaylistDbRepositoryImpl(
             else -> trackDao.delete(trackDB)
         }
 
+    }
+
+    override suspend fun deletePlaylist(playlistId: Long, tracks: List<Track>) {
+        val playlistDao = appDatabase.playlistDao()
+        val trackDao = appDatabase.trackDao()
+        val playlist = playlistDao.findById(playlistId) ?: return
+        val playlistsSnapshot = playlistDao.listPlaylist().first()
+        for (track in tracks) {
+            val isUseInPlaylists = playlistsSnapshot.any { p ->
+                if (p.id == playlistId || p.tracksIds.isEmpty()) return@any false
+                val ids = gson.fromJson(p.tracksIds, Array<String>::class.java)
+                ids.contains(track.trackId)
+            }
+            val trackDb = trackDao.findById(track.trackId) ?: continue
+            when {
+                trackDb.isFavorite -> trackDao.updatePlaylist(track.trackId, isUseInPlaylists)
+                isUseInPlaylists -> trackDao.updatePlaylist(track.trackId, true)
+                else -> trackDao.delete(trackDb)
+            }
+        }
+        playlistDao.delete(playlist)
     }
 
     override suspend fun findById(id: Long): PlaylistDetails? {

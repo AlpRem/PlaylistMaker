@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
@@ -34,6 +35,8 @@ class PlaylistDetailsFragment: Fragment() {
     private lateinit var binding: FragmentPlaylistDetailsBinding
     private val viewModel: PlaylistDetailsViewModel by viewModel()
     private lateinit var playlistDetailsAdapter: PlaylistDetailsAdapter
+
+    private lateinit var menuBottomSheetBehavior: BottomSheetBehavior<LinearLayout>
     private lateinit var confirmDialog: AlertDialog
 
 
@@ -47,6 +50,8 @@ class PlaylistDetailsFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecycler()
         toBackArrowButton()
+        initMenuBottomSheet()
+
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(top = systemBars.top)
@@ -55,6 +60,10 @@ class PlaylistDetailsFragment: Fragment() {
 
         viewModel.observeState().observe(viewLifecycleOwner) { state ->
             render(state)
+            if (state.completerDelete) {
+                findNavController().popBackStack()
+                viewModel.changeFlagCompleterDelete()
+            }
         }
         viewModel.loadPlaylist(requireArguments().getLong(PLAYLIST_ID))
         initBottomSheetPeekHeight()
@@ -62,10 +71,17 @@ class PlaylistDetailsFragment: Fragment() {
         binding.playlistIconShared.setOnClickListener { viewModel.shareApp() }
 
         binding.playlistIconMenu.setOnClickListener {
+            menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
 
+        binding.sharing.setOnClickListener {
+            viewModel.shareApp()
+        }
+
+        binding.delete.setOnClickListener {
+            viewModel.delete()
         }
     }
-
 
     private fun toBackArrowButton() {
         binding.arrowBack.setOnClickListener {
@@ -97,16 +113,26 @@ class PlaylistDetailsFragment: Fragment() {
     }
 
     private fun showPlaylist(playlist: Playlist, durationMillis: Long) {
-        if (playlist.image.isBlank())
+        if (playlist.image.isBlank()) {
             binding.playlistImage.setImageResource(R.drawable.placeholder)
-        else
+            binding.imagePlaylistSm.setImageResource(R.drawable.placeholder)
+        }
+        else {
             Glide.with(this)
                 .load(File(playlist.image))
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.placeholder)
                 .centerCrop()
                 .into(binding.playlistImage)
+            Glide.with(this)
+                .load(File(playlist.image))
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
+                .centerCrop()
+                .into(binding.imagePlaylistSm)
+        }
         binding.name.text = playlist.name
+        binding.namePlaylistSm.text = playlist.name
         binding.description.text = playlist.description
         val minutes = durationMillis / 1000 / 60
         binding.time.text = this.resources.getQuantityString(
@@ -116,6 +142,11 @@ class PlaylistDetailsFragment: Fragment() {
         )
 
         binding.countTrack.text = this.resources.getQuantityString(
+            R.plurals.tracks_count,
+            playlist.countTracks,
+            playlist.countTracks
+        )
+        binding.countTrackSm.text = this.resources.getQuantityString(
             R.plurals.tracks_count,
             playlist.countTracks,
             playlist.countTracks
@@ -164,6 +195,33 @@ class PlaylistDetailsFragment: Fragment() {
             behavior.peekHeight = peekHeight
             behavior.isHideable = false
             behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+    }
+
+    private fun initMenuBottomSheet() {
+        menuBottomSheetBehavior =
+            BottomSheetBehavior.from(binding.menuBottomSheet).apply {
+                state = BottomSheetBehavior.STATE_HIDDEN
+            }
+
+        menuBottomSheetBehavior.addBottomSheetCallback(
+            object : BottomSheetBehavior.BottomSheetCallback() {
+
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    binding.overlay.visibility =
+                        if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                            View.GONE
+                        } else {
+                            View.VISIBLE
+                        }
+                }
+
+                override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
+            }
+        )
+
+        binding.overlay.setOnClickListener {
+            menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
     }
 
