@@ -23,6 +23,7 @@ import com.practicum.playlistmaker.library.presenter.PlaylistAddViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
 import androidx.core.net.toUri
+import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.R
@@ -31,6 +32,11 @@ class PlaylistAddFragment: Fragment() {
     private lateinit var binding: FragmentPlaylistAddBinding
     private val viewModel: PlaylistAddViewModel by viewModel()
     private lateinit var confirmDialog: AlertDialog
+
+    private val playlistId: Long?
+        get() = arguments
+            ?.takeIf { it.containsKey(PLAYLIST_ID) }
+            ?.getLong(PLAYLIST_ID)
 
     val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         uri?.let {
@@ -57,6 +63,7 @@ class PlaylistAddFragment: Fragment() {
         initTextWatcher()
         toHandleBack()
         savePlaylist()
+
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
@@ -65,6 +72,10 @@ class PlaylistAddFragment: Fragment() {
             pickMedia.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
             )
+        }
+
+        playlistId?.let {
+            viewModel.loadPlaylist(it)
         }
     }
     private fun toHandleBack() {
@@ -150,5 +161,11 @@ class PlaylistAddFragment: Fragment() {
         binding.addPlaylistBtn.setOnClickListener {
             viewModel.savePlaylist()
         }
+    }
+
+    companion object {
+        private const val PLAYLIST_ID = "PLAYLIST_ID"
+        fun createArgs(id: Long?): Bundle =
+            bundleOf(PLAYLIST_ID to id)
     }
 }

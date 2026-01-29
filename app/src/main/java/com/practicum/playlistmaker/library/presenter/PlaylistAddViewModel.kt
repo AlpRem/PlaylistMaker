@@ -91,4 +91,8 @@ class PlaylistAddViewModel(
             }
         }
     }
+
+    fun loadPlaylist(playlistId: Long) {
+        val int: Int
+    }
 }

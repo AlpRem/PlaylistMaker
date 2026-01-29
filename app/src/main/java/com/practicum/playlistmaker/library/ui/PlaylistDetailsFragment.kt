@@ -78,6 +78,13 @@ class PlaylistDetailsFragment: Fragment() {
             viewModel.shareApp()
         }
 
+        binding.edit.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_playlistDetailsFragment_to_playlistAddFragment,
+                PlaylistAddFragment.createArgs(requireArguments().getLong(PLAYLIST_ID))
+            )
+        }
+
         binding.delete.setOnClickListener {
             val playlistName = viewModel.observeState().value?.playlist?.name ?: ""
             confirmDialog = MaterialAlertDialogBuilder(requireContext())
