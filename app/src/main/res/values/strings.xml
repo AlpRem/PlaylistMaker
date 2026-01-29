@@ -44,8 +44,12 @@
     <string name="ending">Завершить</string>
     <string name="end_add_playlist">Завершить создание плейлиста?</string>
     <string name="delete_track_dialog">Хотите удалить трек?</string>
+    <string name="delete_playlist_dialog">Хотите удалить плейлист «%1$s»?</string>
     <string name="yes">ДА</string>
     <string name="no">НЕТ</string>
+    <string name="sharing">Поделиться</string>
+    <string name="edit">Редактировать информацию</string>
+    <string name="delete">Удалить плейлист</string>
 
 
     <plurals name="tracks_count">

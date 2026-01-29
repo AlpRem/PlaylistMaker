@@ -193,7 +193,7 @@
         android:background="@drawable/bg_bottom_sheet"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:behavior_hideable="true"
-        android:paddingBottom="107dp"
+        android:paddingBottom="@dimen/layout_details_menu_bottom"
         >
 
         <View
@@ -201,14 +201,17 @@
             android:layout_height="@dimen/height_line_bottom_sheet"
             android:background="?attr/colorLineBottomSheet"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_top_line_bottom_sheet" />
+            android:layout_marginTop="@dimen/margin_top_line_bottom_sheet"
+            android:layout_marginBottom="@dimen/margin_bottom_line_bottom_sheet" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingHorizontal="@dimen/main_padding_vertical">
+            android:paddingHorizontal="@dimen/details_layout_sm_padding_vertical"
+            android:paddingVertical="@dimen/details_layout_sm_padding_horizontal"
+            android:layout_marginBottom="@dimen/margin_bottom_img_layout">
 
             <ImageView
                 android:id="@+id/image_playlist_sm"
@@ -218,11 +221,10 @@
                 android:contentDescription="@string/content_description_playlist" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/size_null"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
-
                 <TextView
                     android:id="@+id/name_playlist_sm"
                     android:layout_width="wrap_content"
@@ -230,40 +232,34 @@
                     style="@style/titleTrackStyle"
                     android:maxLines="1"
                     android:ellipsize="end"/>
-
                 <TextView
                     android:id="@+id/count_track_sm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/infoTrackStyle"/>
-
             </LinearLayout>
-
         </LinearLayout>
 
         <TextView
             android:id="@+id/sharing"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Поделиться"
-            style="@style/font_playlist_detail"
-            android:paddingVertical="16dp"/>
+            android:text="@string/sharing"
+            style="@style/item_menu_details"/>
 
         <TextView
             android:id="@+id/edit"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Редактировать информацию"
-            style="@style/font_playlist_detail"
-            android:paddingVertical="16dp"/>
+            android:text="@string/edit"
+            style="@style/item_menu_details"/>
 
         <TextView
             android:id="@+id/delete"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Удалить плейлист"
-            style="@style/font_playlist_detail"
-            android:paddingVertical="16dp"/>
+            android:text="@string/delete"
+            style="@style/item_menu_details"/>
 
     </LinearLayout>
 

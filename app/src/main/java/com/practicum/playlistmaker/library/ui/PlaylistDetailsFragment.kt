@@ -79,7 +79,18 @@ class PlaylistDetailsFragment: Fragment() {
         }
 
         binding.delete.setOnClickListener {
-            viewModel.delete()
+            val playlistName = viewModel.observeState().value?.playlist?.name ?: ""
+            confirmDialog = MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.delete_playlist_dialog,playlistName))
+                .setNegativeButton(R.string.no) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton(R.string.yes) { dialog, _ ->
+                    dialog.dismiss()
+                    viewModel.delete()
+                }
+                .create()
+            confirmDialog.show()
         }
     }
 
@@ -172,10 +183,10 @@ class PlaylistDetailsFragment: Fragment() {
     private fun showDialog(track: Track) {
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.delete_track_dialog)
-            .setNeutralButton(R.string.no) { dialog, _ ->
+            .setNegativeButton(R.string.no) { dialog, _ ->
                 dialog.dismiss()
             }
-            .setNegativeButton(R.string.yes) { dialog, _ ->
+            .setPositiveButton(R.string.yes) { dialog, _ ->
                 dialog.dismiss()
                 viewModel.delete(track)
             }

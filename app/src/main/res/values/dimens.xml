@@ -82,6 +82,7 @@
     <dimen name="width_line_bottom_sheet">50dp</dimen>
     <dimen name="height_line_bottom_sheet">4dp</dimen>
     <dimen name="margin_top_line_bottom_sheet">8dp</dimen>
+    <dimen name="margin_bottom_line_bottom_sheet">12dp</dimen>
     <dimen name="margin_top_title_add_to_playlist">12dp</dimen>
     <dimen name="padding_top_line_bottom_sheet">18dp</dimen>
     <dimen name="padding_bottom_line_bottom_sheet">12dp</dimen>
@@ -99,5 +100,11 @@
     <dimen name="size_icon_playlist">24dp</dimen>
     <dimen name="margin_right_icon_playlist_details">16dp</dimen>
     <dimen name="margin_top_arrow">16dp</dimen>
+    <dimen name="details_layout_sm_padding_vertical">13dp</dimen>
+    <dimen name="details_layout_sm_padding_horizontal">8dp</dimen>
+    <dimen name="margin_bottom_img_layout">8dp</dimen>
+    <dimen name="item_menu_details_padding_vertical">21dp</dimen>
+    <dimen name="item_menu_details_padding_horizontal">16dp</dimen>
+    <dimen name="layout_details_menu_bottom">107dp</dimen>
 
 </resources>

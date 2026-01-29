@@ -312,4 +312,12 @@
         <item name="android:textColor">@color/color_text_playlist_details</item>
     </style>
 
+    <style name="item_menu_details">
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">@dimen/font_size_placeholder</item>
+        <item name="android:textColor">?attr/titleTrackColor</item>
+        <item name="android:paddingHorizontal">@dimen/item_menu_details_padding_horizontal</item>
+        <item name="android:paddingVertical">@dimen/item_menu_details_padding_vertical</item>
+    </style>
+
 </resources>
