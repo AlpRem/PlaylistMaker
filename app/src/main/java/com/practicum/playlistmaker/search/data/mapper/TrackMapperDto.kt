@@ -20,8 +20,7 @@ class TrackMapperDto: EntityMapper<TrackDto, Track> {
             primaryGenreName = entity.primaryGenreName,
             country = entity.country,
             previewUrl = entity.previewUrl,
-            isFavorite = entity.isFavorite,
-            isPlaylist = entity.isPlaylist
+            isFavorite = entity.isFavorite
         )
     }
 

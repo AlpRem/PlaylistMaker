@@ -36,7 +36,7 @@ class PlaylistDbRepositoryImpl(
 
     override suspend fun addTrackToPlaylist(playlistId: Long, track: Track): AddTrackToPlaylistResult {
         val playlistDao = appDatabase.playlistDao()
-        val trackDao = appDatabase.trackDao()
+        val trackInPlaylistDao = appDatabase.trackInPlaylistDao()
         val playlistEntity = playlistDao.findById(playlistId) ?: return AddTrackToPlaylistResult.TrackIsExists
         val trackIds: MutableList<String> =
             if (playlistEntity.tracksIds.isNotEmpty()) {
@@ -51,15 +51,9 @@ class PlaylistDbRepositoryImpl(
         if (trackIds.contains(track.trackId))
             return AddTrackToPlaylistResult.TrackIsExists
 
-        val trackInDB = trackDao.findById(track.trackId)
+        val trackInDB = trackInPlaylistDao.findById(track.trackId)
         if (trackInDB == null)
-            trackDao.save(
-                trackMapper.map(
-                    track.copy(isPlaylist = true)
-                )
-            )
-        else
-            trackDao.updatePlaylist(track.trackId, true)
+            trackInPlaylistDao.save(trackMapper.mapToTrackInPlaylistEntity(track))
 
         trackIds.add(track.trackId)
         val updatedPlaylist = playlistEntity.copy(
@@ -75,58 +69,58 @@ class PlaylistDbRepositoryImpl(
         playlistId: Long,
         track: Track
     ) {
-        val playlistDao = appDatabase.playlistDao()
-        val trackDao = appDatabase.trackDao()
-        val playlist = playlistDao.findById(playlistId) ?: return
-        val trackIds = if (playlist.tracksIds.isNotEmpty())
-            gson.fromJson(playlist.tracksIds, Array<String>::class.java).toMutableList()
-        else
-            mutableListOf()
-        if (!trackIds.remove(track.trackId)) return
-        playlistDao.update(
-            playlist.copy(
-                tracksIds = gson.toJson(trackIds),
-                countTracks = trackIds.size
-            )
-        )
-
-        val allPlaylists = playlistDao.listPlaylist()
-        var isUseInPlaylists = false
-        allPlaylists.collect { playlists ->
-            isUseInPlaylists = playlists.any { p ->
-                if (p.id == playlistId || p.tracksIds.isEmpty()) return@any false
-                val ids = gson.fromJson(p.tracksIds, Array<String>::class.java)
-                ids.contains(track.trackId)
-            }
-        }
-        val trackDB = trackDao.findById(track.trackId) ?: return
-        when {
-            trackDB.isFavorite -> trackDao.updatePlaylist(track.trackId, isUseInPlaylists)
-            isUseInPlaylists -> trackDao.updatePlaylist(track.trackId, true)
-            else -> trackDao.delete(trackDB)
-        }
+//        val playlistDao = appDatabase.playlistDao()
+//        val trackDao = appDatabase.trackDao()
+//        val playlist = playlistDao.findById(playlistId) ?: return
+//        val trackIds = if (playlist.tracksIds.isNotEmpty())
+//            gson.fromJson(playlist.tracksIds, Array<String>::class.java).toMutableList()
+//        else
+//            mutableListOf()
+//        if (!trackIds.remove(track.trackId)) return
+//        playlistDao.update(
+//            playlist.copy(
+//                tracksIds = gson.toJson(trackIds),
+//                countTracks = trackIds.size
+//            )
+//        )
+//
+//        val allPlaylists = playlistDao.listPlaylist()
+//        var isUseInPlaylists = false
+//        allPlaylists.collect { playlists ->
+//            isUseInPlaylists = playlists.any { p ->
+//                if (p.id == playlistId || p.tracksIds.isEmpty()) return@any false
+//                val ids = gson.fromJson(p.tracksIds, Array<String>::class.java)
+//                ids.contains(track.trackId)
+//            }
+//        }
+//        val trackDB = trackDao.findById(track.trackId) ?: return
+//        when {
+//            trackDB.isFavorite -> trackDao.updatePlaylist(track.trackId, isUseInPlaylists)
+//            isUseInPlaylists -> trackDao.updatePlaylist(track.trackId, true)
+//            else -> trackDao.delete(trackDB)
+//        }
 
     }
 
     override suspend fun deletePlaylist(playlistId: Long, tracks: List<Track>) {
-        val playlistDao = appDatabase.playlistDao()
-        val trackDao = appDatabase.trackDao()
-        val playlist = playlistDao.findById(playlistId) ?: return
-        val playlistsSnapshot = playlistDao.listPlaylist().first()
-        for (track in tracks) {
-            val isUseInPlaylists = playlistsSnapshot.any { p ->
-                if (p.id == playlistId || p.tracksIds.isEmpty()) return@any false
-                val ids = gson.fromJson(p.tracksIds, Array<String>::class.java)
-                ids.contains(track.trackId)
-            }
-            val trackDb = trackDao.findById(track.trackId) ?: continue
-            when {
-                trackDb.isFavorite -> trackDao.updatePlaylist(track.trackId, isUseInPlaylists)
-                isUseInPlaylists -> trackDao.updatePlaylist(track.trackId, true)
-                else -> trackDao.delete(trackDb)
-            }
-        }
-        playlistDao.delete(playlist)
+//        val playlistDao = appDatabase.playlistDao()
+//        val trackDao = appDatabase.trackDao()
+//        val playlist = playlistDao.findById(playlistId) ?: return
+//        val playlistsSnapshot = playlistDao.listPlaylist().first()
+//        for (track in tracks) {
+//            val isUseInPlaylists = playlistsSnapshot.any { p ->
+//                if (p.id == playlistId || p.tracksIds.isEmpty()) return@any false
+//                val ids = gson.fromJson(p.tracksIds, Array<String>::class.java)
+//                ids.contains(track.trackId)
+//            }
+//            val trackDb = trackDao.findById(track.trackId) ?: continue
+//            when {
+//                trackDb.isFavorite -> trackDao.updatePlaylist(track.trackId, isUseInPlaylists)
+//                isUseInPlaylists -> trackDao.updatePlaylist(track.trackId, true)
+//                else -> trackDao.delete(trackDb)
+//            }
+//        }
+//        playlistDao.delete(playlist)
     }
 
     override suspend fun findById(id: Long): PlaylistDetails? {
@@ -140,9 +134,19 @@ class PlaylistDbRepositoryImpl(
             emptyList()
         }
         val trackDB  = appDatabase
-            .trackDao()
+            .trackInPlaylistDao()
             .findByIds(trackIds)
-        val tracks = trackDB.map { trackMapper.map(it) }
+
+        val favoriteIds = appDatabase
+            .trackDao()
+            .findByFavoriteSnapshot()
+            .toSet()
+
+        val tracks = trackDB.map { entity ->
+            trackMapper.map(entity).copy(
+                isFavorite = favoriteIds.contains(entity.id)
+            )
+        }
         val totalDuration = trackDB .sumOf { it.trackTimeMillis ?: 0L }
 
         return PlaylistDetails(

@@ -19,11 +19,4 @@ class TrackDbInteractorImpl(private val trackDbRepository: TrackDbRepository): T
     override suspend fun save(track: Track) {
         return trackDbRepository.save(track)
     }
-
-    private suspend fun garbageCollector(track: Track) {
-        if (!track.isFavorite && !track.isPlaylist) {
-            trackDbRepository.delete(track.trackId)
-        }
-    }
-
 }

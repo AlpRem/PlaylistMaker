@@ -21,8 +21,8 @@ class TrackDbRepositoryImpl(
 
     override fun findByPlaylist(): Flow<Page<Track>> {
         return appDatabase
-            .trackDao()
-            .findByPlaylist()
+            .trackInPlaylistDao()
+            .list()
             .map { t -> Page.of(t.asReversed().map { trackMapper.map(it) }) }
     }
 
