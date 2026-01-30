@@ -4,7 +4,9 @@ data class PlaylistAddState (
     val playlistId: Long? = null,
     val isAddPlaylistBtnEnabled: Boolean =  false,
     val namePlaylist: String = "",
+    val oldNamePlaylist: String = "",
     val descriptionPlaylist: String? = null,
+    val oldDescriptionPlaylist: String? = null,
     val coverPlaylistUri: String? = null,
     val oldCoverPlaylistUri: String? = null,
     val tracksIds: String = "[]",
@@ -16,7 +18,7 @@ data class PlaylistAddState (
     val isEditPlaylist: Boolean
         get() = playlistId != null
     val isChangeData: Boolean
-        get() = namePlaylist.isNotBlank() ||
-                !descriptionPlaylist.isNullOrBlank() ||
-                !coverPlaylistUri.isNullOrBlank()
+        get() = namePlaylist != oldNamePlaylist ||
+                descriptionPlaylist != oldDescriptionPlaylist ||
+                coverPlaylistUri != oldCoverPlaylistUri
 }

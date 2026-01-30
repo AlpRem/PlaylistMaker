@@ -103,7 +103,9 @@ class PlaylistAddViewModel(
                 stateLiveData.value!!.copy(
                     playlistId = playlistId,
                     namePlaylist = playlistDetails.playlist.name,
+                    oldNamePlaylist = playlistDetails.playlist.name,
                     descriptionPlaylist = playlistDetails.playlist.description,
+                    oldDescriptionPlaylist = playlistDetails.playlist.description,
                     coverPlaylistUri = playlistDetails.playlist.image,
                     oldCoverPlaylistUri = playlistDetails.playlist.image,
                     tracksIds  = playlistDetails.playlist.tracksIds,
