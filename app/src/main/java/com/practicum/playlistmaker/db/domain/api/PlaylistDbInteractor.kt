@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface PlaylistDbInteractor {
     fun list(): Flow<Page<Playlist>>
     suspend fun save(playlist: Playlist)
+    suspend fun update(playlist: Playlist)
     suspend fun addTrackToPlaylist(playlistId: Long, track: Track): AddTrackToPlaylistResult
     suspend fun deleteTrackToPlaylist(playlistId: Long, track: Track)
 

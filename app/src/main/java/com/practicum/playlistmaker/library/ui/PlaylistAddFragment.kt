@@ -25,8 +25,10 @@ import kotlin.getValue
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
+import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.R
+import java.io.File
 
 class PlaylistAddFragment: Fragment() {
     private lateinit var binding: FragmentPlaylistAddBinding
@@ -64,6 +66,14 @@ class PlaylistAddFragment: Fragment() {
         toHandleBack()
         savePlaylist()
 
+        if (playlistId == null) {
+            binding.titlePage.text = getString(R.string.btn_playlist_add)
+            binding.addPlaylistBtn.text = getString(R.string.playlist_btn_add)
+        } else {
+            binding.titlePage.text = getString(R.string.btn_playlist_edit)
+            binding.titlePage.text = getString(R.string.playlist_btn_edit)
+        }
+
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
@@ -100,6 +110,33 @@ class PlaylistAddFragment: Fragment() {
     }
     private fun render(state: PlaylistAddState) {
         binding.addPlaylistBtn.isEnabled = state.isAddPlaylistBtnEnabled
+        if (binding.namePlaylist.text.toString() != state.namePlaylist)
+            binding.namePlaylist.setText(state.namePlaylist)
+        if (binding.descriptionPlaylist.text.toString() != state.descriptionPlaylist.orEmpty())
+            binding.descriptionPlaylist.setText(state.descriptionPlaylist)
+        val coverPlaylistUri = state.coverPlaylistUri
+        when {
+            !coverPlaylistUri.isNullOrBlank() -> {
+                Glide.with(this)
+                    .load(File(coverPlaylistUri))
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.placeholder)
+                    .centerCrop()
+                    .into(binding.addPhoto)
+                binding.iconAddPhotoIcon.isInvisible = true
+            }
+            playlistId != null -> {
+                Glide.with(this)
+                    .load(R.drawable.placeholder)
+                    .centerCrop()
+                    .into(binding.addPhoto)
+                binding.iconAddPhotoIcon.isInvisible = true
+            }
+            else -> {
+                binding.addPhoto.setImageDrawable(null)
+                binding.iconAddPhotoIcon.isInvisible = false
+            }
+        }
         if (state.isSaveSuccess) {
             Toast.makeText(
                 requireContext(),

@@ -34,6 +34,10 @@ class PlaylistDbRepositoryImpl(
         appDatabase.playlistDao().save(playlistMapper.map(playlist))
     }
 
+    override suspend fun update(playlist: Playlist) {
+        appDatabase.playlistDao().update(playlistMapper.map(playlist))
+    }
+
     override suspend fun addTrackToPlaylist(playlistId: Long, track: Track): AddTrackToPlaylistResult {
         val playlistDao = appDatabase.playlistDao()
         val trackInPlaylistDao = appDatabase.trackInPlaylistDao()

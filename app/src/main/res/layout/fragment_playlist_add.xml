@@ -58,6 +58,7 @@ tools:context=".library.ui.PlaylistAddFragment">
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
+        android:id="@+id/title_page"
         android:text="@string/btn_playlist_add"
         app:layout_constraintStart_toEndOf="@id/arrow_back"
         app:layout_constraintTop_toTopOf="@id/arrow_back"

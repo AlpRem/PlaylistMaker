@@ -61,21 +61,25 @@ class PlaylistAddViewModel(
 
         viewModelScope.launch {
             try {
-                val imagePath = if (!state.coverPlaylistUri.isNullOrBlank()) {
-                    imageStorageInteractor.saveImage(state.coverPlaylistUri.toUri())
-                } else {
-                    ""
+                val imagePath = when {
+                    state.coverPlaylistUri.isNullOrBlank() -> ""
+                    state.coverPlaylistUri!=state.oldCoverPlaylistUri ->
+                        imageStorageInteractor.saveImage(state.coverPlaylistUri.toUri())
+                    else -> state.oldCoverPlaylistUri.orEmpty()
                 }
 
                 val playlist = Playlist(
-                    id = 0,
+                    id = state.playlistId ?: 0,
                     name = state.namePlaylist,
                     description = state.descriptionPlaylist.orEmpty(),
                     image = imagePath,
-                    tracksIds = "[]",
-                    countTracks = 0
+                    tracksIds = state.tracksIds,
+                    countTracks = state.countTracks
                 )
-                playlistDbInteractor.save(playlist)
+                if (state.isEditPlaylist)
+                    playlistDbInteractor.update(playlist)
+                else
+                    playlistDbInteractor.save(playlist)
 
                 stateLiveData.postValue(
                     state.copy(
@@ -93,6 +97,20 @@ class PlaylistAddViewModel(
     }
 
     fun loadPlaylist(playlistId: Long) {
-        val int: Int
+        viewModelScope.launch {
+            val playlistDetails = playlistDbInteractor.findById(playlistId) ?: return@launch
+            stateLiveData.postValue(
+                stateLiveData.value!!.copy(
+                    playlistId = playlistId,
+                    namePlaylist = playlistDetails.playlist.name,
+                    descriptionPlaylist = playlistDetails.playlist.description,
+                    coverPlaylistUri = playlistDetails.playlist.image,
+                    oldCoverPlaylistUri = playlistDetails.playlist.image,
+                    tracksIds  = playlistDetails.playlist.tracksIds,
+                    countTracks   = playlistDetails.playlist.countTracks,
+                    isAddPlaylistBtnEnabled = true
+                )
+            )
+        }
     }
 }
