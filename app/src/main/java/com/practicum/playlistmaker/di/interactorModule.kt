@@ -15,6 +15,7 @@ import com.practicum.playlistmaker.search.domain.impl.HistoryTrackInteractorImpl
 import com.practicum.playlistmaker.search.domain.impl.TracksInteractorImpl
 import com.practicum.playlistmaker.setting.domain.api.SettingsInteractor
 import com.practicum.playlistmaker.setting.domain.impl.SettingsInteractorImpl
+import com.practicum.playlistmaker.sharing.domain.api.ResourceProvider
 import com.practicum.playlistmaker.sharing.domain.api.SharingInteractor
 import com.practicum.playlistmaker.sharing.domain.impl.SharingInteractorImpl
 import org.koin.dsl.module
@@ -52,5 +53,9 @@ val interactorModule = module {
 
     single<ImageStorageInteractor> {
         ImageStorageInteractorImpl(get())
+    }
+
+    single<ResourceProvider> {
+        com.practicum.playlistmaker.sharing.data.ResourceProvider(get())
     }
 }

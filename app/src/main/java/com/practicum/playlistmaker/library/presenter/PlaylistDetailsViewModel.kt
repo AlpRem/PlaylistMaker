@@ -11,13 +11,14 @@ import com.practicum.playlistmaker.player.domain.util.PlaylistToText
 import com.practicum.playlistmaker.search.domain.model.Track
 import com.practicum.playlistmaker.sharing.domain.api.SharingInteractor
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.sharing.domain.api.ResourceProvider
 import kotlinx.coroutines.launch
 
 class PlaylistDetailsViewModel(
     private val playlistDbInteractor: PlaylistDbInteractor,
     private val playlistToText: PlaylistToText,
     private val sharingInteractor: SharingInteractor,
-    private val resources: Resources): ViewModel() {
+    private val resources: ResourceProvider): ViewModel() {
 
     private val stateLiveData = MutableLiveData(PlaylistDetailsState())
     fun observeState(): LiveData<PlaylistDetailsState> = stateLiveData
@@ -78,10 +79,11 @@ class PlaylistDetailsViewModel(
     fun shareApp() {
         val state = stateLiveData.value ?: return
         val playlist = state.playlist ?: return
-        val countTrack = resources.getQuantityString(
+        val countTrack = resources.getString(
             R.plurals.tracks_count,
             state.tracks.size,
             state.tracks.size
+
         )
         val playlistInfo = playlistToText.build(
             name = playlist.name,

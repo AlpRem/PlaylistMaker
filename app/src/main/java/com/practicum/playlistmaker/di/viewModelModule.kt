@@ -42,7 +42,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        PlaylistDetailsViewModel(get(), get(), get(), androidContext().resources)
+        PlaylistDetailsViewModel(get(), get(), get(), get())
     }
 
 }
