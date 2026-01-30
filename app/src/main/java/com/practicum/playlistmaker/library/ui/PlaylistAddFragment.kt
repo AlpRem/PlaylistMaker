@@ -118,7 +118,7 @@ class PlaylistAddFragment: Fragment() {
         when {
             !coverPlaylistUri.isNullOrBlank() -> {
                 Glide.with(this)
-                    .load(File(coverPlaylistUri))
+                    .load(state.coverPlaylistUri.toUri())
                     .placeholder(R.drawable.placeholder)
                     .error(R.drawable.placeholder)
                     .centerCrop()
@@ -130,6 +130,7 @@ class PlaylistAddFragment: Fragment() {
                     .load(R.drawable.placeholder)
                     .centerCrop()
                     .into(binding.addPhoto)
+                binding.addPhoto.background = null
                 binding.iconAddPhotoIcon.isInvisible = true
             }
             else -> {
