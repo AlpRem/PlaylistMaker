@@ -71,7 +71,7 @@ class PlaylistAddFragment: Fragment() {
             binding.addPlaylistBtn.text = getString(R.string.playlist_btn_add)
         } else {
             binding.titlePage.text = getString(R.string.btn_playlist_edit)
-            binding.titlePage.text = getString(R.string.playlist_btn_edit)
+            binding.addPlaylistBtn.text = getString(R.string.playlist_btn_edit)
         }
 
         viewModel.observeState().observe(viewLifecycleOwner) {
