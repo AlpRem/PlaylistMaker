@@ -116,11 +116,19 @@ class PlaylistDetailsFragment: Fragment() {
             viewModel.resetOpenTrack()
         }
         when {
-            state.isLoading -> showLoading()
-            state.isEmpty -> showEmpty()
+            state.isLoading -> {}
+            state.isEmpty -> {}
             state.playlist != null -> {
                 showPlaylist(state.playlist, state.totalDurationMillis)
+
                 playlistDetailsAdapter.updatePage(Page.of(state.tracks))
+                if (state.tracks.isEmpty()) {
+                    binding.errorTextView.visibility = View.VISIBLE
+                    binding.recyclerView.visibility = View.GONE
+                } else {
+                    binding.errorTextView.visibility = View.GONE
+                    binding.recyclerView.visibility = View.VISIBLE
+                }
             }
         }
     }

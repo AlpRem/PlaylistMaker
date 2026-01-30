@@ -33,6 +33,7 @@
     <string name="library_playlist">Плейлисты</string>
     <string name="library_favorites">Избранные треки</string>
     <string name="playlist_not_created">Вы не создали\nни одного плейлиста</string>
+    <string name="playlist_not_found_track">Вы не добавили\nни одного трека</string>
     <string name="favorites_null">Ваша медиатека пуста</string>
     <string name="playlist_created">Новый плейлист</string>
     <string name="playlist_name">Название*</string>
