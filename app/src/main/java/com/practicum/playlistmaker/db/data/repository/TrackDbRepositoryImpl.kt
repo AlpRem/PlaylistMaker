@@ -23,7 +23,7 @@ class TrackDbRepositoryImpl(
         return appDatabase
             .trackInPlaylistDao()
             .list()
-            .map { t -> Page.of(t.asReversed().map { trackMapper.map(it) }) }
+            .map { t -> Page.of(t.map { trackMapper.map(it) }) }
     }
 
     override suspend fun save(track: Track) {

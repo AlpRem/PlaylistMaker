@@ -135,12 +135,17 @@ class PlaylistDbRepositoryImpl(
             .trackInPlaylistDao()
             .findByIds(trackIds)
 
+        val trackDBById = trackDB.associateBy { it.id }
+        val orderedTracks = trackIds.mapNotNull { id ->
+            trackDBById[id]
+        }
+
         val favoriteIds = appDatabase
             .trackDao()
             .findByFavoriteSnapshot()
             .toSet()
 
-        val tracks = trackDB.map { entity ->
+        val tracks = orderedTracks.map { entity ->
             trackMapper.map(entity).copy(
                 isFavorite = favoriteIds.contains(entity.id)
             )
