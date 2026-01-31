@@ -70,7 +70,7 @@ class PlaylistAddFragment: Fragment() {
             binding.titlePage.text = getString(R.string.btn_playlist_add)
             binding.addPlaylistBtn.text = getString(R.string.playlist_btn_add)
         } else {
-            binding.titlePage.text = getString(R.string.btn_playlist_edit)
+            binding.titlePage.text = getString(R.string.edit)
             binding.addPlaylistBtn.text = getString(R.string.playlist_btn_edit)
         }
 
@@ -117,6 +117,15 @@ class PlaylistAddFragment: Fragment() {
         val cover = state.coverPlaylistUri
 
         when {
+            cover.isNullOrBlank() && state.isEditPlaylist -> {
+                Glide.with(this)
+                    .load(R.drawable.placeholder)
+                    .centerCrop()
+                    .into(binding.addPhoto)
+                binding.addPhoto.background = null
+                binding.iconAddPhotoIcon.isInvisible = true
+            }
+
             cover.isNullOrBlank() -> {
                 binding.addPhoto.setImageDrawable(null)
                 binding.iconAddPhotoIcon.isInvisible = false
@@ -134,6 +143,7 @@ class PlaylistAddFragment: Fragment() {
                     .error(R.drawable.placeholder)
                     .centerCrop()
                     .into(binding.addPhoto)
+
                 binding.iconAddPhotoIcon.isInvisible = true
             }
         }
@@ -200,10 +210,13 @@ class PlaylistAddFragment: Fragment() {
     }
 
     private fun handleBack(state: PlaylistAddState) {
-        if (state.isChangeData)
-            confirmDialog.show()
-        else
-            findNavController().popBackStack()
+        if (state.isEditPlaylist) findNavController().popBackStack()
+            else {
+            if (state.isChangeData)
+                confirmDialog.show()
+            else
+                findNavController().popBackStack()
+        }
     }
 
     private fun savePlaylist() {

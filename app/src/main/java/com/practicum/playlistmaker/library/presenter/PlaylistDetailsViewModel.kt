@@ -32,7 +32,7 @@ class PlaylistDetailsViewModel(
             stateLiveData.value = PlaylistDetailsState(
                 isLoading = false,
                 playlist = playlistDetails?.playlist,
-                tracks = playlistDetails?.tracks.orEmpty(),
+                tracks = playlistDetails?.tracks?.asReversed().orEmpty(),
                 totalDurationMillis = playlistDetails?.totalDurationMillis ?: 0L,
                 isEmpty = playlistDetails == null
             )

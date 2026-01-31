@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
@@ -69,14 +70,35 @@ class PlaylistDetailsFragment: Fragment() {
         viewModel.loadPlaylist(requireArguments().getLong(PLAYLIST_ID))
         initBottomSheetPeekHeight()
 
-        binding.playlistIconShared.setOnClickListener { viewModel.shareApp() }
+        binding.sharing.setOnClickListener {
+            val state = viewModel.observeState().value
+            if (state?.tracks?.isNotEmpty() == true)
+                viewModel.shareApp()
+            else {
+                menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.track_not_has_in_playlisr),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
 
         binding.playlistIconMenu.setOnClickListener {
             menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
-        binding.sharing.setOnClickListener {
-            viewModel.shareApp()
+        binding.playlistIconShared.setOnClickListener {
+            val state = viewModel.observeState().value
+            if (state?.tracks?.isNotEmpty() == true)
+                viewModel.shareApp()
+            else {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.track_not_has_in_playlisr),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
 
         binding.edit.setOnClickListener {
@@ -88,12 +110,14 @@ class PlaylistDetailsFragment: Fragment() {
 
         binding.delete.setOnClickListener {
             val playlistName = viewModel.observeState().value?.playlist?.name ?: ""
+            menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             confirmDialog = MaterialAlertDialogBuilder(requireContext())
-                .setTitle(getString(R.string.delete_playlist_dialog,playlistName))
-                .setNegativeButton(R.string.no) { dialog, _ ->
+                .setTitle(R.string.title_delete_playlist_dialog)
+                .setMessage(R.string.mes_playlist_dialog)
+                .setNegativeButton(R.string.cansel_playlist_dialog) { dialog, _ ->
                     dialog.dismiss()
                 }
-                .setPositiveButton(R.string.yes) { dialog, _ ->
+                .setPositiveButton(R.string.ok_playlist_dialog) { dialog, _ ->
                     dialog.dismiss()
                     viewModel.delete()
                 }
