@@ -87,11 +87,7 @@ class PlaylistAddViewModel(
                     )
                 )
             } catch (ex: Exception) {
-                stateLiveData.postValue(
-                    state.copy(
-                        isSaveError = true
-                    )
-                )
+                stateLiveData.postValue(state.copy(isSaveError = true))
             }
         }
     }

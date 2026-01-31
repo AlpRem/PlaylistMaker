@@ -114,42 +114,53 @@ class PlaylistAddFragment: Fragment() {
             binding.namePlaylist.setText(state.namePlaylist)
         if (binding.descriptionPlaylist.text.toString() != state.descriptionPlaylist.orEmpty())
             binding.descriptionPlaylist.setText(state.descriptionPlaylist)
-        val coverPlaylistUri = state.coverPlaylistUri
+        val cover = state.coverPlaylistUri
+
         when {
-            !coverPlaylistUri.isNullOrBlank() -> {
+            cover.isNullOrBlank() -> {
+                binding.addPhoto.setImageDrawable(null)
+                binding.iconAddPhotoIcon.isInvisible = false
+            }
+
+            cover.startsWith("content://") -> {
+                binding.addPhoto.setImageURI(cover.toUri())
+                binding.iconAddPhotoIcon.isInvisible = true
+            }
+
+            else -> {
                 Glide.with(this)
-                    .load(state.coverPlaylistUri.toUri())
+                    .load(File(cover))
                     .placeholder(R.drawable.placeholder)
                     .error(R.drawable.placeholder)
                     .centerCrop()
                     .into(binding.addPhoto)
                 binding.iconAddPhotoIcon.isInvisible = true
             }
-            playlistId != null -> {
-                Glide.with(this)
-                    .load(R.drawable.placeholder)
-                    .centerCrop()
-                    .into(binding.addPhoto)
-                binding.addPhoto.background = null
-                binding.iconAddPhotoIcon.isInvisible = true
-            }
-            else -> {
-                binding.addPhoto.setImageDrawable(null)
-                binding.iconAddPhotoIcon.isInvisible = false
-            }
         }
         if (state.isSaveSuccess) {
-            Toast.makeText(
-                requireContext(),
-                "Плейлист ${state.namePlaylist} создан",
-                Toast.LENGTH_SHORT
-            ).show()
-            findNavController().popBackStack()
-        }
+            if (state.isEditPlaylist) {
+                Toast.makeText(
+                    requireContext(),
+                    "Плейлист обновлён",
+                    Toast.LENGTH_SHORT
+                ).show()
 
-        state.coverPlaylistUri?.let {
-            binding.addPhoto.setImageURI(it.toUri())
-            binding.iconAddPhotoIcon.isInvisible = true
+                findNavController()
+                    .getBackStackEntry(R.id.libraryFragment)
+                    .savedStateHandle
+                    .set("tab", 1)
+                findNavController().popBackStack(
+                    R.id.libraryFragment,
+                    false
+                )
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Плейлист ${state.namePlaylist} создан",
+                    Toast.LENGTH_SHORT
+                ).show()
+                findNavController().popBackStack()
+            }
         }
     }
 

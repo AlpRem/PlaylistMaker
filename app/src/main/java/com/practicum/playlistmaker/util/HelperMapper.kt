@@ -32,3 +32,7 @@ fun extractYear(dateString: String?): String {
         ""
     }
 }
+
+fun millisecondToMinute(millis: Long): Int {
+    return (millis / 1000 / 60).toInt()
+}

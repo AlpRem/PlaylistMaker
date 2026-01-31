@@ -28,6 +28,7 @@ import com.practicum.playlistmaker.library.presenter.PlaylistDetailsViewModel
 import com.practicum.playlistmaker.player.ui.AudioPlayerAdapter
 import com.practicum.playlistmaker.player.ui.AudioPlayerFragment
 import com.practicum.playlistmaker.search.domain.model.Track
+import com.practicum.playlistmaker.util.millisecondToMinute
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
@@ -120,7 +121,6 @@ class PlaylistDetailsFragment: Fragment() {
             state.isEmpty -> {}
             state.playlist != null -> {
                 showPlaylist(state.playlist, state.totalDurationMillis)
-
                 playlistDetailsAdapter.updatePage(Page.of(state.tracks))
                 if (state.tracks.isEmpty()) {
                     binding.errorTextView.visibility = View.VISIBLE
@@ -132,12 +132,6 @@ class PlaylistDetailsFragment: Fragment() {
             }
         }
     }
-    private fun showLoading() {
-    }
-
-    private fun showEmpty() {
-    }
-
     private fun showPlaylist(playlist: Playlist, durationMillis: Long) {
         if (playlist.image.isBlank()) {
             binding.playlistImage.setImageResource(R.drawable.placeholder)
@@ -160,10 +154,10 @@ class PlaylistDetailsFragment: Fragment() {
         binding.name.text = playlist.name
         binding.namePlaylistSm.text = playlist.name
         binding.description.text = playlist.description
-        val minutes = durationMillis / 1000 / 60
+        val minutes = millisecondToMinute(durationMillis)
         binding.time.text = this.resources.getQuantityString(
             R.plurals.time_count,
-            minutes.toInt() ,
+            minutes,
             minutes
         )
 
