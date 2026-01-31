@@ -106,5 +106,6 @@
     <dimen name="item_menu_details_padding_vertical">21dp</dimen>
     <dimen name="item_menu_details_padding_horizontal">16dp</dimen>
     <dimen name="layout_details_menu_bottom">107dp</dimen>
+    <dimen name="view_bottom_sheet_radios">44dp</dimen>
 
 </resources>

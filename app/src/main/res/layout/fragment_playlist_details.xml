@@ -59,7 +59,7 @@
             android:id="@+id/arrow_back"
             style="@style/imageInTitleActivity"
             android:layout_height="wrap_content"
-            android:src="@drawable/arrow_back"
+            android:src="@drawable/arrow_back_black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
@@ -166,7 +166,7 @@
         <View
             android:layout_width="@dimen/width_line_bottom_sheet"
             android:layout_height="@dimen/height_line_bottom_sheet"
-            android:background="?attr/colorLineBottomSheet"
+            android:background="@drawable/border_view_bs"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/margin_top_line_bottom_sheet" />
 
@@ -204,7 +204,7 @@
         <View
             android:layout_width="@dimen/width_line_bottom_sheet"
             android:layout_height="@dimen/height_line_bottom_sheet"
-            android:background="?attr/colorLineBottomSheet"
+            android:background="@drawable/border_view_bs"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/margin_top_line_bottom_sheet"
             android:layout_marginBottom="@dimen/margin_bottom_line_bottom_sheet" />

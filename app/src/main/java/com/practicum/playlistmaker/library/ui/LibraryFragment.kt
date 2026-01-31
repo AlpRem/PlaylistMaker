@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -52,5 +53,17 @@ class LibraryFragment: Fragment() {
             findNavController()
                 .currentBackStackEntry?.savedStateHandle?.remove<Int>("tab")
             }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    val navController = findNavController()
+                    if (navController.popBackStack())
+                        return
+                    requireActivity().finish()
+                }
+            }
+        )
     }
 }
